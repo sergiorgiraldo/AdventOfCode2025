@@ -1,0 +1,5 @@
+ruff
+advent-of-code-data
+selenium
+python-dotenv
+networkx

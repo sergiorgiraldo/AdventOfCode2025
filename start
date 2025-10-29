@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+
+import argparse
+from pathlib import Path
+from os import path;
+from datetime import date
+from aocd import get_data
+import subprocess
+import webbrowser
+
+PARSER = argparse.ArgumentParser(
+    prog="./start", description="Scaffold a new Advent of Code solution"
+)
+PARSER.add_argument(
+    "day",
+    type=int,
+    help=(
+        "Which puzzle day to start, between [1,25]."
+        " Defaults to the next day without a folder (matching `day_N`) in that year."
+    ),
+    nargs="?",
+)
+
+if __name__ == "__main__":
+    ARGS = PARSER.parse_args()
+
+    day = ARGS.day if ARGS.day is not None else date.today().day
+
+    if not 1 <= day <= 25:
+        PARSER.error(f"day {day} is not in range [1,25]")
+
+    print("doing day", day)
+
+    day_dir = Path("solutions", f"day{day:02}")
+
+    day_dir.mkdir(parents=True, exist_ok=True)
+
+    # bgn get input ##############
+
+    ## puzzle
+
+    with open('.env') as f: aoc_session = f.read()
+
+    content = get_data(day=day, year=2025, session=aoc_session)
+
+    input_path = Path(day_dir, "input.txt")
+
+    # always overwrite
+    if path.exists(input_path): 
+        open(input_path, 'w').close()
+    # save content to file
+    with open(input_path, "a") as f:
+        for line in content:
+            f.write(line)
+
+    ## test
+
+    command = "aocd " + str(day) + " 2025 --example"
+    result = subprocess.run(command, shell=True, text=True, capture_output=True)
+    content = result.stdout
+
+    input_test_path = Path(day_dir, "input.test.txt")
+    # always overwrite
+    if path.exists(input_test_path):
+        open(input_test_path, 'w').close()
+    # save content to file
+    with open(input_test_path, "a") as f:
+        for line in content:
+            f.write(line)
+
+    print("Downloaded input files")
+
+    # end get input ##############
+
+    ## puzzle
+
+    command = "./get-puzzles " + str(day) + " 2025"
+    result = subprocess.run(command, shell=True, text=True)
+
+    # end get puzzle ##############
+
+    solution_path = Path(day_dir, "solution.py")
+    tests_path = Path(day_dir, "tests.py")
+
+    if solution_path.exists():
+        # if we're here, it's probably a re-run
+        print("ensuring input files exist")
+        print("skipping solution creation, file already exists")
+    else:
+        template = Path("misc/example_solution.py.tmpl").read_text()
+        replaced_template = template.replace("<YEAR>", "2025").replace("<DAY>", str(day))
+        solution_path.write_text(replaced_template)
+        print("Created a new Solution file at", solution_path)
+
+        template = Path("misc/tests.py.tmpl").read_text()
+        tests_path.write_text(template)
+        print("Created a new Test file at", tests_path)
+
+        print("Open AOC day in the browser")
+        url = "https://adventofcode.com/2025/day/" + str(day)
+        webbrowser.open(url)
+
