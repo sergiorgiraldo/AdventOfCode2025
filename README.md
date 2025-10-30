@@ -22,15 +22,23 @@ When advent begins, get the session cookie from the page and update these:
 - aoc_session in gh action secret
 - aocd token in `~/.config/aocd/token`
 
-## gh actions
+### gh actions
 
 - copy .github folder from prev year and change the year
 
-## git crypt
+### git crypt
 
 - `git-crypt init`
 - `git-crypt add-gpg-user sergio@giraldo.com.br`
 - Make sure the .gitattributes are copied from prev year
+
+### version
+
+set to 0.0.0
+
+### viewer
+
+remove links from `viewer/index.html`
 
 ## running a day
 

@@ -13,18 +13,18 @@ function navigateTo(direction) {
 	if (direction === "prev") {
 		newDay = currentDay - 1;
 	} 
-  else {
+	else {
 		newDay = currentDay + 1;
 	}
 
 	if (newDay < 10) {
 		newDay = "0" + newDay;
 	}
-	
-  if (newDay >= 1 && newDay <= 25) {
+
+	if (newDay >= 1 && newDay <= 25) {
 		window.location.href = `day${newDay}.html`;
 	} 
-  else {
+	else {
 		alert(
 			`You are already at the ${
 				direction === "prev" ? "first" : "last"
