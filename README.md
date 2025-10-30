@@ -62,6 +62,14 @@ leave ~/source/AdventOfCode2025/(.*)
 
 ## Commands
 
+### run [day] (t|s)
+
+Run tests or solution for a given day, default current day
+
+Always run in the venv
+
+`source venv/bin/activate`
+
 ### markdownlint-cli2
 
 Lint and format markdown files

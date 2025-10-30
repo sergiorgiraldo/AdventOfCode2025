@@ -3,3 +3,4 @@ advent-of-code-data
 selenium
 python-dotenv
 networkx
+z3
