@@ -62,48 +62,60 @@ leave ~/source/AdventOfCode2025/(.*)
 
 ## Commands
 
-### run [day] (t|s)
+### start
 
-Run tests or solution for a given day, default current day
+Scaffold files to start a new Advent of Code solution and download the puzzle input and puzzle test input.
 
-Always run in the venv
+Default current year and current day
 
-`source venv/bin/activate`
+#### Usage
+
+> `./start [-h] [--year YEAR] [day]`
+
+### run.sh
+
+Run tests or solution for a given day, default current day and tests
+
+It always runs in the venv
+
+#### Usage
+
+> `./run.sh [day] [t|tests|s|solution]`
 
 ### markdownlint-cli2
 
 Lint and format markdown files
 
-### `./ruff.sh`
+### ruff.sh
 
 Lint, options in `pyproject.toml`
 
-### `./black.sh`
+### black.sh
 
 Format, options in `pyproject.toml`
 
-### `./deploy.sh`
+### deploy.sh
 
 Lint (using Ruff), format (using Black), create viewer, commit to Github and make PR
 
-#### Usage
+Default current day
 
-> `./deploy.sh [day]` # *default current day*
-> run in **develop** branch
->
-
-### `./start`
-
-Scaffold files to start a new Advent of Code solution and download the puzzle input and puzzle test input
+It should be run in **develop** branch
 
 #### Usage
 
-> `./start [-h] [--year YEAR] [day]` # *default current year and current day*
+> `./deploy.sh [day]`
 
-### `./build-viewer`
+### finish.sh
+
+Run once advent is finished and all solutions done.
+
+It will rerun all tests, download all puzzles, rebuild all viewers, format and lint all files. Then generate a final version.
+
+### build-viewer
 
 Generate HTML for viewing the day's solution
 
 #### Usage
 
-> `./build-viewer {day}`
+> `./build-viewer [day]`

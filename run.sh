@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Default values
-DAY=$(date +%-d)  # Current day without leading zero
-ACTION="s"        # Default action is solution
+DAY=$(date +%d)   # Default is current day with leading zero
+ACTION="t"        # Default action is tests
 
-# Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
         -d|--day)
@@ -16,7 +14,6 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         *)
-            # Positional arguments
             if [[ -z "${FIRST_ARG:-}" ]]; then
                 FIRST_ARG="$1"
             elif [[ -z "${SECOND_ARG:-}" ]]; then
@@ -27,23 +24,18 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Use positional arguments if provided
 DAY="${FIRST_ARG:-$DAY}"
 ACTION="${SECOND_ARG:-$ACTION}"
 
-# Convert action to lowercase
 ACTION=$(echo "$ACTION" | tr '[:upper:]' '[:lower:]')
 
-# Construct folder path
 FOLDER="solutions/day${DAY}"
 
-# Check if folder exists
 if [ ! -d "$FOLDER" ]; then
     echo "Error: Folder '$FOLDER' does not exist"
     exit 1
 fi
 
-# Activate virtual environment
 if [ -f "venv/bin/activate" ]; then
     source venv/bin/activate
 else
@@ -51,10 +43,8 @@ else
     exit 1
 fi
 
-# Change to the day's folder
 cd "$FOLDER" || exit 1
 
-# Run the appropriate command
 case $ACTION in
     t|test|tests)
         echo "Running tests for day ${DAY}..."
@@ -71,13 +61,10 @@ case $ACTION in
         ;;
 esac
 
-# Store exit code
 EXIT_CODE=$?
 
-# Deactivate virtual environment
 deactivate
 
-# Return to original directory (optional)
 cd - > /dev/null
 
 exit $EXIT_CODE
