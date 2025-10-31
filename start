@@ -84,7 +84,6 @@ if __name__ == "__main__":
 
     if solution_path.exists():
         # if we're here, it's probably a re-run
-        print("ensuring input files exist")
         print("skipping solution creation, file already exists")
     else:
         template = Path("misc/example_solution.py.tmpl").read_text()
