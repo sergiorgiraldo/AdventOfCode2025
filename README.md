@@ -50,6 +50,12 @@ remove links from `viewer/index.html`
 
 ## running a day
 
+`cd` to root folder 
+
+use the `run.sh` command (see below)
+
+OR
+
 `cd` to the day
 
 `python -m tests --verbose` && `python -m solution`
