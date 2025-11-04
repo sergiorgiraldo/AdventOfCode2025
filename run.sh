@@ -27,7 +27,6 @@ done
 DAY="${FIRST_ARG:-$DAY}"
 ACTION="${SECOND_ARG:-$ACTION}"
 
-# Pad day with leading zero if single digit
 if [[ "$DAY" =~ ^[0-9]$ ]]; then
     DAY="0${DAY}"
 fi
