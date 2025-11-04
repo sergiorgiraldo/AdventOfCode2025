@@ -36,6 +36,14 @@ When advent begins, get the session cookie from the page and update these:
 
 set to 0.0.0
 
+### iteration
+
+set to 0000
+
+### changelog.md
+
+clean up the file
+
 ### viewer
 
 remove links from `viewer/index.html`
