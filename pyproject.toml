@@ -1,3 +1,20 @@
+[project]
+name = "advent of code 2025"
+authors = [
+    {name = "Sergio Rodrigues Giraldo", email = "sergiorgiraldo@gmail.com"},
+]
+maintainers = [
+    {name = "Sergio Rodrigues Giraldo", email = "sergiorgiraldo@gmail.com"},
+]
+dependencies = [
+    "ruff",
+    "advent-of-code-data",
+    "selenium",
+    "python-dotenv",
+    "networkx",
+    "z3-solver",
+]
+
 [tool.black]
 line-length = 88
 include = '\.pyi?$'
