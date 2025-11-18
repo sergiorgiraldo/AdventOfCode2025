@@ -14,7 +14,7 @@ fi
 
 markdownlint-cli2 "*.md" --fix
 
-git bumpmajor
+./bumpversion.sh
 
 git add --all . 
 
