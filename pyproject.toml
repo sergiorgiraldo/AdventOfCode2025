@@ -14,6 +14,7 @@ dependencies = [
     "networkx",
     "z3-solver",
 ]
+version = "0.0.0"
 
 [tool.black]
 line-length = 88

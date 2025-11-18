@@ -45,7 +45,7 @@ echo "###########################"
 echo "Formatted, linked and checked."
 echo "###########################"
 
-git bumpmajor
+./bumpversion.sh
 
 git add --all . 
 
