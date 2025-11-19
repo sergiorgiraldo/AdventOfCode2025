@@ -74,7 +74,7 @@ if __name__ == "__main__":
         print("Refreshing all days...")
 
         src = "./src/advent-of-code-2025/misc/viewer.tmpl"
-        dst = "./src/advent-of-code-2025/viewer/index.html"
+        dst = "./viewer/index.html"
         shutil.copy(src, dst)
 
         for i in range(1, 26):
