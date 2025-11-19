@@ -5,6 +5,13 @@ ACTION="t"        # Default action is tests
 
 while [[ $# -gt 0 ]]; do
     case $1 in
+        -h|--help)
+            echo "./run.sh [day] [s|t]"
+            echo "day: which day of AOC"
+            echo "s: execute solution"
+            echo "t: execute tests"
+            exit 0
+            ;;
         -d|--day)
             DAY="$2"
             shift 2
