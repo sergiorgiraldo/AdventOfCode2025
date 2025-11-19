@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd solutions
+cd src/advent-of-code-2025/solutions
 
 for day in $(ls -d day*); do
     cd $day

@@ -8,7 +8,7 @@ import shutil
 def do(day):
     __day = day
     __day = __day.zfill(2)
-    __path = os.path.join("solutions", f"day{__day}")
+    __path = os.path.join("src/advent-of-code-2025/solutions", f"day{__day}")
     __filename = os.path.join(__path, "solution.py")
 
     if not Path(__filename).exists(): 
@@ -73,8 +73,8 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Refreshing all days...")
 
-        src = "./misc/viewer.tmpl"
-        dst = "./viewer/index.html"
+        src = "./src/advent-of-code-2025/misc/viewer.tmpl"
+        dst = "./src/advent-of-code-2025/viewer/index.html"
         shutil.copy(src, dst)
 
         for i in range(1, 26):
