@@ -1,0 +1,281 @@
+<style>
+    pre {
+background: #303030;
+color: #f1f1f1;
+padding: 10px 16px;
+border-radius: 2px;
+border-top: 4px solid #00aeef;
+-moz-box-shadow: inset 0 0 10px #000;
+box-shadow: inset 0 0 10px #000;
+counter-reset: line;
+}
+pre span {
+display: block;
+line-height: 1.5rem;
+}
+pre span:before {
+counter-increment: line;
+content: counter(line);
+display: inline-block;
+border-right: 1px solid #ddd;
+padding: 0 .5em;
+margin-right: .5em;
+color: #888
+}
+span{
+    font-family: monospace;
+    font-size: 16px;
+}
+</style>
+<div id="navigation">
+<button onclick="document.location.href='index.html'">Home</button>
+</div>
+<h1>advent.py</h1>
+<pre>
+    <span>from abc import ABC, abstractmethod</span>
+    <span>from pathlib import Path</span>
+    <span>from pprint import pprint</span>
+    <span>from typing import final</span>
+    <span></span>
+    <span>from aocd import submit</span>
+    <span></span>
+    <span></span>
+    <span>class AoCException(Exception):</span>
+    <span>    pass</span>
+    <span></span>
+    <span></span>
+    <span># Abstract Solution</span>
+    <span>class BaseSolution(ABC):</span>
+    <span>    _year: int</span>
+    <span>    _day: int</span>
+    <span>    _is_debugging: bool = False</span>
+    <span></span>
+    <span>    def __init__(</span>
+    <span>        cls,</span>
+    <span>        lines=False,</span>
+    <span>        csv=False,</span>
+    <span>        two_dimensional=False,</span>
+    <span>        int_csvline=False,</span>
+    <span>        block=False,</span>
+    <span>        separator=",",</span>
+    <span>        to_int=False,</span>
+    <span>    ):</span>
+    <span>        if lines:</span>
+    <span>            if to_int:</span>
+    <span>                lines = cls.read_input().splitlines()</span>
+    <span>                cls.input = [int(d) for d in lines]</span>
+    <span>            else:</span>
+    <span>                cls.input = cls.read_input().splitlines()</span>
+    <span>        else:</span>
+    <span>            if csv:</span>
+    <span>                lines = cls.read_input().splitlines()</span>
+    <span></span>
+    <span>                if to_int:</span>
+    <span>                    cls.input = [</span>
+    <span>                        [int(d) for d in line.split(separator)] for line in lines</span>
+    <span>                    ]</span>
+    <span>                else:</span>
+    <span>                    cls.input = [line.split(separator) for line in lines]</span>
+    <span>            else:</span>
+    <span>                if two_dimensional:</span>
+    <span>                    lines = cls.read_input().splitlines()</span>
+    <span></span>
+    <span>                    cls.input = [list(line) for line in lines]</span>
+    <span>                else:</span>
+    <span>                    if int_csvline:  # single line</span>
+    <span>                        line = cls.read_input().strip()</span>
+    <span></span>
+    <span>                        cls.input = [int(d) for d in line.split(separator)]</span>
+    <span>                    else:</span>
+    <span>                        if block:  # blocks separated by newline</span>
+    <span>                            lines = cls.read_input()</span>
+    <span>                            blocks = lines.split("\n\n")</span>
+    <span>                            arr = []</span>
+    <span>                            for i in range(len(blocks)):</span>
+    <span>                                blocks[i] = blocks[i].strip().split("\n")</span>
+    <span>                                arr.append(blocks[i])</span>
+    <span></span>
+    <span>                            cls.input = arr</span>
+    <span></span>
+    <span>                        else:  # if string:</span>
+    <span>                            if to_int:</span>
+    <span>                                cls.input = int(cls.read_input())</span>
+    <span>                            else:</span>
+    <span>                                cls.input = cls.read_input()</span>
+    <span></span>
+    <span>    @property</span>
+    <span>    def year(self):</span>
+    <span>        if not hasattr(self, "_year"):</span>
+    <span>            raise NotImplementedError("explicitly define Solution._year")</span>
+    <span>        return self._year</span>
+    <span></span>
+    <span>    @property</span>
+    <span>    def day(self):</span>
+    <span>        if not hasattr(self, "_day"):</span>
+    <span>            raise NotImplementedError("explicitly define Solution._day")</span>
+    <span>        return self._day</span>
+    <span></span>
+    <span>    @abstractmethod</span>
+    <span>    def dummy(self):  # prevent usage of BaseSolution</span>
+    <span>        pass</span>
+    <span></span>
+    <span>    @final</span>
+    <span>    def read_input(self) -> str:</span>
+    <span>        """</span>
+    <span>        handles locating, reading, and parsing input files</span>
+    <span>        """</span>
+    <span>        input_file = Path(</span>
+    <span>            Path(__file__).parent.parent.parent,</span>
+    <span>            "input.txt",</span>
+    <span>        )</span>
+    <span>        if not input_file.exists():</span>
+    <span>            raise AoCException(</span>
+    <span>                f'Failed to find an input file at path "./{input_file.relative_to(Path.cwd())}". You can run `./start --year {self.year} {self.day}` to create it.'</span>
+    <span>            )</span>
+    <span></span>
+    <span>        data = input_file.read_text().strip("\n")</span>
+    <span></span>
+    <span>        if not data:</span>
+    <span>            raise AoCException(</span>
+    <span>                f'Found a file at path "./{input_file.relative_to(Path.cwd())}", but it was empty. Make sure to paste some input!'</span>
+    <span>            )</span>
+    <span>        return data</span>
+    <span></span>
+    <span>    @final</span>
+    <span>    def save(self, part, res, tm):</span>
+    <span>        answer_path = Path(</span>
+    <span>            Path(__file__).parent.parent.parent,</span>
+    <span>            f"ans{part}.txt",</span>
+    <span>        )</span>
+    <span></span>
+    <span>        if Path.exists(answer_path):</span>
+    <span>            Path.open(answer_path, "w").close()  # always overwrite</span>
+    <span></span>
+    <span>        with answer_path.open("a") as f:</span>
+    <span>            f.write(res + "\n")</span>
+    <span>            f.write(int(tm * 1000).__str__() + " msecs")</span>
+    <span></span>
+    <span>    @final</span>
+    <span>    def submit_puzzle(self, part, res):</span>
+    <span>        submit(res, part=part, day=self.day, year=self.year)</span>
+    <span></span>
+    <span>    @final</span>
+    <span>    def debug(self, *objects, trailing_newline=False):</span>
+    <span>        if not self._is_debugging:</span>
+    <span>            return</span>
+    <span></span>
+    <span>        for o in objects:</span>
+    <span>            pprint(o)</span>
+    <span></span>
+    <span>        if trailing_newline:</span>
+    <span>            print()</span>
+    <span></span>
+    <span>    def solve(self, part, res, tm, submit_to_aocd=True):</span>
+    <span>        print(f"Part {part} :: {res}")</span>
+    <span></span>
+    <span>        if self._is_debugging:</span>
+    <span>            print("********** Debug mode, skipping submission **********")</span>
+    <span>        else:</span>
+    <span>            self.save(part, str(res), tm)</span>
+    <span></span>
+    <span>            if submit_to_aocd:</span>
+    <span>                self.submit_puzzle(part="a" if part == "1" else "b", res=res)</span>
+    <span></span>
+    <span></span>
+    <span># Concrete Solutions</span>
+    <span>class InputAsStringSolution(BaseSolution):</span>
+    <span>    def __init__(self):</span>
+    <span>        super().__init__(</span>
+    <span>            lines=False,</span>
+    <span>            csv=False,</span>
+    <span>            two_dimensional=False,</span>
+    <span>            int_csvline=False,</span>
+    <span>            block=False,</span>
+    <span>            separator=",",</span>
+    <span>            to_int=False,</span>
+    <span>        )</span>
+    <span></span>
+    <span>    def dummy(self):</span>
+    <span>        pass</span>
+    <span></span>
+    <span></span>
+    <span>class InputAsLinesSolution(BaseSolution):</span>
+    <span>    def __init__(self, to_int=False):</span>
+    <span>        super().__init__(</span>
+    <span>            lines=True, </span>
+    <span>            csv=False, </span>
+    <span>            two_dimensional=False, </span>
+    <span>            int_csvline=False, </span>
+    <span>            block=False,</span>
+    <span>            separator=",",</span>
+    <span>            to_int=to_int,</span>
+    <span>        )</span>
+    <span></span>
+    <span>    def dummy(self):</span>
+    <span>        pass</span>
+    <span></span>
+    <span></span>
+    <span>class InputAsCSVSolution(BaseSolution):</span>
+    <span>    def __init__(self, separator=",", to_int=False):</span>
+    <span>        super().__init__(</span>
+    <span>            lines=False,</span>
+    <span>            csv=True,</span>
+    <span>            two_dimensional=False,</span>
+    <span>            int_csvline=False,</span>
+    <span>            block=False,</span>
+    <span>            separator=separator,</span>
+    <span>            to_int=to_int,</span>
+    <span>        )</span>
+    <span></span>
+    <span>    def dummy(self):</span>
+    <span>        pass</span>
+    <span></span>
+    <span></span>
+    <span>class InputAsIntCSVLineSolution(BaseSolution):</span>
+    <span>    def __init__(self, separator=","):</span>
+    <span>        super().__init__(</span>
+    <span>            lines=False,</span>
+    <span>            csv=False,</span>
+    <span>            two_dimensional=False,</span>
+    <span>            int_csvline=True,</span>
+    <span>            block=False,</span>
+    <span>            separator=separator,</span>
+    <span>            to_int=False,</span>
+    <span>        )</span>
+    <span></span>
+    <span>    def dummy(self):</span>
+    <span>        pass</span>
+    <span></span>
+    <span></span>
+    <span>class InputAs2DSolution(BaseSolution):</span>
+    <span>    def __init__(self):</span>
+    <span>        super().__init__(</span>
+    <span>            lines=False, </span>
+    <span>            csv=False, </span>
+    <span>            two_dimensional=True, </span>
+    <span>            int_csvline=False, </span>
+    <span>            block=False,</span>
+    <span>            separator=",",</span>
+    <span>            to_int=False,</span>
+    <span>        )</span>
+    <span></span>
+    <span>    def dummy(self):</span>
+    <span>        pass</span>
+    <span></span>
+    <span></span>
+    <span>class InputAsBlockSolution(BaseSolution):</span>
+    <span>    def __init__(self):</span>
+    <span>        super().__init__(</span>
+    <span>            lines=False, </span>
+    <span>            csv=False, </span>
+    <span>            two_dimensional=False, </span>
+    <span>            int_csvline=False, </span>
+    <span>            block=True,</span>
+    <span>            separator=",",</span>
+    <span>            to_int=False,</span>
+    <span>        )</span>
+    <span></span>
+    <span>    def dummy(self):</span>
+    <span>        pass</span>
+    <span></span>
+</pre>
