@@ -33,7 +33,7 @@ fi
 
 ACTION=$(echo "$ACTION" | tr '[:upper:]' '[:lower:]')
 
-FOLDER="solutions/day${DAY}"
+FOLDER="src/advent-of-code-2025/solutions/day${DAY}"
 
 if [ ! -d "$FOLDER" ]; then
     echo "Error: Folder '$FOLDER' does not exist"

@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     print("doing day", day)
 
-    day_dir = Path("solutions", f"day{day:02}")
+    day_dir = Path("src/advent-of-code-2025/solutions", f"day{day:02}")
 
     day_dir.mkdir(parents=True, exist_ok=True)
 
@@ -86,12 +86,12 @@ if __name__ == "__main__":
         # if we're here, it's probably a re-run
         print("skipping solution creation, file already exists")
     else:
-        template = Path("misc/example_solution.py.tmpl").read_text()
+        template = Path("src/advent-of-code-2025/misc/example_solution.py.tmpl").read_text()
         replaced_template = template.replace("<YEAR>", "2025").replace("<DAY>", str(day))
         solution_path.write_text(replaced_template)
         print("Created a new Solution file at", solution_path)
 
-        template = Path("misc/tests.py.tmpl").read_text()
+        template = Path("src/advent-of-code-2025/misc/tests.py.tmpl").read_text()
         tests_path.write_text(template)
         print("Created a new Test file at", tests_path)
 
