@@ -31,41 +31,39 @@ if __name__ == "__main__":
 
     print("doing day", day)
 
-    day_dir = Path("src/advent-of-code-2025/solutions", f"day{day:02}")
+    day_path = Path("src/advent-of-code-2025/solutions", f"day{day:02}")
 
-    day_dir.mkdir(parents=True, exist_ok=True)
+    day_path.mkdir(parents=True, exist_ok=True)
 
     # bgn get input ##############
 
     ## puzzle
 
     with open('.env') as f: aoc_session = f.read()
+    contents_puzzle = get_data(day=day, year=2025, session=aoc_session)
 
-    content = get_data(day=day, year=2025, session=aoc_session)
+    day_fullpath = Path(day_path, "input.txt")
 
-    input_path = Path(day_dir, "input.txt")
+    if path.exists(day_fullpath): 
+        open(day_fullpath, 'w').close()
 
-    # always overwrite
-    if path.exists(input_path): 
-        open(input_path, 'w').close()
-    # save content to file
-    with open(input_path, "a") as f:
-        for line in content:
+    with open(day_fullpath, "a") as f:
+        for line in contents_puzzle:
             f.write(line)
 
     ## test
 
     command = "aocd " + str(day) + " 2025 --example"
     result = subprocess.run(command, shell=True, text=True, capture_output=True)
-    content = result.stdout
+    contents_test = result.stdout
 
-    input_test_path = Path(day_dir, "input.test.txt")
-    # always overwrite
-    if path.exists(input_test_path):
-        open(input_test_path, 'w').close()
-    # save content to file
-    with open(input_test_path, "a") as f:
-        for line in content:
+    test_fullpath = Path(day_path, "input.test.txt")
+
+    if path.exists(test_fullpath):
+        open(test_fullpath, 'w').close()
+
+    with open(test_fullpath, "a") as f:
+        for line in contents_test:
             f.write(line)
 
     print("Downloaded input files")
@@ -79,11 +77,10 @@ if __name__ == "__main__":
 
     # end get puzzle ##############
 
-    solution_path = Path(day_dir, "solution.py")
-    tests_path = Path(day_dir, "tests.py")
+    solution_path = Path(day_path, "solution.py")
+    tests_path = Path(day_path, "tests.py")
 
     if solution_path.exists():
-        # if we're here, it's probably a re-run
         print("skipping solution creation, file already exists")
     else:
         template = Path("src/advent-of-code-2025/misc/example_solution.py.tmpl").read_text()
