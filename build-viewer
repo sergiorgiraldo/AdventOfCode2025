@@ -5,28 +5,28 @@ import sys
 from pathlib import Path
 import shutil
 
-def do(day):
-    __day = day
-    __day = __day.zfill(2)
-    __path = os.path.join("src/advent-of-code-2025/solutions", f"day{__day}")
-    __filename = os.path.join(__path, "solution.py")
+def do(which):
+    day = which
+    day = day.zfill(2)
+    code = os.path.join("src/advent-of-code-2025/solutions", f"day{day}")
+    code_fullpath = os.path.join(code, "solution.py")
 
-    if not Path(__filename).exists(): 
+    if not Path(code_fullpath).exists(): 
         return
     
     print("Building viewer for day {}...".format(day))
 
-    contents_script = Path(__filename).read_text()
+    contents_code = Path(code_fullpath).read_text()
 
-    __index = os.path.join("viewer", "index.html")
-    contents_index = Path(__index).read_text()
-    link_day = "<a href='" + f"day{__day}.html" + "'>" + \
-        f"Day {__day}" + "</a><br />" + "\n" + "<!--NEXT-->"
+    index_fullpath = os.path.join("viewer", "index.html")
+    contents_index = Path(index_fullpath).read_text()
+    link_day = "<a href='" + f"day{day}.html" + "'>" + \
+        f"Day {day}" + "</a><br />" + "\n" + "<!--NEXT-->"
     contents_index = contents_index.replace("<!--NEXT-->", link_day)
-    Path(__index).write_text(contents_index)
+    Path(index_fullpath).write_text(contents_index)
 
-    __page = os.path.join("viewer", f"day{__day}.html")
-    contents_day = """<style>
+    solutionpage__fullpath = os.path.join("viewer", f"day{day}.html")
+    contents_page = """<style>
         pre {
     background: #303030;
     color: #f1f1f1;
@@ -55,19 +55,19 @@ def do(day):
         font-size: 16px;
     }
     </style>\n"""
-    contents_day += "<script src=\"script.js\"></script>\n"
+    contents_page += "<script src=\"script.js\"></script>\n"
 
-    contents_day += "<div id=\"navigation\">\n"
-    contents_day += "<button onclick=\"navigateTo('prev')\">Previous Day</button>\n"
-    contents_day += "<button onclick=\"navigateTo('next')\">Next Day</button>\n"
-    contents_day += "</div>\n"
+    contents_page += "<div id=\"navigation\">\n"
+    contents_page += "<button onclick=\"navigateTo('prev')\">Previous Day</button>\n"
+    contents_page += "<button onclick=\"navigateTo('next')\">Next Day</button>\n"
+    contents_page += "</div>\n"
 
-    contents_day += "<h1>Day " + __day + "</h1>\n"
-    lines = contents_script.split('\n') 
+    contents_page += "<h1>Day " + day + "</h1>\n"
+    lines = contents_code.split('\n') 
     wrapped_lines = [f'<span>{line}</span>' for line in lines]
-    contents_script = '\n'.join(wrapped_lines)
-    contents_day += "<pre>\n" + contents_script + "\n</pre>"
-    Path(__page).write_text(contents_day)
+    contents_code = '\n'.join(wrapped_lines)
+    contents_page += "<pre>\n" + contents_code + "\n</pre>"
+    Path(solutionpage__fullpath).write_text(contents_page)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
