@@ -16,6 +16,9 @@ markdownlint-cli2 "*.md" --fix
 
 ./bumpversion.sh
 
+backlog board export
+mv ./Backlog.md ./viewer/Backlog.md
+
 git add --all . 
 
 git commit -S -m 'feat!: day '"$param"' completed.'
