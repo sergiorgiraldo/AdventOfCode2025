@@ -47,6 +47,15 @@ echo "###########################"
 
 ./bumpversion.sh
 
+
+echo "###########################"
+echo "Backlog"
+echo "###########################"
+
+backlog board export
+mv ./Backlog.md ./viewer/Backlog.md
+
+
 git add --all . 
 
 git commit -S -m 'feat!: AOC 2025 completed.'
