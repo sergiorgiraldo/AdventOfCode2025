@@ -22,17 +22,17 @@ def scrape_aoc_current_year():
             response = requests.get(url, timeout=10)
             response.raise_for_status()
             
-            soup = BeautifulSoup(response.text, 'html.parser')
+            soup = BeautifulSoup(response.text, "html.parser")
             
             # Find all span elements with title attribute
-            spans_with_title = soup.find_all('span', title=True)
+            spans_with_title = soup.find_all("span", title=True)
             
             if spans_with_title:
                 markdown_content += f"## Day {day}\n\n"
                 
                 for span in spans_with_title:
                     span_text = span.get_text(strip=True)
-                    title_text = span['title']
+                    title_text = span["title"]
                     markdown_content += f"**{span_text}** : {title_text}\n\n"
             
         except requests.exceptions.RequestException as e:
@@ -41,9 +41,9 @@ def scrape_aoc_current_year():
         except Exception as e:
             print(f"    Unexpected error on day {day}: {e}")
     
-    output_file = "easter.eggs.md"
-    with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(markdown_content)
+    if markdown_content is not None:
+        with open("easter.eggs.md", "w", encoding="utf-8") as f:
+            f.write(markdown_content)
 
 if __name__ == "__main__":
     scrape_aoc_current_year()

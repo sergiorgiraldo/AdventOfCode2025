@@ -34,7 +34,7 @@ echo "###########################"
 echo "Puzzles downloaded."
 echo '###########################'
 
-./easter-eggs
+./get-easter-eggs
 
 echo "###########################"
 echo "Easter eggs retrieved."
