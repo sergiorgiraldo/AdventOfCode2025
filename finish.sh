@@ -34,6 +34,11 @@ echo "###########################"
 echo "Puzzles downloaded."
 echo '###########################'
 
+./easter-eggs
+
+echo "###########################"
+echo "Easter eggs retrieved."
+echo '###########################'
 
 ./ruff.sh
 
