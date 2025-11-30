@@ -5,10 +5,8 @@ from typing import final
 
 from aocd import submit
 
-
 class AoCException(Exception):
     pass
-
 
 # Abstract Solution
 class BaseSolution(ABC):
