@@ -1,0 +1,116 @@
+<style>
+        pre {
+    background: #303030;
+    color: #f1f1f1;
+    padding: 10px 16px;
+    border-radius: 2px;
+    border-top: 4px solid #00aeef;
+    -moz-box-shadow: inset 0 0 10px #000;
+    box-shadow: inset 0 0 10px #000;
+    counter-reset: line;
+    }
+    pre span {
+    display: block;
+    line-height: 1.5rem;
+    }
+    pre span:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    border-right: 1px solid #ddd;
+    padding: 0 .5em;
+    margin-right: .5em;
+    color: #888
+    }
+    span{
+        font-family: monospace;
+        font-size: 16px;
+    }
+    </style>
+<script src="script.js"></script>
+<div id="navigation">
+<button onclick="navigateTo('prev')">Previous Day</button>
+<button onclick="navigateTo('next')">Next Day</button>
+</div>
+<h1>Day 01</h1>
+<pre>
+<span># puzzle prompt: https://adventofcode.com/2025/day/1</span>
+<span></span>
+<span>import time</span>
+<span>import sys</span>
+<span>sys.path.insert(0,"..")</span>
+<span></span>
+<span>from base.advent import * # type: ignore</span>
+<span></span>
+<span>class Solution(InputAsLinesSolution): # type: ignore</span>
+<span>    _year = 2025</span>
+<span>    _day = 1</span>
+<span>    </span>
+<span>    _is_debugging = False</span>
+<span></span>
+<span>    def parse(self, instruction):</span>
+<span>        direction = -1 if instruction[0] == "L" else 1</span>
+<span>        clicks = int(instruction[1:])</span>
+<span>        return direction, clicks</span>
+<span></span>
+<span>    def turn(self, input):</span>
+<span>        instructions = [self.parse(instruction) for instruction in input]</span>
+<span></span>
+<span>        dial = 50 #magic number given by the puzzle</span>
+<span></span>
+<span>        hits, passes = 0, 0</span>
+<span></span>
+<span>        for direction, clicks in instructions:</span>
+<span>            offset_to_zero = dial or 100 if direction < 0 else 100 - dial</span>
+<span></span>
+<span>            # Rotate the dial</span>
+<span>            dial = (dial + direction * clicks) % 100</span>
+<span></span>
+<span>            # dial must be exactly 0</span>
+<span>            if dial == 0:</span>
+<span>                hits += 1 </span>
+<span></span>
+<span>            if clicks >= offset_to_zero:</span>
+<span>                passes += (clicks - offset_to_zero) // 100 + 1</span>
+<span></span>
+<span>        return hits, passes</span>
+<span></span>
+<span>    def pt1(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.turn(input)</span>
+<span></span>
+<span>        return res[0]</span>
+<span></span>
+<span>    def pt2(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.turn(input)</span>
+<span></span>
+<span>        return res[1]</span>
+<span>        </span>
+<span>    def part_1(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt1(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("1", res, (end_time - start_time))</span>
+<span></span>
+<span>    def part_2(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt2(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("2", res, (end_time - start_time))</span>
+<span></span>
+<span>if __name__ == '__main__':</span>
+<span>    solution = Solution()</span>
+<span></span>
+<span>    solution.part_1()</span>
+<span>    </span>
+<span>    solution.part_2()</span>
+</pre>
