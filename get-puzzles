@@ -28,13 +28,15 @@ def get_puzzle_from(day, year):
     try:
         response = session.get("https://adventofcode.com/" + str(year) + "/day/" + str(day))
         response.raise_for_status()
-
         soup = BeautifulSoup(response.text, "html.parser")
 
         articles = soup.find_all("article", class_="day-desc")
         puzzle = [article.get_text() for article in articles]
-        content = puzzle[0].strip().replace(" ---", " ---\n") + "\n\n" + puzzle[1].strip().replace(" ---", " ---\n")
-                
+        if (len(puzzle) == 1):
+            content = puzzle[0].strip().replace(" ---", " ---\n")
+        else:
+            content = puzzle[0].strip().replace(" ---", " ---\n") + "\n\n" + puzzle[1].strip().replace(" ---", " ---\n")
+
     except requests.exceptions.RequestException as e:
         print(f"    Error fetching {year}: {day}")
         return None
