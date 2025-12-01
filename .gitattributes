@@ -1,2 +1,3 @@
 input.txt filter=git-crypt diff=git-crypt
 src/advent-of-code-2025/puzzles/** filter=git-crypt diff=git-crypt
+day*.txt filter=git-crypt diff=git-crypt
