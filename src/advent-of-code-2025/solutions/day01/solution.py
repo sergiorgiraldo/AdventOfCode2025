@@ -7,7 +7,6 @@ sys.path.insert(0, "..")
 
 from base.advent import *  # type: ignore
 
-
 class Solution(InputAsLinesSolution):  # type: ignore
     _year = 2025
     _day = 1
@@ -16,45 +15,48 @@ class Solution(InputAsLinesSolution):  # type: ignore
 
     def parse(self, instruction):
         direction = -1 if instruction[0] == "L" else 1
-        clicks = int(instruction[1:])
-        return direction, clicks
+        steps = int(instruction[1:])
+        return direction, steps
 
-    def turn(self, input):
-        instructions = [self.parse(instruction) for instruction in input]
-
+    def turn(self, instructions):
         dial = 50  # magic number given by the puzzle
 
-        hits, passes = 0, 0
+        zeroes, clicks = 0, 0
 
-        for direction, clicks in instructions:
-            offset_to_zero = dial or 100 if direction < 0 else 100 - dial
+        for direction, steps in instructions:
+            offset_to_zero = (dial or 100) if direction < 0 else (100 - dial)
 
             # Rotate the dial
-            dial = (dial + direction * clicks) % 100
+            dial = (dial + direction * steps) % 100
 
-            # dial must be exactly 0
+            # dial must be exactly 0 (part 1)
             if dial == 0:
-                hits += 1
+                zeroes += 1
 
-            if clicks >= offset_to_zero:
-                passes += (clicks - offset_to_zero) // 100 + 1
+            if steps >= offset_to_zero:
+                clicks += (steps - offset_to_zero) // 100 + 1 #you can pass several times
 
-        return hits, passes
+        return zeroes, clicks
 
     def pt1(self, input):
         self.debug(input)
 
-        res = self.turn(input)
+        instructions = [self.parse(rotation) for rotation in input]
+
+        res = self.turn(instructions)
 
         return res[0]
 
     def pt2(self, input):
         self.debug(input)
 
-        res = self.turn(input)
+        instructions = [self.parse(instruction) for instruction in input]
+
+        res = self.turn(instructions)
 
         return res[1]
 
+#region execute parts
     def part_1(self):
         start_time = time.time()
 
@@ -72,7 +74,7 @@ class Solution(InputAsLinesSolution):  # type: ignore
         end_time = time.time()
 
         self.solve("2", res, (end_time - start_time))
-
+#endregion
 
 if __name__ == "__main__":
     solution = Solution()

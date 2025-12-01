@@ -4,9 +4,9 @@ import time
 import sys
 sys.path.insert(0,"..")
 
-from base.advent import *
+from base.advent import *  # type: ignore
 
-class Solution(InputAsLinesSolution):
+class Solution(InputAsLinesSolution):  # type: ignore
     _year = <YEAR>
     _day = <DAY>
     
@@ -22,6 +22,7 @@ class Solution(InputAsLinesSolution):
 
         return ""
         
+#region execute parts
     def part_1(self):
         start_time = time.time()
 
@@ -39,6 +40,7 @@ class Solution(InputAsLinesSolution):
         end_time = time.time()
 
         # self.solve("2", res, (end_time - start_time))
+#endregion
 
 if __name__ == '__main__':
     solution = Solution()
