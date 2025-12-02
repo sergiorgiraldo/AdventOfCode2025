@@ -1,11 +1,11 @@
 # Kanban Board Export (powered by Backlog.md)
-Generated on: 2025-12-01 09:38:26
+Generated on: 2025-12-02 08:11:24
 Project: aoc2025
 
 | To Do | In Progress | Done |
 | --- | --- | --- |
-| **TASK-12** - day 12 |  | **TASK-1** - day 01 |
-| **TASK-11** - day 11 |  |  |
+| **TASK-12** - day 12 |  | **TASK-2** - day 02 |
+| **TASK-11** - day 11 |  | **TASK-1** - day 01 |
 | **TASK-10** - day 10 |  |  |
 | **TASK-9** - day 09 |  |  |
 | **TASK-8** - day 08 |  |  |
@@ -14,4 +14,3 @@ Project: aoc2025
 | **TASK-5** - day 05 |  |  |
 | **TASK-4** - day 04 |  |  |
 | **TASK-3** - day 03 |  |  |
-| **TASK-2** - day 02 |  |  |

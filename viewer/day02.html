@@ -1,0 +1,124 @@
+<style>
+        pre {
+    background: #303030;
+    color: #f1f1f1;
+    padding: 10px 16px;
+    border-radius: 2px;
+    border-top: 4px solid #00aeef;
+    -moz-box-shadow: inset 0 0 10px #000;
+    box-shadow: inset 0 0 10px #000;
+    counter-reset: line;
+    }
+    pre span {
+    display: block;
+    line-height: 1.5rem;
+    }
+    pre span:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    border-right: 1px solid #ddd;
+    padding: 0 .5em;
+    margin-right: .5em;
+    color: #888
+    }
+    span{
+        font-family: monospace;
+        font-size: 16px;
+    }
+    </style>
+<script src="script.js"></script>
+<div id="navigation">
+<button onclick="navigateTo('prev')">Previous Day</button>
+<button onclick="navigateTo('next')">Next Day</button>
+</div>
+<h1>Day 02</h1>
+<pre>
+<span># puzzle prompt: https://adventofcode.com/2025/day/2</span>
+<span></span>
+<span>import time</span>
+<span>import sys</span>
+<span>sys.path.insert(0,"..")</span>
+<span></span>
+<span>from base.advent import *  # type: ignore</span>
+<span></span>
+<span>class Solution(InputAsStringSolution):  # type: ignore</span>
+<span>    _year = 2025</span>
+<span>    _day = 2</span>
+<span>    </span>
+<span>    _is_debugging = False</span>
+<span></span>
+<span>    def checkIds(self, input):</span>
+<span>        invalids_single_rep = 0</span>
+<span>        invalids_multiple_rep = 0</span>
+<span></span>
+<span>        # i wanted to use ranges but range is a keyword :)</span>
+<span>        intervals = [interval for interval in input.split(",")]</span>
+<span></span>
+<span>        for interval in intervals:</span>
+<span>            min, max = interval.split("-")</span>
+<span></span>
+<span>            for id in range(int(min), int(max)+1):</span>
+<span>                id_as_string = str(id)</span>
+<span>                length = len(id_as_string)</span>
+<span>                invalid_ids = set()</span>
+<span></span>
+<span>                for div in range(2, length + 1):</span>
+<span>                    size = length // div</span>
+<span>                    if length % div != 0:</span>
+<span>                        continue</span>
+<span></span>
+<span>                    sections = [id_as_string[i*size:(i+1)*size] for i in range(div)]</span>
+<span></span>
+<span>                    #in part 1, simply calculate middle of the id and see if they match, like 4545</span>
+<span>                    if div == 2:</span>
+<span>                        if sections[0] == sections[1]:</span>
+<span>                            invalids_single_rep += id</span>
+<span></span>
+<span>                    #in part 2, there can be repetition in more substrings, like 454545  </span>
+<span>                    if all(sub == sections[0] for sub in sections):</span>
+<span>                        invalid_ids.add(id)</span>
+<span></span>
+<span>                invalids_multiple_rep += sum(invalid_ids)</span>
+<span></span>
+<span>        return invalids_single_rep, invalids_multiple_rep        </span>
+<span></span>
+<span>    def pt1(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.checkIds(input)</span>
+<span></span>
+<span>        return res[0]</span>
+<span></span>
+<span>    def pt2(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.checkIds(input)</span>
+<span></span>
+<span>        return res[1]</span>
+<span>        </span>
+<span>    def part_1(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt1(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("1", res, (end_time - start_time))</span>
+<span></span>
+<span>    def part_2(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt2(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("2", res, (end_time - start_time))</span>
+<span></span>
+<span>if __name__ == '__main__':</span>
+<span>    solution = Solution()</span>
+<span></span>
+<span>    solution.part_1()</span>
+<span>    </span>
+<span>    solution.part_2()</span>
+</pre>
