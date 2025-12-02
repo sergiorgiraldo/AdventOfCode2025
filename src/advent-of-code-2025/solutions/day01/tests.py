@@ -1,9 +1,8 @@
 import unittest
 
-from solution import Solution  # type: ignore
+from ..day01.solution import Solution
 
 solution = Solution()
-
 
 class Tests(unittest.TestCase):
     def test_part1(self):

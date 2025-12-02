@@ -1,14 +1,9 @@
 # puzzle prompt: https://adventofcode.com/2025/day/1
 
-import sys
 import time
 
-sys.path.insert(0, "..")
-
-from base.advent import *  # type: ignore
-
-
-class Solution(InputAsLinesSolution):  # type: ignore
+from ..base.advent import *
+class Solution(InputAsLinesSolution):
     _year = 2025
     _day = 1
 
