@@ -18,7 +18,7 @@ class Solution(InputAsStringSolution):  # type: ignore
         invalids_single_rep = 0
         invalids_multiple_rep = 0
 
-        # i wanted to use ranges but range is a keyword :)
+        # i wanted to use ranges as variable name but range is a keyword :)
         intervals = [interval for interval in input.split(",")]
 
         for interval in intervals:
@@ -29,23 +29,20 @@ class Solution(InputAsStringSolution):  # type: ignore
                 length = len(id_as_string)
                 invalid_ids = set()
 
-                for div in range(2, length + 1):
-                    size = length // div
-                    if length % div != 0:
-                        continue
+                for offset in range(2, length + 1):
+                    # make sure we can divide the string in equal pieces
+                    # e.g if len is 10, i can make section of 1, 2, 5
+                    if length % offset == 0:                    
+                        size = length // offset
+                        sections = [id_as_string[i * size : (i + 1) * size] for i in range(offset)]
 
-                    sections = [
-                        id_as_string[i * size : (i + 1) * size] for i in range(div)
-                    ]
-
-                    # in part 1, simply calculate middle of the id and see if they match, like 4545
-                    if div == 2:
-                        if sections[0] == sections[1]:
+                        # in part 1, simply calculate middle of the id and see if they match, like 4545
+                        if offset == 2 and sections[0] == sections[1]:
                             invalids_single_rep += id
 
-                    # in part 2, there can be repetition in more substrings, like 454545
-                    if all(sub == sections[0] for sub in sections):
-                        invalid_ids.add(id)
+                        # in part 2, there can be repetition in more substrings, like 454545
+                        if all(sub == sections[0] for sub in sections):
+                            invalid_ids.add(id)
 
                 invalids_multiple_rep += sum(invalid_ids)
 
