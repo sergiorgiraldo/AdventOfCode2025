@@ -7,6 +7,7 @@ sys.path.insert(0, "..")
 
 from base.advent import *  # type: ignore
 
+
 class Solution(InputAsLinesSolution):  # type: ignore
     _year = 2025
     _day = 1
@@ -24,17 +25,17 @@ class Solution(InputAsLinesSolution):  # type: ignore
         zeroes, clicks = 0, 0
 
         for direction, steps in instructions:
+            # Calculate distance to zero
             offset_to_zero = (dial or 100) if direction < 0 else (100 - dial)
 
             # Rotate the dial
             dial = (dial + direction * steps) % 100
 
-            # dial must be exactly 0 (part 1)
-            if dial == 0:
-                zeroes += 1
-
-            if steps >= offset_to_zero:
-                clicks += (steps - offset_to_zero) // 100 + 1 #you can pass several times
+            zeroes += steps == offset_to_zero  # exactly zero
+            clicks += ((steps - offset_to_zero) // 100 + 1) * (
+                steps >= offset_to_zero
+            )  # passing/reaching zero
+            # can be several times
 
         return zeroes, clicks
 
@@ -56,7 +57,7 @@ class Solution(InputAsLinesSolution):  # type: ignore
 
         return res[1]
 
-#region execute parts
+    # region execute parts
     def part_1(self):
         start_time = time.time()
 
@@ -74,7 +75,9 @@ class Solution(InputAsLinesSolution):  # type: ignore
         end_time = time.time()
 
         self.solve("2", res, (end_time - start_time))
-#endregion
+
+
+# endregion
 
 if __name__ == "__main__":
     solution = Solution()
