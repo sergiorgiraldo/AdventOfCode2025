@@ -89,10 +89,10 @@ if __name__ == "__main__":
         print("Created a new Solution file at", solution_path)
 
         template = Path("src/advent-of-code-2025/misc/tests.py.tmpl").read_text()
-        tests_path.write_text(template)
+        replaced_template = template.replace("<DAY>", str(day).zfill(2))
+        tests_path.write_text(replaced_template)
         print("Created a new Test file at", tests_path)
 
         print("Open AOC day in the browser")
         url = "https://adventofcode.com/2025/day/" + str(day)
         webbrowser.open(url)
-

@@ -40,7 +40,7 @@ fi
 
 ACTION=$(echo "$ACTION" | tr '[:upper:]' '[:lower:]')
 
-FOLDER="src/advent-of-code-2025/solutions/day${DAY}"
+FOLDER="src/advent-of-code-2025"
 
 if [ ! -d "$FOLDER" ]; then
     echo "Error: Folder '$FOLDER' does not exist"
@@ -59,11 +59,11 @@ cd "$FOLDER" || exit 1
 case $ACTION in
     t|test|tests)
         echo "Running tests for day ${DAY}..."
-        python -m tests --verbose
+        python -m solutions.day${DAY}.tests --verbose
         ;;
     s|solution|sol)
         echo "Running solution for day ${DAY}..."
-        python -m solution
+        python -m solutions.day${DAY}.solution
         ;;
     *)
         echo "Error: Invalid action '$ACTION'. Use 't' for tests or 's' for solution"

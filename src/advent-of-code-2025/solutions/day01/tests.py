@@ -1,6 +1,6 @@
 import unittest
 
-from solution import Solution  # type: ignore
+from ..day01.solution import Solution
 
 solution = Solution()
 
