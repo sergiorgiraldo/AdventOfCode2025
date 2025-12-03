@@ -4,6 +4,7 @@ from ..day01.solution import Solution
 
 solution = Solution()
 
+
 class Tests(unittest.TestCase):
     def test_part1(self):
         input = ["L68", "L30", "R48", "L5", "R60", "L55", "L1", "L99", "R14", "L82"]

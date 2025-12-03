@@ -4,6 +4,7 @@ import time
 
 from ..base.advent import *
 
+
 class Solution(InputAsStringSolution):
     _year = 2025
     _day = 2
@@ -28,10 +29,12 @@ class Solution(InputAsStringSolution):
                 for offset in range(2, length + 1):
                     # make sure we can divide the string in equal pieces
                     # e.g if len is 10, i can make sections of 1, 2, 5 characters
-                    if length % offset == 0:                    
+                    if length % offset == 0:
                         size = length // offset
-                        sections = [id_as_string[i * size : (i + 1) * size] 
-                                    for i in range(offset)]
+                        sections = [
+                            id_as_string[i * size : (i + 1) * size]
+                            for i in range(offset)
+                        ]
 
                         # in part 1, simply calculate middle of the id and see if they match, like 4545
                         if len(sections) == 2 and sections[0] == sections[1]:

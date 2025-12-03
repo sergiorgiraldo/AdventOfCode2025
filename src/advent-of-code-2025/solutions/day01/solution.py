@@ -3,6 +3,8 @@
 import time
 
 from ..base.advent import *
+
+
 class Solution(InputAsLinesSolution):
     _year = 2025
     _day = 1

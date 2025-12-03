@@ -1,8 +1,9 @@
+import inspect
 from abc import ABC, abstractmethod
 from pathlib import Path
 from pprint import pprint
 from typing import final
-import inspect
+
 from aocd import submit
 
 
@@ -92,7 +93,7 @@ class BaseSolution(ABC):
         """
         handles locating, reading, and parsing input files
         """
-        
+
         input_file = Path(
             Path(str(Path(__file__).parent.parent) + "/day" + str(self._day).zfill(2)),
             "input.txt",
