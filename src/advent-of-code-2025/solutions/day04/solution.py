@@ -4,7 +4,6 @@ import time
 
 from ..base.advent import *
 
-
 class Solution(InputAsLinesSolution):
     _year = 2025
     _day = 4
@@ -17,31 +16,25 @@ class Solution(InputAsLinesSolution):
     #       @  @  @
     # Scan the @ positions, there must be less than 4 around the Roll
     def inspectRoll(self, input, row, col):
+        if input[row][col] != "@": return False
+
         row_bgn = max(0, row - 1)
         row_end = min(row + 1, len(input) - 1)
         col_bgn = max(0, col - 1)
         col_end = min(col + 1, len(input[row]) - 1)
 
-        rolls = 0
+        rolls = sum(
+            input[row_adj][col_adj] == "@"
+            for row_adj in range(row_bgn, row_end + 1)
+            for col_adj in range(col_bgn, col_end + 1))
 
-        if input[row][col] == "@":
-            for row_adj in range(row_bgn, row_end + 1):
-                for col_adj in range(col_bgn, col_end + 1):
-                    if input[row_adj][col_adj] == "@":
-                        rolls += 1
-
-            if rolls < 5:  # magic number given by the puzzle
-                return True
-
-        return False
+        return rolls < 5  # magic number given by the puzzle
 
     def determineRolls(self, input):
-        res = 0
-
-        for row in range(len(input)):
-            for col in range(len(input[row])):
-                if self.inspectRoll(input, row, col):
-                    res += 1
+        res = sum(1
+                for row in range(len(input))
+                for col in range(len(input[row]))
+                if self.inspectRoll(input, row, col))
 
         return res
 
@@ -49,21 +42,21 @@ class Solution(InputAsLinesSolution):
     def removeRolls(self, input):
         res = 0
 
-        grid = [list(line) for line in input]  # grid can mutate
+        grid = [list(line) for line in input] #input may change
 
         while True:
-            rolls_picked = 0
+            lifted = 0
 
             for row in range(len(grid)):
                 for col in range(len(grid[row])):
                     if self.inspectRoll(grid, row, col):
                         grid[row][col] = "x"
-                        rolls_picked += 1
+                        lifted += 1
 
-            if rolls_picked == 0:
+            if lifted == 0:
                 break
 
-            res += rolls_picked
+            res += lifted
 
         return res
 
