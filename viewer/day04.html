@@ -1,0 +1,143 @@
+<style>
+        pre {
+    background: #303030;
+    color: #f1f1f1;
+    padding: 10px 16px;
+    border-radius: 2px;
+    border-top: 4px solid #00aeef;
+    -moz-box-shadow: inset 0 0 10px #000;
+    box-shadow: inset 0 0 10px #000;
+    counter-reset: line;
+    }
+    pre span {
+    display: block;
+    line-height: 1.5rem;
+    }
+    pre span:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    border-right: 1px solid #ddd;
+    padding: 0 .5em;
+    margin-right: .5em;
+    color: #888
+    }
+    span{
+        font-family: monospace;
+        font-size: 16px;
+    }
+    </style>
+<script src="script.js"></script>
+<div id="navigation">
+<button onclick="navigateTo('prev')">Previous Day</button>
+<button onclick="navigateTo('next')">Next Day</button>
+</div>
+<h1>Day 04</h1>
+<pre>
+<span># puzzle prompt: https://adventofcode.com/2025/day/4</span>
+<span></span>
+<span>import time</span>
+<span></span>
+<span>from ..base.advent import *</span>
+<span></span>
+<span>class Solution(InputAsLinesSolution):</span>
+<span>    _year = 2025</span>
+<span>    _day = 4</span>
+<span>    </span>
+<span>    _is_debugging = False</span>
+<span>    </span>
+<span>    #         col</span>
+<span>    #       @  @  @</span>
+<span>    #  row  @  R  @</span>
+<span>    #       @  @  @</span>
+<span>    # Scan the @ positions, there must be less than 4 around the Roll </span>
+<span>    def inspectRoll(self, input, row, col):</span>
+<span>        row_bgn   = max(0, row - 1)</span>
+<span>        row_end   = min(row + 1, len(input) - 1)</span>
+<span>        col_bgn   = max(0, col - 1)</span>
+<span>        col_end   = min(col + 1, len(input[row]) - 1)</span>
+<span>        </span>
+<span>        rolls = 0</span>
+<span></span>
+<span>        if input[row][col] == "@":</span>
+<span>            for row_adj in range(row_bgn, row_end + 1):</span>
+<span>                for col_adj in range(col_bgn, col_end + 1):</span>
+<span>                    if input[row_adj][col_adj] == "@":</span>
+<span>                        rolls += 1</span>
+<span></span>
+<span>            if rolls < 5: #magic number given by the puzzle</span>
+<span>                return True</span>
+<span>        </span>
+<span>        return False</span>
+<span></span>
+<span>    def determineRolls(self, input):</span>
+<span>        res = 0</span>
+<span></span>
+<span>        for row in range(len(input)):</span>
+<span>            for col in range(len(input[row])):</span>
+<span>                if self.inspectRoll(input, row, col):</span>
+<span>                    res += 1</span>
+<span></span>
+<span>        return res</span>
+<span></span>
+<span>    #same algorithm as in determine but now you go back and check again if more rolls can be removed</span>
+<span>    def removeRolls(self, input):</span>
+<span>        res = 0</span>
+<span></span>
+<span>        grid = [list(line) for line in input] #grid can mutate</span>
+<span></span>
+<span>        while True:</span>
+<span>            rolls_picked = 0</span>
+<span></span>
+<span>            for row in range(len(grid)):</span>
+<span>                for col in range(len(grid[row])):</span>
+<span>                    if self.inspectRoll(grid, row, col):</span>
+<span>                        grid[row][col] = "x"</span>
+<span>                        rolls_picked += 1                    </span>
+<span></span>
+<span>            if rolls_picked == 0:</span>
+<span>                break</span>
+<span></span>
+<span>            res += rolls_picked</span>
+<span></span>
+<span>        return res</span>
+<span></span>
+<span>    def pt1(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.determineRolls(input)</span>
+<span></span>
+<span>        return res</span>
+<span></span>
+<span>    def pt2(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.removeRolls(input)</span>
+<span></span>
+<span>        return res</span>
+<span>        </span>
+<span>    def part_1(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt1(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("1", res, (end_time - start_time))</span>
+<span></span>
+<span>    def part_2(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt2(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("2", res, (end_time - start_time))</span>
+<span></span>
+<span>if __name__ == '__main__':</span>
+<span>    solution = Solution()</span>
+<span></span>
+<span>    solution.part_1()</span>
+<span>    </span>
+<span>    solution.part_2()</span>
+</pre>

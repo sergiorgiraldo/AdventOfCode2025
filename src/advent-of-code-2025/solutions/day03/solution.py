@@ -24,27 +24,28 @@ class Solution(InputAsLinesSolution):
             # doing slices in the bank, ensuring there are enough batteries left
             #
             # bank is 987654321111111 and i need 2 batteries
-            # i can make slices of 14, so my slices will be
+            # I can make slices of 14 (pick max from them and leave 1 battery), so my slices will be
             # [9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1],[8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1]
             #
             # bank is 987654321111111 and i need 12 batteries
-            # i can make slices of 4 (pick 1 and leave 11 batteries), so my slices will be
+            # I can make slices of 4 (pick max from them and leave 11 batteries), so my slices will be
             # [9, 8, 7, 6],[8, 7, 6, 5],[7, 6, 5, 4],...
             #
-            # after picking a battery, I discard the batteries before it, they cannot be rearranged
+            # after picking a battery from a slice, I discard the batteries before the battery position,
+            # they cannot be rearranged
             while slots_available:
                 max_joltage = max(bank[offset + 1 : length - slots_available + 1])
-
-                # recalculate the position where to start next subset
-                offset = bank.index(max_joltage, offset + 1)
 
                 on.append(max_joltage)
 
                 slots_available -= 1
 
+                # recalculate the position where to start next slices
+                offset = bank.index(max_joltage, offset + 1)
+
             # this is first_digit * 10^position + second_digit * 10^position, etc
             # [3,4] => 3*10^1 + 4*10^0
-            total += (sum(digit * 10 ** (len(on) - i - 1) for i, digit in enumerate(on)))
+            total += sum(digit * 10 ** (len(on) - i - 1) for i, digit in enumerate(on))
 
         return total
 

@@ -37,10 +37,12 @@ class Solution(InputAsStringSolution):
                         ]
 
                         # in part 1, simply calculate middle of the id and see if they match, like 4545
+                        # i build (4,5,4,5)/(45,45)
                         if len(sections) == 2 and sections[0] == sections[1]:
                             invalids_single_rep += id
 
                         # in part 2, there can be repetition in more substrings, like 454545
+                        # i build (4,5,4,5,4,5) / (45,45,45) / (454,545)
                         if all(section == sections[0] for section in sections):
                             invalid_ids.add(id)
 

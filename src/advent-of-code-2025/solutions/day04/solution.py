@@ -1,0 +1,108 @@
+# puzzle prompt: https://adventofcode.com/2025/day/4
+
+import time
+
+from ..base.advent import *
+
+
+class Solution(InputAsLinesSolution):
+    _year = 2025
+    _day = 4
+
+    _is_debugging = False
+
+    #         col
+    #       @  @  @
+    #  row  @  R  @
+    #       @  @  @
+    # Scan the @ positions, there must be less than 4 around the Roll
+    def inspectRoll(self, input, row, col):
+        row_bgn = max(0, row - 1)
+        row_end = min(row + 1, len(input) - 1)
+        col_bgn = max(0, col - 1)
+        col_end = min(col + 1, len(input[row]) - 1)
+
+        rolls = 0
+
+        if input[row][col] == "@":
+            for row_adj in range(row_bgn, row_end + 1):
+                for col_adj in range(col_bgn, col_end + 1):
+                    if input[row_adj][col_adj] == "@":
+                        rolls += 1
+
+            if rolls < 5:  # magic number given by the puzzle
+                return True
+
+        return False
+
+    def determineRolls(self, input):
+        res = 0
+
+        for row in range(len(input)):
+            for col in range(len(input[row])):
+                if self.inspectRoll(input, row, col):
+                    res += 1
+
+        return res
+
+    # same algorithm as in determine but now you go back and check again if more rolls can be removed
+    def removeRolls(self, input):
+        res = 0
+
+        grid = [list(line) for line in input]  # grid can mutate
+
+        while True:
+            rolls_picked = 0
+
+            for row in range(len(grid)):
+                for col in range(len(grid[row])):
+                    if self.inspectRoll(grid, row, col):
+                        grid[row][col] = "x"
+                        rolls_picked += 1
+
+            if rolls_picked == 0:
+                break
+
+            res += rolls_picked
+
+        return res
+
+    def pt1(self, input):
+        self.debug(input)
+
+        res = self.determineRolls(input)
+
+        return res
+
+    def pt2(self, input):
+        self.debug(input)
+
+        res = self.removeRolls(input)
+
+        return res
+
+    def part_1(self):
+        start_time = time.time()
+
+        res = self.pt1(self.input)
+
+        end_time = time.time()
+
+        self.solve("1", res, (end_time - start_time))
+
+    def part_2(self):
+        start_time = time.time()
+
+        res = self.pt2(self.input)
+
+        end_time = time.time()
+
+        self.solve("2", res, (end_time - start_time))
+
+
+if __name__ == "__main__":
+    solution = Solution()
+
+    solution.part_1()
+
+    solution.part_2()
