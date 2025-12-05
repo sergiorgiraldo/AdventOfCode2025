@@ -37,51 +37,54 @@
 <span># puzzle prompt: https://adventofcode.com/2025/day/2</span>
 <span></span>
 <span>import time</span>
-<span>import sys</span>
-<span>sys.path.insert(0,"..")</span>
 <span></span>
-<span>from base.advent import *  # type: ignore</span>
+<span>from ..base.advent import *</span>
 <span></span>
-<span>class Solution(InputAsStringSolution):  # type: ignore</span>
+<span></span>
+<span>class Solution(InputAsStringSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 2</span>
-<span>    </span>
+<span></span>
 <span>    _is_debugging = False</span>
 <span></span>
 <span>    def checkIds(self, input):</span>
 <span>        invalids_single_rep = 0</span>
 <span>        invalids_multiple_rep = 0</span>
 <span></span>
-<span>        # i wanted to use ranges but range is a keyword :)</span>
+<span>        # i wanted to use ranges as variable name but range is a keyword :)</span>
 <span>        intervals = [interval for interval in input.split(",")]</span>
 <span></span>
 <span>        for interval in intervals:</span>
-<span>            min, max = interval.split("-")</span>
+<span>            min, max = map(int, interval.split("-"))</span>
 <span></span>
-<span>            for id in range(int(min), int(max)+1):</span>
+<span>            for id in range(min, max + 1):</span>
 <span>                id_as_string = str(id)</span>
 <span>                length = len(id_as_string)</span>
 <span>                invalid_ids = set()</span>
 <span></span>
-<span>                for div in range(2, length + 1):</span>
-<span>                    size = length // div</span>
-<span>                    if length % div != 0:</span>
-<span>                        continue</span>
+<span>                for offset in range(2, length + 1):</span>
+<span>                    # make sure we can divide the string in equal pieces</span>
+<span>                    # e.g if len is 10, i can make sections of 1, 2, 5 characters</span>
+<span>                    if length % offset == 0:</span>
+<span>                        size = length // offset</span>
+<span>                        sections = [</span>
+<span>                            id_as_string[i * size : (i + 1) * size]</span>
+<span>                            for i in range(offset)</span>
+<span>                        ]</span>
 <span></span>
-<span>                    sections = [id_as_string[i*size:(i+1)*size] for i in range(div)]</span>
-<span></span>
-<span>                    #in part 1, simply calculate middle of the id and see if they match, like 4545</span>
-<span>                    if div == 2:</span>
-<span>                        if sections[0] == sections[1]:</span>
+<span>                        # in part 1, simply calculate middle of the id and see if they match, like 4545</span>
+<span>                        # i build (4,5,4,5)/(45,45)</span>
+<span>                        if len(sections) == 2 and sections[0] == sections[1]:</span>
 <span>                            invalids_single_rep += id</span>
 <span></span>
-<span>                    #in part 2, there can be repetition in more substrings, like 454545  </span>
-<span>                    if all(sub == sections[0] for sub in sections):</span>
-<span>                        invalid_ids.add(id)</span>
+<span>                        # in part 2, there can be repetition in more substrings, like 454545</span>
+<span>                        # i build (4,5,4,5,4,5) / (45,45,45) / (454,545)</span>
+<span>                        if all(section == sections[0] for section in sections):</span>
+<span>                            invalid_ids.add(id)</span>
 <span></span>
 <span>                invalids_multiple_rep += sum(invalid_ids)</span>
 <span></span>
-<span>        return invalids_single_rep, invalids_multiple_rep        </span>
+<span>        return invalids_single_rep, invalids_multiple_rep</span>
 <span></span>
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
@@ -96,7 +99,7 @@
 <span>        res = self.checkIds(input)</span>
 <span></span>
 <span>        return res[1]</span>
-<span>        </span>
+<span></span>
 <span>    def part_1(self):</span>
 <span>        start_time = time.time()</span>
 <span></span>
@@ -115,10 +118,12 @@
 <span></span>
 <span>        self.solve("2", res, (end_time - start_time))</span>
 <span></span>
-<span>if __name__ == '__main__':</span>
+<span></span>
+<span>if __name__ == "__main__":</span>
 <span>    solution = Solution()</span>
 <span></span>
 <span>    solution.part_1()</span>
-<span>    </span>
+<span></span>
 <span>    solution.part_2()</span>
+<span></span>
 </pre>

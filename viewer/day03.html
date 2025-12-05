@@ -40,49 +40,50 @@
 <span></span>
 <span>from ..base.advent import *</span>
 <span></span>
+<span></span>
 <span>class Solution(InputAsLinesSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 3</span>
-<span>    </span>
+<span></span>
 <span>    _is_debugging = False</span>
 <span></span>
 <span>    def turnOnBatteries(self, input, howmany):</span>
-<span>        total = []</span>
+<span>        total = 0</span>
+<span>        banks = [[int(joltage) for joltage in bank] for bank in input]</span>
 <span></span>
-<span>        for bank in input:</span>
+<span>        for bank in banks:</span>
 <span>            length = len(bank)</span>
-<span>            joltages = [int(joltage) for joltage in bank]</span>
 <span>            slots_available = howmany</span>
 <span>            on = []</span>
-<span>            </span>
 <span>            offset = -1</span>
-<span>            #doing slices in the bank, ensuring there are enough batteries left</span>
+<span></span>
+<span>            # doing slices in the bank, ensuring there are enough batteries left</span>
 <span>            #</span>
-<span>            #bank is 987654321111111 and i need 2 batteries</span>
-<span>            #i can make slices of 14, so my slices will be </span>
-<span>            #[9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1],[8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1]</span>
+<span>            # bank is 987654321111111 and i need 2 batteries</span>
+<span>            # I can make slices of 14 (pick max from them and leave 1 battery), so my slices will be</span>
+<span>            # [9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1],[8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1]</span>
 <span>            #</span>
-<span>            #bank is 987654321111111 and i need 12 batteries</span>
-<span>            #i can make slices of 4 (pick 1 and leave 11 batteries), so my slices will be </span>
-<span>            #[9, 8, 7, 6],[8, 7, 6, 5],[7, 6, 5, 4],...</span>
+<span>            # bank is 987654321111111 and i need 12 batteries</span>
+<span>            # I can make slices of 4 (pick max from them and leave 11 batteries), so my slices will be</span>
+<span>            # [9, 8, 7, 6],[8, 7, 6, 5],[7, 6, 5, 4],...</span>
 <span>            #</span>
-<span>            #after picking a battery, I discard the batteries before it, they cannot be rearranged</span>
+<span>            # after picking a battery from a slice, I discard the batteries before the battery position,</span>
+<span>            # they cannot be rearranged</span>
 <span>            while slots_available:</span>
-<span>                subset = joltages[offset + 1 : length - slots_available + 1]</span>
-<span>                max_joltage = max(subset)</span>
-<span>                </span>
-<span>                # recalculate the position where to start next subset</span>
-<span>                offset = joltages.index(max_joltage, offset + 1)</span>
-<span>                </span>
+<span>                max_joltage = max(bank[offset + 1 : length - slots_available + 1])</span>
+<span></span>
 <span>                on.append(max_joltage)</span>
 <span></span>
 <span>                slots_available -= 1</span>
 <span></span>
+<span>                # recalculate the position where to start next slices</span>
+<span>                offset = bank.index(max_joltage, offset + 1)</span>
+<span></span>
 <span>            # this is first_digit * 10^position + second_digit * 10^position, etc</span>
 <span>            # [3,4] => 3*10^1 + 4*10^0</span>
-<span>            total.append(sum(digit * 10**(len(on) - i - 1) for i, digit in enumerate(on)))</span>
+<span>            total += sum(digit * 10 ** (len(on) - i - 1) for i, digit in enumerate(on))</span>
 <span></span>
-<span>        return sum(total)</span>
+<span>        return total</span>
 <span></span>
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
@@ -97,7 +98,7 @@
 <span>        res = self.turnOnBatteries(input, 12)</span>
 <span></span>
 <span>        return res</span>
-<span>        </span>
+<span></span>
 <span>    def part_1(self):</span>
 <span>        start_time = time.time()</span>
 <span></span>
@@ -116,10 +117,12 @@
 <span></span>
 <span>        self.solve("2", res, (end_time - start_time))</span>
 <span></span>
-<span>if __name__ == '__main__':</span>
+<span></span>
+<span>if __name__ == "__main__":</span>
 <span>    solution = Solution()</span>
 <span></span>
 <span>    solution.part_1()</span>
-<span>    </span>
+<span></span>
 <span>    solution.part_2()</span>
+<span></span>
 </pre>

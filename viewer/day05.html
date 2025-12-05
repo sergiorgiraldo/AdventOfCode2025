@@ -40,48 +40,48 @@
 <span></span>
 <span>from ..base.advent import *</span>
 <span></span>
+<span></span>
 <span>class Solution(InputAsBlockSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 5</span>
-<span>    </span>
+<span></span>
 <span>    _is_debugging = False</span>
-<span>    </span>
+<span></span>
 <span>    def parse(self, input):</span>
 <span>        self.ranges = []</span>
 <span>        self.ingredients = []</span>
 <span></span>
-<span>        for line in input[0]:</span>
-<span>            start, end = map(int, line.split("-"))</span>
-<span>            self.ranges.append([start, end + 1])</span>
-<span></span>
-<span>        self.ranges = sorted(self.ranges)</span>
+<span>        self.ranges = sorted(</span>
+<span>            [int(start), int(end) + 1] </span>
+<span>            for start, end in (line.split("-") </span>
+<span>            for line in input[0])</span>
+<span>        )</span>
 <span></span>
 <span>        self.ingredients = list(map(int, input[1]))</span>
 <span></span>
-<span>    def getGoodIngredients(self, input):</span>
+<span>    def getFreshIngredients(self, input):</span>
 <span>        self.parse(input)</span>
 <span></span>
-<span>        goods = 0</span>
+<span>        fresh = sum(</span>
+<span>            1</span>
+<span>            for id in self.ingredients</span>
+<span>            if any(range[0] <= id < range[1] for range in self.ranges)</span>
+<span>        )</span>
 <span></span>
-<span>        goods = sum(1 </span>
-<span>                    for id in self.ingredients </span>
-<span>                    if any(range[0] <= id < range[1] </span>
-<span>                    for range in self.ranges))</span>
+<span>        return fresh</span>
 <span></span>
-<span>        return goods</span>
-<span></span>
-<span>    def getAllIngredients(self, input):</span>
+<span>    def getPossibleIngredients(self, input):</span>
 <span>        self.parse(input)</span>
 <span></span>
 <span>        total = 0</span>
 <span>        idx = 0</span>
-<span>        </span>
+<span></span>
 <span>        while idx < len(self.ranges):</span>
 <span>            start, end = self.ranges[idx][0], self.ranges[idx][1]</span>
 <span>            idx += 1</span>
 <span></span>
-<span>            #i stay in this inner loop until my min is not changed</span>
-<span>            #my ranges are sorted so my first one is the min, i only have to go checking for the maxes </span>
+<span>            # i stay in this inner loop until my min is not changed</span>
+<span>            # my ranges are sorted so my first one is the min, i only have to go checking for the maxes</span>
 <span>            # like</span>
 <span>            # *******</span>
 <span>            #    ******</span>
@@ -89,11 +89,11 @@
 <span>            # i break when</span>
 <span>            # *******</span>
 <span>            #          ********</span>
-<span>            #             </span>
+<span>            #</span>
 <span>            while (idx < len(self.ranges)) and (self.ranges[idx][0] <= end):</span>
-<span>                end = self.ranges[idx][1] if self.ranges[idx][1] > end else end</span>
+<span>                end = max(end, self.ranges[idx][1])</span>
 <span>                idx += 1</span>
-<span>            </span>
+<span></span>
 <span>            total += end - start</span>
 <span></span>
 <span>        return total</span>
@@ -101,17 +101,17 @@
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
-<span>        res = self.getGoodIngredients(input)</span>
+<span>        res = self.getFreshIngredients(input)</span>
 <span></span>
 <span>        return res</span>
 <span></span>
 <span>    def pt2(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
-<span>        res = self.getAllIngredients(input)</span>
+<span>        res = self.getPossibleIngredients(input)</span>
 <span></span>
 <span>        return res</span>
-<span>            </span>
+<span></span>
 <span>    def part_1(self):</span>
 <span>        start_time = time.time()</span>
 <span></span>
@@ -130,10 +130,12 @@
 <span></span>
 <span>        self.solve("2", res, (end_time - start_time))</span>
 <span></span>
-<span>if __name__ == '__main__':</span>
+<span></span>
+<span>if __name__ == "__main__":</span>
 <span>    solution = Solution()</span>
 <span></span>
 <span>    solution.part_1()</span>
-<span>    </span>
+<span></span>
 <span>    solution.part_2()</span>
+<span></span>
 </pre>

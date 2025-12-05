@@ -37,58 +37,60 @@
 <span># puzzle prompt: https://adventofcode.com/2025/day/1</span>
 <span></span>
 <span>import time</span>
-<span>import sys</span>
-<span>sys.path.insert(0,"..")</span>
 <span></span>
-<span>from base.advent import * # type: ignore</span>
+<span>from ..base.advent import *</span>
 <span></span>
-<span>class Solution(InputAsLinesSolution): # type: ignore</span>
+<span></span>
+<span>class Solution(InputAsLinesSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 1</span>
-<span>    </span>
+<span></span>
 <span>    _is_debugging = False</span>
 <span></span>
 <span>    def parse(self, instruction):</span>
 <span>        direction = -1 if instruction[0] == "L" else 1</span>
-<span>        clicks = int(instruction[1:])</span>
-<span>        return direction, clicks</span>
+<span>        steps = int(instruction[1:])</span>
+<span>        return direction, steps</span>
 <span></span>
-<span>    def turn(self, input):</span>
-<span>        instructions = [self.parse(instruction) for instruction in input]</span>
+<span>    def turn(self, instructions):</span>
+<span>        dial = 50  # magic number given by the puzzle</span>
 <span></span>
-<span>        dial = 50 #magic number given by the puzzle</span>
+<span>        zeroes, clicks = 0, 0</span>
 <span></span>
-<span>        hits, passes = 0, 0</span>
-<span></span>
-<span>        for direction, clicks in instructions:</span>
-<span>            offset_to_zero = dial or 100 if direction < 0 else 100 - dial</span>
+<span>        for direction, steps in instructions:</span>
+<span>            # Calculate distance to zero</span>
+<span>            offset_to_zero = (dial or 100) if direction < 0 else (100 - dial)</span>
 <span></span>
 <span>            # Rotate the dial</span>
-<span>            dial = (dial + direction * clicks) % 100</span>
+<span>            dial = (dial + direction * steps) % 100</span>
 <span></span>
-<span>            # dial must be exactly 0</span>
-<span>            if dial == 0:</span>
-<span>                hits += 1 </span>
+<span>            zeroes += steps == offset_to_zero  # exactly zero</span>
+<span>            clicks += ((steps - offset_to_zero) // 100 + 1) * (</span>
+<span>                steps >= offset_to_zero</span>
+<span>            )  # passing/reaching zero</span>
+<span>            # can be several times</span>
 <span></span>
-<span>            if clicks >= offset_to_zero:</span>
-<span>                passes += (clicks - offset_to_zero) // 100 + 1</span>
-<span></span>
-<span>        return hits, passes</span>
+<span>        return zeroes, clicks</span>
 <span></span>
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
-<span>        res = self.turn(input)</span>
+<span>        instructions = [self.parse(rotation) for rotation in input]</span>
+<span></span>
+<span>        res = self.turn(instructions)</span>
 <span></span>
 <span>        return res[0]</span>
 <span></span>
 <span>    def pt2(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
-<span>        res = self.turn(input)</span>
+<span>        instructions = [self.parse(instruction) for instruction in input]</span>
+<span></span>
+<span>        res = self.turn(instructions)</span>
 <span></span>
 <span>        return res[1]</span>
-<span>        </span>
+<span></span>
+<span>    # region execute parts</span>
 <span>    def part_1(self):</span>
 <span>        start_time = time.time()</span>
 <span></span>
@@ -107,10 +109,14 @@
 <span></span>
 <span>        self.solve("2", res, (end_time - start_time))</span>
 <span></span>
-<span>if __name__ == '__main__':</span>
+<span></span>
+<span># endregion</span>
+<span></span>
+<span>if __name__ == "__main__":</span>
 <span>    solution = Solution()</span>
 <span></span>
 <span>    solution.part_1()</span>
-<span>    </span>
+<span></span>
 <span>    solution.part_2()</span>
+<span></span>
 </pre>
