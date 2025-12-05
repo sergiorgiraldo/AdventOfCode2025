@@ -12,9 +12,6 @@ class Solution(InputAsBlockSolution):
     _is_debugging = False
 
     def parse(self, input):
-        self.ranges = []
-        self.ingredients = []
-
         self.ranges = sorted(
             [int(start), int(end) + 1] 
             for start, end in (line.split("-") 

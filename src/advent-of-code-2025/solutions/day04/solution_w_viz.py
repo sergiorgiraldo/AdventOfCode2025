@@ -3,11 +3,13 @@
 import time
 
 from ..base.advent import *
-class Solution(InputAsLinesSolution):
+from .visualize import GridVisualizer
+
+class SolutionWithViz(InputAsLinesSolution):
     _year = 2025
     _day = 4
 
-    _is_debugging = False
+    _is_debugging = True
 
     #         col
     #       @  @  @
@@ -45,8 +47,13 @@ class Solution(InputAsLinesSolution):
     # same algorithm as in determine but now you go back and check again if more rolls can be removed
     def removeRolls(self, input):
         res = 0
+        if self._is_debugging:
+            visualizer = GridVisualizer()
 
         grid = [list(line) for line in input]  # input may change
+
+        if self._is_debugging:            
+            visualizer.capture(grid) # Capture initial state
 
         while True:
             lifted = 0
@@ -55,6 +62,8 @@ class Solution(InputAsLinesSolution):
                 for col in range(len(grid[row])):
                     if self.inspectRoll(grid, row, col):
                         grid[row][col] = "x"
+                        if self._is_debugging:            
+                            visualizer.capture(grid)  # Capture state after each iteration
                         lifted += 1
 
 
@@ -62,6 +71,10 @@ class Solution(InputAsLinesSolution):
                 break
 
             res += lifted
+
+        if self._is_debugging:            
+            #visualizer.show_static()  
+            visualizer.animate(interval=10)
 
         return res
 
@@ -99,8 +112,8 @@ class Solution(InputAsLinesSolution):
 
 
 if __name__ == "__main__":
-    solution = Solution()
+    solution = SolutionWithViz()
 
-    solution.part_1()
+    # solution.part_1()
 
     solution.part_2()
