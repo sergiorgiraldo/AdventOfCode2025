@@ -6,9 +6,9 @@ My solutions to [Advent of Code 2025](https://adventofcode.com/2025) done in Pyt
 
 ## Performance
 
-![](https://img.shields.io/badge/day%20📅-3-blue)
+![](https://img.shields.io/badge/day%20📅-4-blue)
 
-![](https://img.shields.io/badge/stars%20⭐-6-yellow)
+![](https://img.shields.io/badge/stars%20⭐-8-yellow)
 
 ---
 
