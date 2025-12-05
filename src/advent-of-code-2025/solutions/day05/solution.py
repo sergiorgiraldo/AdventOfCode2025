@@ -15,28 +15,26 @@ class Solution(InputAsBlockSolution):
         self.ranges = []
         self.ingredients = []
 
-        for line in input[0]:
-            start, end = map(int, line.split("-"))
-            self.ranges.append([start, end + 1])
-
-        self.ranges = sorted(self.ranges)
+        self.ranges = sorted(
+            [int(start), int(end) + 1] 
+            for start, end in (line.split("-") 
+            for line in input[0])
+        )
 
         self.ingredients = list(map(int, input[1]))
 
-    def getGoodIngredients(self, input):
+    def getFreshIngredients(self, input):
         self.parse(input)
 
-        goods = 0
-
-        goods = sum(
+        fresh = sum(
             1
             for id in self.ingredients
             if any(range[0] <= id < range[1] for range in self.ranges)
         )
 
-        return goods
+        return fresh
 
-    def getAllIngredients(self, input):
+    def getPossibleIngredients(self, input):
         self.parse(input)
 
         total = 0
@@ -57,7 +55,7 @@ class Solution(InputAsBlockSolution):
             #          ********
             #
             while (idx < len(self.ranges)) and (self.ranges[idx][0] <= end):
-                end = self.ranges[idx][1] if self.ranges[idx][1] > end else end
+                end = max(end, self.ranges[idx][1])
                 idx += 1
 
             total += end - start
@@ -67,14 +65,14 @@ class Solution(InputAsBlockSolution):
     def pt1(self, input):
         self.debug(input)
 
-        res = self.getGoodIngredients(input)
+        res = self.getFreshIngredients(input)
 
         return res
 
     def pt2(self, input):
         self.debug(input)
 
-        res = self.getAllIngredients(input)
+        res = self.getPossibleIngredients(input)
 
         return res
 
