@@ -114,7 +114,7 @@ class BaseSolution(ABC):
     @final
     def save(self, part, res, tm):
         answer_path = Path(
-            Path(__file__).parent.parent.parent,
+            Path(str(Path(__file__).parent.parent) + "/day" + str(self._day).zfill(2)),
             f"ans{part}.txt",
         )
 
