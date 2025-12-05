@@ -4,6 +4,7 @@ import time
 
 from ..base.advent import *
 
+
 class Solution(InputAsLinesSolution):
     _year = 2025
     _day = 4
@@ -12,11 +13,13 @@ class Solution(InputAsLinesSolution):
 
     #         col
     #       @  @  @
-    #  row  @  R  @
+    #  row  @  |  @
     #       @  @  @
-    # Scan the @ positions, there must be less than 4 around the Roll
+    #
+    # Scan the @ positions, there must be less than 4 around the Roll |
     def inspectRoll(self, input, row, col):
-        if input[row][col] != "@": return False
+        if input[row][col] != "@":
+            return False
 
         row_bgn = max(0, row - 1)
         row_end = min(row + 1, len(input) - 1)
@@ -26,15 +29,18 @@ class Solution(InputAsLinesSolution):
         rolls = sum(
             input[row_adj][col_adj] == "@"
             for row_adj in range(row_bgn, row_end + 1)
-            for col_adj in range(col_bgn, col_end + 1))
+            for col_adj in range(col_bgn, col_end + 1)
+        )
 
         return rolls < 5  # magic number given by the puzzle
 
     def determineRolls(self, input):
-        res = sum(1
-                for row in range(len(input))
-                for col in range(len(input[row]))
-                if self.inspectRoll(input, row, col))
+        res = sum(
+            1
+            for row in range(len(input))
+            for col in range(len(input[row]))
+            if self.inspectRoll(input, row, col)
+        )
 
         return res
 
@@ -42,7 +48,7 @@ class Solution(InputAsLinesSolution):
     def removeRolls(self, input):
         res = 0
 
-        grid = [list(line) for line in input] #input may change
+        grid = [list(line) for line in input]  # input may change
 
         while True:
             lifted = 0
