@@ -5,6 +5,7 @@ import time
 from ..base.advent import *
 from .visualize import GridVisualizer
 
+
 class SolutionWithViz(InputAsLinesSolution):
     _year = 2025
     _day = 4
@@ -52,8 +53,8 @@ class SolutionWithViz(InputAsLinesSolution):
 
         grid = [list(line) for line in input]  # input may change
 
-        if self._is_debugging:            
-            visualizer.capture(grid) # Capture initial state
+        if self._is_debugging:
+            visualizer.capture(grid)  # Capture initial state
 
         while True:
             lifted = 0
@@ -62,18 +63,19 @@ class SolutionWithViz(InputAsLinesSolution):
                 for col in range(len(grid[row])):
                     if self.inspectRoll(grid, row, col):
                         grid[row][col] = "x"
-                        if self._is_debugging:            
-                            visualizer.capture(grid)  # Capture state after each iteration
+                        if self._is_debugging:
+                            visualizer.capture(
+                                grid
+                            )  # Capture state after each iteration
                         lifted += 1
-
 
             if lifted == 0:
                 break
 
             res += lifted
 
-        if self._is_debugging:            
-            #visualizer.show_static()  
+        if self._is_debugging:
+            # visualizer.show_static()
             visualizer.animate(interval=10)
 
         return res

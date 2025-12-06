@@ -13,9 +13,8 @@ class Solution(InputAsBlockSolution):
 
     def parse(self, input):
         self.ranges = sorted(
-            [int(start), int(end) + 1] 
-            for start, end in (line.split("-") 
-            for line in input[0])
+            [int(start), int(end) + 1]
+            for start, end in (line.split("-") for line in input[0])
         )
 
         self.ingredients = list(map(int, input[1]))

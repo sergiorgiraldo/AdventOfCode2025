@@ -1,0 +1,131 @@
+<style>
+        pre {
+    background: #303030;
+    color: #f1f1f1;
+    padding: 10px 16px;
+    border-radius: 2px;
+    border-top: 4px solid #00aeef;
+    -moz-box-shadow: inset 0 0 10px #000;
+    box-shadow: inset 0 0 10px #000;
+    counter-reset: line;
+    }
+    pre span {
+    display: block;
+    line-height: 1.5rem;
+    }
+    pre span:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    border-right: 1px solid #ddd;
+    padding: 0 .5em;
+    margin-right: .5em;
+    color: #888
+    }
+    span{
+        font-family: monospace;
+        font-size: 16px;
+    }
+    </style>
+<script src="script.js"></script>
+<div id="navigation">
+<button onclick="navigateTo('prev')">Previous Day</button>
+<button onclick="navigateTo('next')">Next Day</button>
+</div>
+<h1>Day 06</h1>
+<pre>
+<span># puzzle prompt: https://adventofcode.com/2025/day/6</span>
+<span></span>
+<span>import re</span>
+<span>from functools import reduce</span>
+<span>import time</span>
+<span></span>
+<span>from ..base.advent import *</span>
+<span></span>
+<span>class Solution(InputAsLinesSolution):</span>
+<span>    _year = 2025</span>
+<span>    _day = 6</span>
+<span>    </span>
+<span>    _is_debugging = False</span>
+<span></span>
+<span>    def parse(self, input):</span>
+<span>        numbers = []</span>
+<span>        matches = list(re.finditer(r"(\W) +", input[-1] + " "))</span>
+<span></span>
+<span>        for match in matches:</span>
+<span>            start = match.start()</span>
+<span>            length = len(match.group(0)) - 1</span>
+<span>            segment = [row[start:start + length] for row in input[:-1]]</span>
+<span>            numbers.append(segment)</span>
+<span></span>
+<span>        ops = input[-1].replace(" ", "").replace(" ", "")</span>
+<span>        ops = list(ops)</span>
+<span></span>
+<span>        return numbers, ops</span>
+<span></span>
+<span>    def doHomework(self, input):</span>
+<span>        numbers, ops = self.parse(input)</span>
+<span></span>
+<span>        def calc(arr, op):</span>
+<span>            numbers = [int(digit) for digit in arr]</span>
+<span>            if op == "+":</span>
+<span>                return sum(numbers)</span>
+<span>            else:  # multiplication</span>
+<span>                return reduce(lambda acc, curr: acc * curr, numbers, 1)</span>
+<span>        </span>
+<span>        ans1 = 0</span>
+<span>        ans2 = 0</span>
+<span>        </span>
+<span>        for i in range(len(ops)):</span>
+<span>            # Part 1: horizontal calculation</span>
+<span>            ans1 += calc(numbers[i], ops[i])</span>
+<span>            </span>
+<span>            # Part 2: vertical calculation (transpose columns)</span>
+<span>            length = len(numbers[i][0])</span>
+<span></span>
+<span>            parts = ["".join(numbers[i][row][n] for row in range(len(numbers[i]))) </span>
+<span>                    for n in range(length)]</span>
+<span>            </span>
+<span>            ans2 += calc(parts, ops[i])</span>
+<span>        </span>
+<span>        return ans1, ans2</span>
+<span></span>
+<span>    def pt1(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.doHomework(input)</span>
+<span></span>
+<span>        return res[0]</span>
+<span></span>
+<span>    def pt2(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.doHomework(input)</span>
+<span></span>
+<span>        return res[1]</span>
+<span>        </span>
+<span>    def part_1(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt1(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("1", res, (end_time - start_time))</span>
+<span></span>
+<span>    def part_2(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt2(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("2", res, (end_time - start_time))</span>
+<span></span>
+<span>if __name__ == "__main__":</span>
+<span>    solution = Solution()</span>
+<span></span>
+<span>    solution.part_1()</span>
+<span>    </span>
+<span>    solution.part_2()</span>
+</pre>

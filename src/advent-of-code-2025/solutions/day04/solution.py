@@ -3,6 +3,8 @@
 import time
 
 from ..base.advent import *
+
+
 class Solution(InputAsLinesSolution):
     _year = 2025
     _day = 4
@@ -56,7 +58,6 @@ class Solution(InputAsLinesSolution):
                     if self.inspectRoll(grid, row, col):
                         grid[row][col] = "x"
                         lifted += 1
-
 
             if lifted == 0:
                 break
