@@ -13,9 +13,11 @@ dependencies = [
     "python-dotenv",
     "networkx",
     "z3-solver",
-    "requests"
+    "requests",
+    "matplotlib",
+    "numpy"
 ]
-version = "5.0.0"
+version = "6.0.0"
 
 [tool.black]
 line-length = 88
