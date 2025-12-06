@@ -17,5 +17,5 @@ Today I help cephalopods with her math homework.
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Still easy days
+Still easy days. However, for part 2 I couldnt figure it out the problem, until I saw the spaces are important :)
 <!-- SECTION:NOTES:END -->
