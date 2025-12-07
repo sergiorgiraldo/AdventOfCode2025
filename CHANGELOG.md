@@ -1,5 +1,16 @@
 # Changelog
 
+## [7.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v6.0.0...v7.0.0) (2025-12-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* day 7 completed.
+
+### Features
+
+* day 7 completed. ([4923886](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/49238861eb0bc59ee7a798b386d5b52e964de39f))
+
 ## [6.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v5.0.0...v6.0.0) (2025-12-06)
 
 ### ⚠ BREAKING CHANGES
