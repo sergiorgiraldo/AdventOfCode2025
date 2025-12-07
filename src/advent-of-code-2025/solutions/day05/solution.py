@@ -11,7 +11,7 @@ class Solution(InputAsBlockSolution):
 
     _is_debugging = False
 
-    def parse(self, input):
+    def Parse(self, input):
         self.ranges = sorted(
             [int(start), int(end) + 1]
             for start, end in (line.split("-") for line in input[0])
@@ -19,8 +19,8 @@ class Solution(InputAsBlockSolution):
 
         self.ingredients = list(map(int, input[1]))
 
-    def getFreshIngredients(self, input):
-        self.parse(input)
+    def GetFreshIngredients(self, input):
+        self.Parse(input)
 
         fresh = sum(
             1
@@ -30,8 +30,8 @@ class Solution(InputAsBlockSolution):
 
         return fresh
 
-    def getPossibleIngredients(self, input):
-        self.parse(input)
+    def GetPossibleIngredients(self, input):
+        self.Parse(input)
 
         total = 0
         idx = 0
@@ -61,14 +61,14 @@ class Solution(InputAsBlockSolution):
     def pt1(self, input):
         self.debug(input)
 
-        res = self.getFreshIngredients(input)
+        res = self.GetFreshIngredients(input)
 
         return res
 
     def pt2(self, input):
         self.debug(input)
 
-        res = self.getPossibleIngredients(input)
+        res = self.GetPossibleIngredients(input)
 
         return res
 

@@ -53,7 +53,7 @@
 <span>    #       @  @  @</span>
 <span>    #</span>
 <span>    # Scan the @ positions, there must be less than 4 around the Roll |</span>
-<span>    def inspectRoll(self, input, row, col):</span>
+<span>    def InspectRoll(self, input, row, col):</span>
 <span>        if input[row][col] != "@":</span>
 <span>            return False</span>
 <span></span>
@@ -70,18 +70,18 @@
 <span></span>
 <span>        return rolls < 5  # magic number given by the puzzle</span>
 <span></span>
-<span>    def determineRolls(self, input):</span>
+<span>    def DetermineRolls(self, input):</span>
 <span>        res = sum(</span>
 <span>            1</span>
 <span>            for row in range(len(input))</span>
 <span>            for col in range(len(input[row]))</span>
-<span>            if self.inspectRoll(input, row, col)</span>
+<span>            if self.InspectRoll(input, row, col)</span>
 <span>        )</span>
 <span></span>
 <span>        return res</span>
 <span></span>
 <span>    # same algorithm as in determine but now you go back and check again if more rolls can be removed</span>
-<span>    def removeRolls(self, input):</span>
+<span>    def RemoveRolls(self, input):</span>
 <span>        res = 0</span>
 <span></span>
 <span>        grid = [list(line) for line in input]  # input may change</span>
@@ -91,7 +91,7 @@
 <span></span>
 <span>            for row in range(len(grid)):</span>
 <span>                for col in range(len(grid[row])):</span>
-<span>                    if self.inspectRoll(grid, row, col):</span>
+<span>                    if self.InspectRoll(grid, row, col):</span>
 <span>                        grid[row][col] = "x"</span>
 <span>                        lifted += 1</span>
 <span></span>
@@ -103,16 +103,16 @@
 <span>        return res</span>
 <span></span>
 <span>    def pt1(self, input):</span>
-<span>        self.debug(input)</span>
+<span>        # self.debug(input)</span>
 <span></span>
-<span>        res = self.determineRolls(input)</span>
+<span>        res = self.DetermineRolls(input)</span>
 <span></span>
 <span>        return res</span>
 <span></span>
 <span>    def pt2(self, input):</span>
-<span>        self.debug(input)</span>
+<span>        # self.debug(input)</span>
 <span></span>
-<span>        res = self.removeRolls(input)</span>
+<span>        res = self.RemoveRolls(input)</span>
 <span></span>
 <span>        return res</span>
 <span></span>

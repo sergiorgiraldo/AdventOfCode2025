@@ -11,7 +11,7 @@ class Solution(InputAsStringSolution):
 
     _is_debugging = False
 
-    def checkIds(self, input):
+    def CheckIds(self, input):
         invalids_single_rep = 0
         invalids_multiple_rep = 0
 
@@ -53,14 +53,14 @@ class Solution(InputAsStringSolution):
     def pt1(self, input):
         self.debug(input)
 
-        res = self.checkIds(input)
+        res = self.CheckIds(input)
 
         return res[0]
 
     def pt2(self, input):
         self.debug(input)
 
-        res = self.checkIds(input)
+        res = self.CheckIds(input)
 
         return res[1]
 

@@ -17,7 +17,7 @@ class Solution(InputAsLinesSolution):
     #       @  @  @
     #
     # Scan the @ positions, there must be less than 4 around the Roll |
-    def inspectRoll(self, input, row, col):
+    def InspectRoll(self, input, row, col):
         if input[row][col] != "@":
             return False
 
@@ -34,18 +34,18 @@ class Solution(InputAsLinesSolution):
 
         return rolls < 5  # magic number given by the puzzle
 
-    def determineRolls(self, input):
+    def DetermineRolls(self, input):
         res = sum(
             1
             for row in range(len(input))
             for col in range(len(input[row]))
-            if self.inspectRoll(input, row, col)
+            if self.InspectRoll(input, row, col)
         )
 
         return res
 
     # same algorithm as in determine but now you go back and check again if more rolls can be removed
-    def removeRolls(self, input):
+    def RemoveRolls(self, input):
         res = 0
 
         grid = [list(line) for line in input]  # input may change
@@ -55,7 +55,7 @@ class Solution(InputAsLinesSolution):
 
             for row in range(len(grid)):
                 for col in range(len(grid[row])):
-                    if self.inspectRoll(grid, row, col):
+                    if self.InspectRoll(grid, row, col):
                         grid[row][col] = "x"
                         lifted += 1
 
@@ -69,14 +69,14 @@ class Solution(InputAsLinesSolution):
     def pt1(self, input):
         # self.debug(input)
 
-        res = self.determineRolls(input)
+        res = self.DetermineRolls(input)
 
         return res
 
     def pt2(self, input):
         # self.debug(input)
 
-        res = self.removeRolls(input)
+        res = self.RemoveRolls(input)
 
         return res
 
