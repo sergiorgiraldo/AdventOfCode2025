@@ -2,9 +2,10 @@
 
 import time
 from collections import defaultdict
+from functools import reduce
+import operator
 
 from ..base.advent import *
-
 
 class Solution(InputAsLinesSolution):
     _year = 2025
@@ -13,7 +14,7 @@ class Solution(InputAsLinesSolution):
     _is_debugging = False
 
     # grids are good as complex numbers (day 10, 2024)
-    def parse(self, input):
+    def Parse(self, input):
         manifold = defaultdict(int)
 
         for i, line in enumerate(input):
@@ -66,39 +67,38 @@ class Solution(InputAsLinesSolution):
     # so we can find the universes summing all splitter hits.
     # the gotcha is that then we must start the investigation from the end:
     # 1. we get a splitter
-    # 2. go all the way down and go up
+    # 2. go all the way down and back up
     # 3. see for each interaction if there is one above and left or right
     # 3.a. remember the imaginary part is the y (left or right)
-    def followBeam(self, input):
-        splitters, hits = self.parse(input)
+    def FollowBeam(self, input):
+        splitters, hits = self.Parse(input)
 
         for i, splitter in enumerate(splitters):
             for j in range(i - 1, -1, -1):
                 above = splitters[j]
 
-                hits[splitter] += (
-                    hits[above] if abs(above.imag - splitter.imag) == 1 else 0
-                )
+                hits[splitter] += (hits[above] if abs(above.imag - splitter.imag) == 1 else 0)
 
                 if above.imag == splitter.imag:  # I navigated all the all way up
                     break
 
-        splitted = sum(hit > 0 for hit in hits.values())
-        timelines = sum(hits.values()) + 1
+        splitted = reduce(operator.add, (1 for value in hits.values() if value != 0), 0)
+
+        timelines = reduce(operator.add, hits.values(), 0) + 1 #add the first one
 
         return splitted, timelines
 
     def pt1(self, input):
         self.debug(input)
 
-        res = self.followBeam(input)
+        res = self.FollowBeam(input)
 
         return res[0]
 
     def pt2(self, input):
         self.debug(input)
 
-        res = self.followBeam(input)
+        res = self.FollowBeam(input)
 
         return res[1]
 
@@ -119,7 +119,6 @@ class Solution(InputAsLinesSolution):
         end_time = time.time()
 
         self.solve("2", res, (end_time - start_time))
-
 
 if __name__ == "__main__":
     solution = Solution()

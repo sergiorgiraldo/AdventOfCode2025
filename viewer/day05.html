@@ -47,20 +47,16 @@
 <span></span>
 <span>    _is_debugging = False</span>
 <span></span>
-<span>    def parse(self, input):</span>
-<span>        self.ranges = []</span>
-<span>        self.ingredients = []</span>
-<span></span>
+<span>    def Parse(self, input):</span>
 <span>        self.ranges = sorted(</span>
-<span>            [int(start), int(end) + 1] </span>
-<span>            for start, end in (line.split("-") </span>
-<span>            for line in input[0])</span>
+<span>            [int(start), int(end) + 1]</span>
+<span>            for start, end in (line.split("-") for line in input[0])</span>
 <span>        )</span>
 <span></span>
 <span>        self.ingredients = list(map(int, input[1]))</span>
 <span></span>
-<span>    def getFreshIngredients(self, input):</span>
-<span>        self.parse(input)</span>
+<span>    def GetFreshIngredients(self, input):</span>
+<span>        self.Parse(input)</span>
 <span></span>
 <span>        fresh = sum(</span>
 <span>            1</span>
@@ -70,8 +66,8 @@
 <span></span>
 <span>        return fresh</span>
 <span></span>
-<span>    def getPossibleIngredients(self, input):</span>
-<span>        self.parse(input)</span>
+<span>    def GetPossibleIngredients(self, input):</span>
+<span>        self.Parse(input)</span>
 <span></span>
 <span>        total = 0</span>
 <span>        idx = 0</span>
@@ -101,14 +97,14 @@
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
-<span>        res = self.getFreshIngredients(input)</span>
+<span>        res = self.GetFreshIngredients(input)</span>
 <span></span>
 <span>        return res</span>
 <span></span>
 <span>    def pt2(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
-<span>        res = self.getPossibleIngredients(input)</span>
+<span>        res = self.GetPossibleIngredients(input)</span>
 <span></span>
 <span>        return res</span>
 <span></span>

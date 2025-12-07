@@ -36,74 +36,81 @@
 <pre>
 <span># puzzle prompt: https://adventofcode.com/2025/day/6</span>
 <span></span>
+<span>import operator</span>
 <span>import re</span>
-<span>from functools import reduce</span>
 <span>import time</span>
+<span>from functools import reduce</span>
 <span></span>
 <span>from ..base.advent import *</span>
+<span></span>
 <span></span>
 <span>class Solution(InputAsLinesSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 6</span>
-<span>    </span>
+<span></span>
 <span>    _is_debugging = False</span>
 <span></span>
-<span>    def parse(self, input):</span>
+<span>    def Parse(self, input):</span>
 <span>        numbers = []</span>
+<span></span>
+<span>        # this works for part 1 but for part 2 i cannot strip the spaces</span>
+<span>        # numbers = [list(col) for col in zip(*[re.findall(r"\d+", row) for row in input[:-1]])]</span>
+<span></span>
+<span>        # notice the space in the pattern</span>
 <span>        matches = list(re.finditer(r"(\W) +", input[-1] + " "))</span>
 <span></span>
 <span>        for match in matches:</span>
 <span>            start = match.start()</span>
 <span>            length = len(match.group(0)) - 1</span>
-<span>            segment = [row[start:start + length] for row in input[:-1]]</span>
+<span>            segment = [row[start : start + length] for row in input[:-1]]</span>
 <span>            numbers.append(segment)</span>
 <span></span>
-<span>        ops = input[-1].replace(" ", "").replace(" ", "")</span>
-<span>        ops = list(ops)</span>
+<span>        ops = re.findall(r"[+*]", input[-1])</span>
 <span></span>
 <span>        return numbers, ops</span>
 <span></span>
-<span>    def doHomework(self, input):</span>
-<span>        numbers, ops = self.parse(input)</span>
+<span>    def Calculate(self, line, op):</span>
+<span>        numbers = map(int, line)</span>
 <span></span>
-<span>        def calc(arr, op):</span>
-<span>            numbers = [int(digit) for digit in arr]</span>
-<span>            if op == "+":</span>
-<span>                return sum(numbers)</span>
-<span>            else:  # multiplication</span>
-<span>                return reduce(lambda acc, curr: acc * curr, numbers, 1)</span>
-<span>        </span>
-<span>        ans1 = 0</span>
-<span>        ans2 = 0</span>
-<span>        </span>
+<span>        if op == "+":</span>
+<span>            return reduce(operator.add, numbers, 0)</span>
+<span>        else:</span>
+<span>            return reduce(operator.mul, numbers, 1)</span>
+<span></span>
+<span>    def DoHomework(self, input):</span>
+<span>        numbers, ops = self.Parse(input)</span>
+<span>        horz = 0</span>
+<span>        vert = 0</span>
+<span></span>
 <span>        for i in range(len(ops)):</span>
 <span>            # Part 1: horizontal calculation</span>
-<span>            ans1 += calc(numbers[i], ops[i])</span>
-<span>            </span>
-<span>            # Part 2: vertical calculation (transpose columns)</span>
+<span>            horz += self.Calculate(numbers[i], ops[i])</span>
+<span></span>
+<span>            # Part 2: vertical calculation</span>
 <span>            length = len(numbers[i][0])</span>
 <span></span>
-<span>            parts = ["".join(numbers[i][row][n] for row in range(len(numbers[i]))) </span>
-<span>                    for n in range(length)]</span>
-<span>            </span>
-<span>            ans2 += calc(parts, ops[i])</span>
-<span>        </span>
-<span>        return ans1, ans2</span>
+<span>            parts = [</span>
+<span>                "".join(numbers[i][row][n] for row in range(len(numbers[i])))</span>
+<span>                for n in range(length)</span>
+<span>            ]</span>
+<span>            vert += self.Calculate(parts, ops[i])</span>
+<span></span>
+<span>        return horz, vert</span>
 <span></span>
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
-<span>        res = self.doHomework(input)</span>
+<span>        res = self.DoHomework(input)</span>
 <span></span>
 <span>        return res[0]</span>
 <span></span>
 <span>    def pt2(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
-<span>        res = self.doHomework(input)</span>
+<span>        res = self.DoHomework(input)</span>
 <span></span>
 <span>        return res[1]</span>
-<span>        </span>
+<span></span>
 <span>    def part_1(self):</span>
 <span>        start_time = time.time()</span>
 <span></span>
@@ -122,10 +129,12 @@
 <span></span>
 <span>        self.solve("2", res, (end_time - start_time))</span>
 <span></span>
+<span></span>
 <span>if __name__ == "__main__":</span>
 <span>    solution = Solution()</span>
 <span></span>
 <span>    solution.part_1()</span>
-<span>    </span>
+<span></span>
 <span>    solution.part_2()</span>
+<span></span>
 </pre>

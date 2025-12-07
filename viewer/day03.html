@@ -47,7 +47,7 @@
 <span></span>
 <span>    _is_debugging = False</span>
 <span></span>
-<span>    def turnOnBatteries(self, input, howmany):</span>
+<span>    def TurnOnBatteries(self, input, howmany):</span>
 <span>        total = 0</span>
 <span>        banks = [[int(joltage) for joltage in bank] for bank in input]</span>
 <span></span>
@@ -88,14 +88,14 @@
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
-<span>        res = self.turnOnBatteries(input, 2)</span>
+<span>        res = self.TurnOnBatteries(input, 2)</span>
 <span></span>
 <span>        return res</span>
 <span></span>
 <span>    def pt2(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
-<span>        res = self.turnOnBatteries(input, 12)</span>
+<span>        res = self.TurnOnBatteries(input, 12)</span>
 <span></span>
 <span>        return res</span>
 <span></span>

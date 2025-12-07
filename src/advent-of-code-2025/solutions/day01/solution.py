@@ -11,15 +11,15 @@ class Solution(InputAsLinesSolution):
 
     _is_debugging = False
 
-    def parse(self, instruction):
+    def Parse(self, instruction):
         direction = -1 if instruction[0] == "L" else 1
         steps = int(instruction[1:])
         return direction, steps
 
-    def turn(self, instructions):
+    def GetPasswordInSafe(self, input):
         dial = 50  # magic number given by the puzzle
-
         zeroes, clicks = 0, 0
+        instructions = [self.Parse(rotation) for rotation in input]
 
         for direction, steps in instructions:
             # Calculate distance to zero
@@ -29,28 +29,24 @@ class Solution(InputAsLinesSolution):
             dial = (dial + direction * steps) % 100
 
             zeroes += steps == offset_to_zero  # exactly zero
-            clicks += ((steps - offset_to_zero) // 100 + 1) * (
-                steps >= offset_to_zero
-            )  # passing/reaching zero
+            
+            # passing/reaching zero
             # can be several times
+            clicks += ((steps - offset_to_zero) // 100 + 1) * (steps >= offset_to_zero)  
 
         return zeroes, clicks
 
     def pt1(self, input):
         self.debug(input)
 
-        instructions = [self.parse(rotation) for rotation in input]
-
-        res = self.turn(instructions)
+        res = self.GetPasswordInSafe(input)
 
         return res[0]
 
     def pt2(self, input):
         self.debug(input)
 
-        instructions = [self.parse(instruction) for instruction in input]
-
-        res = self.turn(instructions)
+        res = self.GetPasswordInSafe(input)
 
         return res[1]
 

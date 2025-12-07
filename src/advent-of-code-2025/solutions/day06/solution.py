@@ -14,7 +14,7 @@ class Solution(InputAsLinesSolution):
 
     _is_debugging = False
 
-    def parse(self, input):
+    def Parse(self, input):
         numbers = []
 
         # this works for part 1 but for part 2 i cannot strip the spaces
@@ -33,7 +33,7 @@ class Solution(InputAsLinesSolution):
 
         return numbers, ops
 
-    def calculate(self, line, op):
+    def Calculate(self, line, op):
         numbers = map(int, line)
 
         if op == "+":
@@ -41,14 +41,14 @@ class Solution(InputAsLinesSolution):
         else:
             return reduce(operator.mul, numbers, 1)
 
-    def doHomework(self, input):
-        numbers, ops = self.parse(input)
+    def DoHomework(self, input):
+        numbers, ops = self.Parse(input)
         horz = 0
         vert = 0
 
         for i in range(len(ops)):
             # Part 1: horizontal calculation
-            horz += self.calculate(numbers[i], ops[i])
+            horz += self.Calculate(numbers[i], ops[i])
 
             # Part 2: vertical calculation
             length = len(numbers[i][0])
@@ -57,21 +57,21 @@ class Solution(InputAsLinesSolution):
                 "".join(numbers[i][row][n] for row in range(len(numbers[i])))
                 for n in range(length)
             ]
-            vert += self.calculate(parts, ops[i])
+            vert += self.Calculate(parts, ops[i])
 
         return horz, vert
 
     def pt1(self, input):
         self.debug(input)
 
-        res = self.doHomework(input)
+        res = self.DoHomework(input)
 
         return res[0]
 
     def pt2(self, input):
         self.debug(input)
 
-        res = self.doHomework(input)
+        res = self.DoHomework(input)
 
         return res[1]
 

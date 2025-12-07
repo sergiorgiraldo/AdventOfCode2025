@@ -11,7 +11,7 @@ class Solution(InputAsLinesSolution):
 
     _is_debugging = False
 
-    def turnOnBatteries(self, input, howmany):
+    def TurnOnBatteries(self, input, howmany):
         total = 0
         banks = [[int(joltage) for joltage in bank] for bank in input]
 
@@ -52,14 +52,14 @@ class Solution(InputAsLinesSolution):
     def pt1(self, input):
         self.debug(input)
 
-        res = self.turnOnBatteries(input, 2)
+        res = self.TurnOnBatteries(input, 2)
 
         return res
 
     def pt2(self, input):
         self.debug(input)
 
-        res = self.turnOnBatteries(input, 12)
+        res = self.TurnOnBatteries(input, 12)
 
         return res
 
