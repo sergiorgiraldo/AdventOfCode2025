@@ -17,7 +17,7 @@ We have to trace the path of beams through splitters
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-I noticed i can only check when the beams hit the splitters, reminds day 16 from 2023
+I noticed i may only check when the beams hit the splitters, reminds day 16 from 2023
 <!-- SECTION:NOTES:END -->
 
 
