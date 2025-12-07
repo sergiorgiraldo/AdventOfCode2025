@@ -1,9 +1,9 @@
 # puzzle prompt: https://adventofcode.com/2025/day/6
 
+import operator
 import re
 import time
 from functools import reduce
-import operator
 
 from ..base.advent import *
 
@@ -18,8 +18,8 @@ class Solution(InputAsLinesSolution):
         numbers = []
 
         # this works for part 1 but for part 2 i cannot strip the spaces
-        #numbers = [list(col) for col in zip(*[re.findall(r"\d+", row) for row in input[:-1]])]
-        
+        # numbers = [list(col) for col in zip(*[re.findall(r"\d+", row) for row in input[:-1]])]
+
         # notice the space in the pattern
         matches = list(re.finditer(r"(\W) +", input[-1] + " "))
 
@@ -28,7 +28,7 @@ class Solution(InputAsLinesSolution):
             length = len(match.group(0)) - 1
             segment = [row[start : start + length] for row in input[:-1]]
             numbers.append(segment)
-        
+
         ops = re.findall(r"[+*]", input[-1])
 
         return numbers, ops
@@ -43,12 +43,12 @@ class Solution(InputAsLinesSolution):
 
     def doHomework(self, input):
         numbers, ops = self.parse(input)
-        ans1 = 0
-        ans2 = 0
+        horz = 0
+        vert = 0
 
         for i in range(len(ops)):
             # Part 1: horizontal calculation
-            ans1 += self.calculate(numbers[i], ops[i])
+            horz += self.calculate(numbers[i], ops[i])
 
             # Part 2: vertical calculation
             length = len(numbers[i][0])
@@ -57,9 +57,9 @@ class Solution(InputAsLinesSolution):
                 "".join(numbers[i][row][n] for row in range(len(numbers[i])))
                 for n in range(length)
             ]
-            ans2 += self.calculate(parts, ops[i])
-        
-        return ans1, ans2
+            vert += self.calculate(parts, ops[i])
+
+        return horz, vert
 
     def pt1(self, input):
         self.debug(input)
