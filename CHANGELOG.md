@@ -2,7 +2,6 @@
 
 ## [6.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v5.0.0...v6.0.0) (2025-12-06)
 
-
 ### ⚠ BREAKING CHANGES
 
 * day 6 completed.
@@ -11,7 +10,6 @@
 
 * day 4 visualizer, sloooow but nice to see ([236542a](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/236542ab19ef19847dabe620efc9cb696404343c))
 * day 6 completed. ([96eea4d](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/96eea4d36c99348246f76fc56db64811437aa817))
-
 
 ### Bug Fixes
 

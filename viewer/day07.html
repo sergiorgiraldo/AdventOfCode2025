@@ -1,0 +1,162 @@
+<style>
+        pre {
+    background: #303030;
+    color: #f1f1f1;
+    padding: 10px 16px;
+    border-radius: 2px;
+    border-top: 4px solid #00aeef;
+    -moz-box-shadow: inset 0 0 10px #000;
+    box-shadow: inset 0 0 10px #000;
+    counter-reset: line;
+    }
+    pre span {
+    display: block;
+    line-height: 1.5rem;
+    }
+    pre span:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    border-right: 1px solid #ddd;
+    padding: 0 .5em;
+    margin-right: .5em;
+    color: #888
+    }
+    span{
+        font-family: monospace;
+        font-size: 16px;
+    }
+    </style>
+<script src="script.js"></script>
+<div id="navigation">
+<button onclick="navigateTo('prev')">Previous Day</button>
+<button onclick="navigateTo('next')">Next Day</button>
+</div>
+<h1>Day 07</h1>
+<pre>
+<span># puzzle prompt: https://adventofcode.com/2025/day/7</span>
+<span></span>
+<span>from collections import defaultdict</span>
+<span>import time</span>
+<span></span>
+<span>from ..base.advent import *</span>
+<span></span>
+<span>class Solution(InputAsLinesSolution):</span>
+<span>    _year = 2025</span>
+<span>    _day = 7</span>
+<span>    </span>
+<span>    _is_debugging = False</span>
+<span></span>
+<span>    #grids are good as complex numbers (day 10, 2024)</span>
+<span>    def parse(self, input):</span>
+<span>        manifold = defaultdict(int)</span>
+<span></span>
+<span>        for i, line in enumerate(input):</span>
+<span>            for j, c in enumerate(line):</span>
+<span>                manifold[i + 1j * j] = c</span>
+<span></span>
+<span>        splitters = [z for z, c in manifold.items() if c == "^"]</span>
+<span>        hits = defaultdict(int, {splitters[0]: 1})</span>
+<span></span>
+<span>        return splitters, hits</span>
+<span></span>
+<span>#look at this at lines marked with X</span>
+<span></span>
+<span># .......S.......</span>
+<span># .......|.......</span>
+<span># ......|^|......X</span>
+<span># ......|.|......X</span>
+<span># ......^.^......</span>
+<span># ...............</span>
+<span># .....^.^.^.....</span>
+<span># ...............</span>
+<span># ....^.^...^....</span>
+<span># ...............</span>
+<span># ...^.^...^.^...</span>
+<span># ...............</span>
+<span># ..^...^.....^..</span>
+<span># ...............</span>
+<span># .^.^.^.^.^...^.</span>
+<span># ...............</span>
+<span></span>
+<span># .......S.......</span>
+<span># .......|.......</span>
+<span># ......|^|......</span>
+<span># ......|.|......X</span>
+<span># .....|^|^|.....X</span>
+<span># ...............</span>
+<span># .....^.^.^.....</span>
+<span># ...............</span>
+<span># ....^.^...^....</span>
+<span># ...............</span>
+<span># ...^.^...^.^...</span>
+<span># ...............</span>
+<span># ..^...^.....^..</span>
+<span># ...............</span>
+<span># .^.^.^.^.^...^.</span>
+<span># ...............</span>
+<span></span>
+<span># the beam will split only if there is a beam on above it and to its left/right</span>
+<span># and then each splitter hit turns a universe into one additional universe, </span>
+<span># so we can find the universes summing all splitter hits.</span>
+<span># the gotcha is that then we must start the investigation from the end:</span>
+<span># 1. we get a splitter</span>
+<span># 2. go all the way down and go up</span>
+<span># 3. see for each interaction if there is one above and left or right</span>
+<span># 3.a. remember the imaginary part is the y (left or right)</span>
+<span>    def followBeam(self, input):</span>
+<span>        splitters, hits = self.parse(input)</span>
+<span></span>
+<span>        for i, splitter in enumerate(splitters):</span>
+<span>            for j in range(i - 1, -1, -1):</span>
+<span>                above = splitters[j]</span>
+<span></span>
+<span>                hits[splitter] += hits[above] if abs(above.imag - splitter.imag) == 1 else 0</span>
+<span></span>
+<span>                if above.imag == splitter.imag: #I navigated all the all way up</span>
+<span>                    break</span>
+<span></span>
+<span>        splitted = sum(hit > 0 for hit in hits.values())</span>
+<span>        timelines = sum(hits.values()) + 1</span>
+<span></span>
+<span>        return splitted, timelines</span>
+<span></span>
+<span>    def pt1(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.followBeam(input)</span>
+<span></span>
+<span>        return res[0]</span>
+<span></span>
+<span>    def pt2(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.followBeam(input)</span>
+<span></span>
+<span>        return res[1]</span>
+<span>        </span>
+<span>    def part_1(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt1(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("1", res, (end_time - start_time))</span>
+<span></span>
+<span>    def part_2(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt2(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("2", res, (end_time - start_time))</span>
+<span></span>
+<span>if __name__ == '__main__':</span>
+<span>    solution = Solution()</span>
+<span></span>
+<span>    solution.part_1()</span>
+<span>    </span>
+<span>    solution.part_2()</span>
+</pre>
