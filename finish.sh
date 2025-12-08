@@ -1,26 +1,24 @@
 #!/bin/sh
 
-cd src/advent-of-code-2025/solutions
+cd src/advent-of-code-2025/
 
-for day in $(ls -d day*); do
-    cd $day
-
+for day in $(seq -w 01 25); do
     echo ""
     echo $day
     
-    python -m tests --verbose
+    python -m solutions.day${day}.tests --verbose
+
     if [ $? -ne 0 ]; then
         echo "Tests failed. Exiting finish.sh."
         exit 1
     fi
-    cd ..
 done
+
+cd ../../
 
 echo "###########################"
 echo "All tests passed."
 echo "###########################"
-
-cd ..
 
 ./build-viewer
 
@@ -59,7 +57,6 @@ echo "###########################"
 
 backlog board export
 mv ./Backlog.md ./viewer/Backlog.md
-
 
 git add --all . 
 

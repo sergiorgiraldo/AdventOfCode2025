@@ -29,10 +29,10 @@ class Solution(InputAsLinesSolution):
             dial = (dial + direction * steps) % 100
 
             zeroes += steps == offset_to_zero  # exactly zero
-            
+
             # passing/reaching zero
             # can be several times
-            clicks += ((steps - offset_to_zero) // 100 + 1) * (steps >= offset_to_zero)  
+            clicks += ((steps - offset_to_zero) // 100 + 1) * (steps >= offset_to_zero)
 
         return zeroes, clicks
 

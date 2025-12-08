@@ -2,7 +2,6 @@
 
 ## [7.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v6.0.0...v7.0.0) (2025-12-07)
 
-
 ### ⚠ BREAKING CHANGES
 
 * day 7 completed.

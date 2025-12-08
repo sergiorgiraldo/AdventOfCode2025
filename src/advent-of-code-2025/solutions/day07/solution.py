@@ -1,11 +1,12 @@
 # puzzle prompt: https://adventofcode.com/2025/day/7
 
+import operator
 import time
 from collections import defaultdict
 from functools import reduce
-import operator
 
 from ..base.advent import *
+
 
 class Solution(InputAsLinesSolution):
     _year = 2025
@@ -77,14 +78,18 @@ class Solution(InputAsLinesSolution):
             for j in range(i - 1, -1, -1):
                 above = splitters[j]
 
-                hits[splitter] += (hits[above] if abs(above.imag - splitter.imag) == 1 else 0)
+                hits[splitter] += (
+                    hits[above] if abs(above.imag - splitter.imag) == 1 else 0
+                )
 
                 if above.imag == splitter.imag:  # I navigated all the all way up
                     break
 
         splitted = reduce(operator.add, (1 for value in hits.values() if value != 0), 0)
 
-        timelines = reduce(operator.add, hits.values(), 0) + 1 #add the first one
+        timelines = (
+            reduce(operator.add, hits.values(), 0) + 1
+        )  # add the original universe
 
         return splitted, timelines
 
@@ -119,6 +124,7 @@ class Solution(InputAsLinesSolution):
         end_time = time.time()
 
         self.solve("2", res, (end_time - start_time))
+
 
 if __name__ == "__main__":
     solution = Solution()
