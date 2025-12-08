@@ -14,8 +14,7 @@ class Solution(InputAsBlockSolution):
     def Parse(self, input):
         self.ranges = sorted(
             [int(start), int(end) + 1]
-            for start, end in (line.split("-") 
-            for line in input[0])
+            for start, end in (line.split("-") for line in input[0])
         )
 
         self.ingredients = list(map(int, input[1]))
@@ -26,8 +25,7 @@ class Solution(InputAsBlockSolution):
         fresh = sum(
             1
             for id in self.ingredients
-            if any(range[0] <= id < range[1] 
-            for range in self.ranges)
+            if any(range[0] <= id < range[1] for range in self.ranges)
         )
 
         return fresh
