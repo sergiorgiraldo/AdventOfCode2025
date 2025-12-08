@@ -9,7 +9,7 @@ import sys
 def get_puzzles():
     year = datetime.datetime.now().year
 
-    for day in range(1, 26):
+    for day in range(1, 13):
         get_puzzle_from(day, year)
 
 def get_puzzle_from(day, year):

@@ -6,7 +6,7 @@ from datetime import datetime
 def scrape_aoc_current_year():    
     base_url = "https://adventofcode.com"
     year = datetime.now().year
-    days = range(1, 26)
+    days = range(1, 13)
     
     print(f"Processing easter eggs")
     markdown_content = f"# {year}\n\n"

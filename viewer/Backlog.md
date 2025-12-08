@@ -1,5 +1,4 @@
 # Kanban Board Export (powered by Backlog.md)
-Generated on: 2025-12-08 07:27:36
 Project: aoc2025
 
 | To Do | In Progress | Done |

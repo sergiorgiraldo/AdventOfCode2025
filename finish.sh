@@ -2,7 +2,7 @@
 
 cd src/advent-of-code-2025/
 
-for day in $(seq -w 01 25); do
+for day in $(seq -w 01 12); do
     echo ""
     echo $day
     
@@ -55,8 +55,7 @@ echo "###########################"
 echo "Backlog"
 echo "###########################"
 
-backlog board export
-mv ./Backlog.md ./viewer/Backlog.md
+./backlog.sh
 
 git add --all . 
 
