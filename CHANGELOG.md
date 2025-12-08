@@ -1,5 +1,21 @@
 # Changelog
 
+## [8.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v7.0.0...v8.0.0) (2025-12-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* day 8 completed.
+
+### Features
+
+* day 8 completed. ([f88c937](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/f88c937863249dfae4bf6d09374943abe655f8d3))
+
+
+### Bug Fixes
+
+* tests in finish were with wrong path ([497f4f5](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/497f4f5be4030755d09c2e5fc0b569033e99a0f9))
+
 ## [7.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v6.0.0...v7.0.0) (2025-12-07)
 
 ### ⚠ BREAKING CHANGES
