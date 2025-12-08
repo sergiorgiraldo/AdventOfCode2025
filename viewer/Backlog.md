@@ -11,4 +11,4 @@ Project: aoc2025
 |  |  | **TASK-4** - day 04 |
 |  |  | **TASK-3** - day 03 |
 |  |  | **TASK-2** - day 02 |
-|  |  | **TASK-1** - day 01 |
+|  |  |  [TASK-1 - day 01](task-1 - day-01.md) |
