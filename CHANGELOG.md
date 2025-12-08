@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.1.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v8.0.0...v8.1.0) (2025-12-08)
+
+
+### Features
+
+* tool to update all the backlog tasks in the finish script ([542ca58](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/542ca5805d82a2429c6db9f563789e3eacee492b))
+
 ## [8.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v7.0.0...v8.0.0) (2025-12-08)
 
 
