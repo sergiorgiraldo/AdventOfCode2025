@@ -15,7 +15,8 @@ dependencies = [
     "z3-solver",
     "requests",
     "matplotlib",
-    "numpy"
+    "numpy",
+    "scipy"
 ]
 version = "8.0.0"
 

@@ -22,6 +22,12 @@ When advent begins, get the session cookie from the page and update these:
 - aoc_session in gh action secret
 - aocd token in `~/.config/aocd/token`
 
+## virtual env
+
+setup a virtual env and install components
+
+`uv pip install -e .`
+
 ### gh actions
 
 - copy .github folder from prev year and change the year

@@ -5,11 +5,10 @@ import math
 import operator
 import time
 from functools import reduce
-
+import matplotlib.pyplot as plt
 import networkx as nx
 
 from ..base.advent import *
-
 
 class Solution(InputAsLinesSolution):
     _year = 2025
@@ -42,6 +41,12 @@ class Solution(InputAsLinesSolution):
         for _, p1, p2 in distances[:howmany]:
             graph.add_edge(p1, p2)
 
+        self.debug(graph.edges)
+
+        if self._is_debugging:
+            nx.draw(graph, with_labels=True)
+            plt.show()
+
         components = [len(c) for c in nx.connected_components(graph)]
         components.sort(reverse=True)
 
@@ -56,11 +61,18 @@ class Solution(InputAsLinesSolution):
 
         for point in points:
             graph.add_node(point)
-
+        
+        self.debug(graph.nodes)
+        self.debug(graph.edges)
+        
         for _, p1, p2 in distances:
             graph.add_edge(p1, p2)
             if nx.is_connected(graph):
                 break
+
+        if self._is_debugging:
+            nx.draw(graph, with_labels=True)
+            plt.show()
 
         return p1[0] * p2[0]
 
