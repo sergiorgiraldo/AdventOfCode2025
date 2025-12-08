@@ -3,15 +3,11 @@ Project: aoc2025
 
 | To Do | In Progress | Done |
 | --- | --- | --- |
-|  |  | [**TASK-1** - day 01](task-1 - day-01.md) |
-|  |  | [**TASK-1** - day 02](task-2 - day-02.md) |
-|  |  | [**TASK-1** - day 03](task-3 - day-03.md) |
-|  |  | [**TASK-1** - day 04](task-4 - day-04.md) |
-|  |  | [**TASK-1** - day 05](task-5 - day-05.md) |
-|  |  | [**TASK-1** - day 06](task-6 - day-06.md) |
-|  |  | [**TASK-1** - day 07](task-7 - day-07.md) |
-|  |  | [**TASK-1** - day 08](task-8 - day-08.md) |
-|  |  | [**TASK-1** - day 09](task-9 - day-09.md) |
-|  |  | [**TASK-1** - day 10](task-10 - day-10.md) |
-|  |  | [**TASK-1** - day 11](task-11 - day-11.md) |
-|  |  | [**TASK-1** - day 12](task-12 - day-12.md) |
+| **TASK-12** - day 12 |  | **TASK-8** - day 08 |
+| **TASK-11** - day 11 |  | **TASK-7** - day 07 |
+| **TASK-10** - day 10 |  | **TASK-6** - day 06 |
+| **TASK-9** - day 09 |  | **TASK-5** - day 05 |
+|  |  | **TASK-4** - day 04 |
+|  |  | **TASK-3** - day 03 |
+|  |  | **TASK-2** - day 02 |
+|  |  |  [TASK-1 - day 01](task-1 - day-01.md) |
