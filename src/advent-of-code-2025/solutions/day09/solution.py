@@ -10,20 +10,15 @@ class Point:
         self.x = x
         self.y = y
 
-    def area(self, other):
+    def GetArea(self, other):
         return (abs(self.x - other.x) + 1) * (abs(self.y - other.y) + 1)
-
 
 class Edge:
     def __init__(self, p1, p2):
-        self.horizontal = p1.y == p2.y
+        self.horizontal = (p1.y == p2.y)
 
-        if self.horizontal:
-            self.p1 = p1 if p1.x < p2.x else p2
-            self.p2 = p2 if p1.x < p2.x else p1
-        else:
-            self.p1 = p1 if p1.y < p2.y else p2
-            self.p2 = p2 if p1.y < p2.y else p1
+        smaller = (p1.x < p2.x) if self.horizontal else (p1.y < p2.y)
+        self.p1, self.p2 = (p1, p2) if smaller else (p2, p1)
 
     # Two edges intersect if:
     #
@@ -34,7 +29,7 @@ class Edge:
     #    y      - - - - - - -
     #    y            '
     #           x x x x x x x
-    def intersects(self, other):
+    def Intersects(self, other):
         if self.horizontal == other.horizontal:
             return False
 
@@ -53,13 +48,13 @@ class Polygon:
     def __init__(self, points):
         self.points = points
         self.edges = []
-        for i, p in enumerate(points):
+
+        for i, point in enumerate(points):
             next_point = points[(i + 1) % len(points)]
-            self.edges.append(Edge(p, next_point))
+            self.edges.append(Edge(point, next_point))
 
-    def intersects(self, edge):
-        return any(e.intersects(edge) for e in self.edges)
-
+    def Intersects(self, other_edge):
+        return any(polygon_edge.Intersects(other_edge) for polygon_edge in self.edges)
 
 class Solution(InputAsLinesSolution):
     _year = 2025
@@ -81,7 +76,7 @@ class Solution(InputAsLinesSolution):
         points, polygon = self.Parse(input)
 
         grid_size = len(points) - 1
-        red = -1
+        red_and_any = -1
         red_and_green = -1
 
         # Iterate all pairs of points
@@ -89,28 +84,42 @@ class Solution(InputAsLinesSolution):
             p1 = points[i]
             for j in range(i + 1, len(points)):
                 p2 = points[j]
-                # Compute area, then update best answer for part 1 if it"s larger
-                area = p1.area(p2)
-                red = max(red, area)
+                # Compute area, then update best answer for part 1 if it's larger
+                area = p1.GetArea(p2)
+                red_and_any = max(red_and_any, area)
 
-                # for part 2 we build four edges that represent the rectangle being checked, then check to see if any
+                # For part 2 we build four edges that represent the rectangle being checked, then check to see if any edge
                 # intersect our polygon's edges. If no intersections, it is a good rectangle.
+                # example, from the puzzle unit test
+                # 0            13
+                # .............. 0
+                # .......#XXX#.. 1
+                # .......XXXXX.. 2
+                # ..#XXXX#XXXX.. 3
+                # ..XXXXXXXXXX.. 4
+                # ..#XXXXXX#XX.. 5
+                # .........XXX.. 6
+                # .........#X#.. 7
+                # .............. 8               
+                # solution will be from rows 3/5
+                # but get reds (11,1) and (2,5), it will be a bigger rectangle. But red (7,1) will intercept, in other 
+                # words, there are tiles not red/green
                 # but .... edges that share a vertex are considered to intersect,
                 # which is guaranteed to happen since all the rectangle's vertices are also vertices of the polygon.
                 # hack: shrink the rectangle for intersection testing
+
                 x1 = min(p1.x, p2.x) + 0.5
                 x2 = max(p1.x, p2.x) - 0.5
                 y1 = min(p1.y, p2.y) + 0.5
                 y2 = max(p1.y, p2.y) - 0.5
-                rect = Polygon(
-                    [Point(x1, y1), Point(x2, y1), Point(x2, y2), Point(x1, y2)]
-                )
 
-                if not any(polygon.intersects(edge) for edge in rect.edges):
-                    # Rectangle is fully inside polygon; update best answer for part 2 if it"s larger
+                rectangle = Polygon([Point(x1, y1), Point(x2, y1), Point(x2, y2), Point(x1, y2)])
+
+                # Rectangle is fully inside polygon; update best answer for part 2 if it's larger
+                if all(not polygon.Intersects(edge) for edge in rectangle.edges):
                     red_and_green = max(red_and_green, area)
 
-        return [red, red_and_green]
+        return [red_and_any, red_and_green]
 
     def pt1(self, input):
         self.debug(input)
