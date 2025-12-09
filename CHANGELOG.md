@@ -2,7 +2,6 @@
 
 ## [8.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v7.0.0...v8.0.0) (2025-12-08)
 
-
 ### ⚠ BREAKING CHANGES
 
 * day 8 completed.
@@ -10,7 +9,6 @@
 ### Features
 
 * day 8 completed. ([f88c937](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/f88c937863249dfae4bf6d09374943abe655f8d3))
-
 
 ### Bug Fixes
 
