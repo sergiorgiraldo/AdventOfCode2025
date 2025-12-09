@@ -21,13 +21,15 @@ class Edge:
         self.p1, self.p2 = (p1, p2) if smaller else (p2, p1)
 
     # Two edges intersect if:
-    #
     # - one is horizontal and the other vertical
     # - the X coordinate of the vertical edge is between the X coordinates of the horizontal edge, and
     # - the Y coordinate of the horizontal edge is between the Y coordinates of the vertical edge.
-    #    y            '
-    #    y      - - - - - - -
-    #    y            '
+    #               v vert (AB)
+    #    y      - - A - - - -       
+    #    y      - - | - - - - 
+    #    y      - C ------D -  < horz (CD)
+    #    y      - - | - - - -  
+    #    y      - - B - - - -   
     #           x x x x x x x
     def Intersects(self, other):
         if self.horizontal == other.horizontal:
@@ -37,10 +39,10 @@ class Edge:
         vertical = other if self.horizontal else self
 
         return (
-            vertical.p1.x > horizontal.p1.x
-            and vertical.p1.x < horizontal.p2.x
-            and horizontal.p1.y > vertical.p1.y
-            and horizontal.p1.y < vertical.p2.y
+            vertical.p1.x > horizontal.p1.x and 
+            vertical.p1.x < horizontal.p2.x and 
+            horizontal.p1.y > vertical.p1.y and 
+            horizontal.p1.y < vertical.p2.y
         )
 
 
