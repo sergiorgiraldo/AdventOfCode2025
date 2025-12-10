@@ -15,35 +15,41 @@ class Solution(InputAsLinesSolution):
     _is_debugging = False
 
     def Parse(self, machine):
-        pattern, *buttons, joltages = machine.split()
+        pattern, *wirings, joltages = machine.split()
 
         pattern = pattern[1:-1]  # pattern is inside brackets
 
-        buttons = [set(map(int, button[1:-1].split(","))) for button in buttons]
+        wirings = [set(map(int, button[1:-1].split(","))) for button in wirings]
 
         joltages = map(int, joltages[1:-1].split(","))
 
-        return pattern, *buttons, joltages
+        return pattern, *wirings, joltages
 
     def TurnOnMachines(self, input):
         presses = 0
 
         # just brute-force which ones to press
         for machine in input:
-            pattern, *buttons, _ = self.Parse(machine)
+            pattern, *wirings, _ = self.Parse(machine)
 
-            presses += next(
-                N
-                for N in itertools.count(0)
-                for pressed in itertools.combinations(buttons, N)
-                if (
-                    "".join(
-                        ".#"[sum((i in button for button in pressed)) % 2]
-                        for i in range(len(pattern))
-                    )
-                    == pattern
-                )
-            )
+            found = False
+            for size in itertools.count(0):
+                #make combinations of the wirings
+                for buttons in itertools.combinations(wirings, size):
+                    result = ""
+                    for i in range(len(pattern)):
+                        #how many of the wiring buttons are the position i.
+                        size = sum(1 for button in buttons if i in button)
+                        #determine if the position should be off (0 = even presses cancel out) or on (1 = odd presses)
+                        result += ".#"[size % 2]
+                    
+                    if result == pattern:
+                        presses += size
+                        found = True
+                        break
+
+                if found:
+                    break
 
         return presses
 
@@ -53,23 +59,25 @@ class Solution(InputAsLinesSolution):
         total = 0
 
         for machine in input:
-            _, *buttons, joltages = self.Parse(machine)
+            _, *wirings, joltages = self.Parse(machine)
 
             # variables available to Z3
-            presses = [z3.Int(f"press{i}") for i in range(len(buttons))]
+            buttons = [z3.Int(f"press{i}") for i in range(len(wirings))]
 
             solver = z3.Optimize()
 
             # constraints
+            
             # button was pressed
-            solver.add(z3.And([press >= 0 for press in presses]))
+            solver.add(z3.And([press >= 0 for press in buttons]))
+
             # sum of the presses must be the joltage
             solver.add(
                 z3.And(
                     [
                         sum(
-                            presses[j]
-                            for j, button in enumerate(buttons)
+                            buttons[j]
+                            for j, button in enumerate(wirings)
                             if i in button
                         )
                         == joltage
@@ -79,12 +87,12 @@ class Solution(InputAsLinesSolution):
             )
 
             # goal
-            solver.minimize(sum(presses))
+            solver.minimize(sum(buttons))
 
             # solve
             assert solver.check() == z3.sat
             model = solver.model()
-            for press in presses:
+            for press in buttons:
                 total += model[press].as_long()
 
         return total
