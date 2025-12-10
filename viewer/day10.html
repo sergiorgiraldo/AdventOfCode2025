@@ -1,0 +1,156 @@
+<style>
+        pre {
+    background: #303030;
+    color: #f1f1f1;
+    padding: 10px 16px;
+    border-radius: 2px;
+    border-top: 4px solid #00aeef;
+    -moz-box-shadow: inset 0 0 10px #000;
+    box-shadow: inset 0 0 10px #000;
+    counter-reset: line;
+    }
+    pre span {
+    display: block;
+    line-height: 1.5rem;
+    }
+    pre span:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    border-right: 1px solid #ddd;
+    padding: 0 .5em;
+    margin-right: .5em;
+    color: #888
+    }
+    span{
+        font-family: monospace;
+        font-size: 16px;
+    }
+    </style>
+<script src="script.js"></script>
+<div id="navigation">
+<button onclick="navigateTo('prev')">Previous Day</button>
+<button onclick="navigateTo('next')">Next Day</button>
+</div>
+<h1>Day 10</h1>
+<pre>
+<span># puzzle prompt: https://adventofcode.com/2025/day/10</span>
+<span></span>
+<span>import time</span>
+<span>import itertools</span>
+<span>import z3</span>
+<span>from ..base.advent import *</span>
+<span></span>
+<span></span>
+<span>class Solution(InputAsLinesSolution):</span>
+<span>    _year = 2025</span>
+<span>    _day = 10</span>
+<span></span>
+<span>    _is_debugging = False</span>
+<span></span>
+<span>    def Parse(self, machine):</span>
+<span>        pattern, *buttons, joltages = machine.split()</span>
+<span></span>
+<span>        pattern = pattern[1:-1] #pattern is inside brackets</span>
+<span></span>
+<span>        buttons = [set(map(int, button[1:-1].split(","))) for button in buttons]</span>
+<span></span>
+<span>        joltages = map(int, joltages[1:-1].split(","))</span>
+<span></span>
+<span>        return pattern, *buttons, joltages</span>
+<span></span>
+<span>    def TurnOnMachines(self, input):</span>
+<span>        presses = 0</span>
+<span></span>
+<span>        # just brute-force which ones to press</span>
+<span>        for machine in input:</span>
+<span>            pattern, *buttons, _ = self.Parse(machine)</span>
+<span></span>
+<span>            presses += next(</span>
+<span>                N for N in itertools.count(0)</span>
+<span>                for pressed in itertools.combinations(buttons, N)</span>
+<span>                if (</span>
+<span>                    "".join(</span>
+<span>                        ".#"[sum((i in button for button in pressed)) % 2]</span>
+<span>                        for i in range(len(pattern))</span>
+<span>                    )</span>
+<span>                    == pattern</span>
+<span>                )</span>
+<span>            )</span>
+<span></span>
+<span>        return presses</span>
+<span></span>
+<span>    # we need to solve several equations like Ax = B with the goal to minimize sum(x)</span>
+<span>    # using Z3 (day 24, 2023/day 13, 2024)</span>
+<span>    def SetJoltage(self, input):</span>
+<span>        total = 0</span>
+<span></span>
+<span>        for machine in input:</span>
+<span>            _, *buttons, joltages = self.Parse(machine)</span>
+<span></span>
+<span>            #variables available to Z3</span>
+<span>            presses = [z3.Int(f"press{i}") for i in range(len(buttons))]</span>
+<span></span>
+<span>            solver = z3.Optimize()</span>
+<span></span>
+<span>            #constraints</span>
+<span>            #button was pressed</span>
+<span>            solver.add(z3.And([press >= 0 for press in presses]))</span>
+<span>            #sum of the presses must be the joltage</span>
+<span>            solver.add(z3.And([</span>
+<span>                sum(presses[j] for j, button in enumerate(buttons) if i in button) == joltage</span>
+<span>                    for i, joltage in enumerate(joltages)</span>
+<span>            ]))</span>
+<span>            </span>
+<span>            #goal</span>
+<span>            solver.minimize(sum(presses))</span>
+<span>            </span>
+<span>            #solve</span>
+<span>            assert solver.check() == z3.sat</span>
+<span>            model = solver.model()</span>
+<span>            for press in presses:</span>
+<span>                total += model[press].as_long()</span>
+<span></span>
+<span>        return total</span>
+<span>    </span>
+<span>    def pt1(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.TurnOnMachines(input)</span>
+<span></span>
+<span>        return res</span>
+<span></span>
+<span>    def pt2(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.SetJoltage(input)</span>
+<span></span>
+<span>        return res</span>
+<span></span>
+<span>    def part_1(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt1(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("1", res, (end_time - start_time))</span>
+<span></span>
+<span>    def part_2(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt2(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("2", res, (end_time - start_time))</span>
+<span></span>
+<span></span>
+<span>if __name__ == "__main__":</span>
+<span>    solution = Solution()</span>
+<span></span>
+<span>    solution.part_1()</span>
+<span></span>
+<span>    solution.part_2()</span>
+<span></span>
+</pre>
