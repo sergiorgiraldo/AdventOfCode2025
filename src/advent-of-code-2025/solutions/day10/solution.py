@@ -35,22 +35,24 @@ class Solution(InputAsLinesSolution):
             found = False
             for size in itertools.count(0):
                 #make combinations of the wirings
-                for buttons in itertools.combinations(wirings, size):
+                for pressed in itertools.combinations(wirings, size):
+                    # Build the result pattern
                     result = ""
                     for i in range(len(pattern)):
                         #how many of the wiring buttons are the position i.
-                        size = sum(1 for button in buttons if i in button)
+                        count = sum(1 for button in pressed if i in button)
                         #determine if the position should be off (0 = even presses cancel out) or on (1 = odd presses)
-                        result += ".#"[size % 2]
+                        result += ".#"[count % 2]
                     
+                    # Check if it matches
                     if result == pattern:
                         presses += size
                         found = True
                         break
-
+                
                 if found:
                     break
-
+                
         return presses
 
     # we need to solve several equations like Ax = B with the goal to minimize sum(x)
@@ -62,21 +64,22 @@ class Solution(InputAsLinesSolution):
             _, *wirings, joltages = self.Parse(machine)
 
             # variables available to Z3
-            buttons = [z3.Int(f"press{i}") for i in range(len(wirings))]
+            # number of wiring schemas
+            schemas = [z3.Int(f"press{i}") for i in range(len(wirings))]
 
             solver = z3.Optimize()
 
             # constraints
             
-            # button was pressed
-            solver.add(z3.And([press >= 0 for press in buttons]))
+            # buttons of a wiring were pressed
+            solver.add(z3.And([presses >= 0 for presses in schemas]))
 
             # sum of the presses must be the joltage
             solver.add(
                 z3.And(
                     [
                         sum(
-                            buttons[j]
+                            schemas[j]
                             for j, button in enumerate(wirings)
                             if i in button
                         )
@@ -87,12 +90,12 @@ class Solution(InputAsLinesSolution):
             )
 
             # goal
-            solver.minimize(sum(buttons))
+            solver.minimize(sum(schemas))
 
             # solve
             assert solver.check() == z3.sat
             model = solver.model()
-            for press in buttons:
+            for press in schemas:
                 total += model[press].as_long()
 
         return total
