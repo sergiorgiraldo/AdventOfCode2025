@@ -38,7 +38,8 @@
 <span></span>
 <span>import itertools</span>
 <span>import time</span>
-<span></span>
+<span>from functools import reduce</span>
+<span>import operator</span>
 <span>import z3</span>
 <span></span>
 <span>from ..base.advent import *</span>
@@ -71,25 +72,27 @@
 <span>            found = False</span>
 <span>            for size in itertools.count(0):</span>
 <span>                #make combinations of the wirings</span>
-<span>                for buttons in itertools.combinations(wirings, size):</span>
+<span>                for pressed in itertools.combinations(wirings, size):</span>
+<span>                    # Build the result pattern</span>
 <span>                    result = ""</span>
 <span>                    for i in range(len(pattern)):</span>
 <span>                        #how many of the wiring buttons are the position i.</span>
-<span>                        size = sum(1 for button in buttons if i in button)</span>
+<span>                        count = sum(1 for button in pressed if i in button)</span>
 <span>                        #determine if the position should be off (0 = even presses cancel out) or on (1 = odd presses)</span>
-<span>                        result += ".#"[size % 2]</span>
+<span>                        result += ".#"[count % 2]</span>
 <span>                    </span>
+<span>                    # Check if it matches</span>
 <span>                    if result == pattern:</span>
 <span>                        presses += size</span>
 <span>                        found = True</span>
 <span>                        break</span>
-<span></span>
+<span>                </span>
 <span>                if found:</span>
 <span>                    break</span>
-<span></span>
+<span>                </span>
 <span>        return presses</span>
 <span></span>
-<span>    # we need to solve several equations like Ax = B with the goal to minimize sum(x)</span>
+<span>    # we need to solve several equations like Wiring * x = Joltage with the goal to minimize sum(x)</span>
 <span>    # using Z3 (day 24, 2023/day 13, 2024)</span>
 <span>    def SetJoltage(self, input):</span>
 <span>        total = 0</span>
@@ -98,38 +101,35 @@
 <span>            _, *wirings, joltages = self.Parse(machine)</span>
 <span></span>
 <span>            # variables available to Z3</span>
-<span>            buttons = [z3.Int(f"press{i}") for i in range(len(wirings))]</span>
+<span>            # number of wiring schemas</span>
+<span>            schemas = [z3.Int(i) for i in range(len(wirings))]</span>
 <span></span>
 <span>            solver = z3.Optimize()</span>
 <span></span>
 <span>            # constraints</span>
 <span>            </span>
-<span>            # button was pressed</span>
-<span>            solver.add(z3.And([press >= 0 for press in buttons]))</span>
+<span>            # buttons of a wiring were pressed</span>
+<span>            solver.add(z3.And([presses >= 0 for presses in schemas]))</span>
 <span></span>
 <span>            # sum of the presses must be the joltage</span>
 <span>            solver.add(</span>
-<span>                z3.And(</span>
-<span>                    [</span>
-<span>                        sum(</span>
-<span>                            buttons[j]</span>
-<span>                            for j, button in enumerate(wirings)</span>
-<span>                            if i in button</span>
-<span>                        )</span>
+<span>                z3.And([</span>
+<span>                        sum(schemas[j]</span>
+<span>                            for j, buttons in enumerate(wirings)</span>
+<span>                            if i in buttons)</span>
 <span>                        == joltage</span>
 <span>                        for i, joltage in enumerate(joltages)</span>
-<span>                    ]</span>
-<span>                )</span>
+<span>                    ])</span>
 <span>            )</span>
 <span></span>
 <span>            # goal</span>
-<span>            solver.minimize(sum(buttons))</span>
+<span>            solver.minimize(sum(schemas))</span>
 <span></span>
 <span>            # solve</span>
-<span>            assert solver.check() == z3.sat</span>
+<span>            _ = solver.check() #assuming result z3.sat</span>
 <span>            model = solver.model()</span>
-<span>            for press in buttons:</span>
-<span>                total += model[press].as_long()</span>
+<span></span>
+<span>            total += sum(model[schema].as_long() for schema in schemas)</span>
 <span></span>
 <span>        return total</span>
 <span></span>
