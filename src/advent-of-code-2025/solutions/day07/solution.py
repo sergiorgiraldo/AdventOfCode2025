@@ -87,9 +87,8 @@ class Solution(InputAsLinesSolution):
 
         splitted = reduce(operator.add, (1 for value in hits.values() if value != 0), 0)
 
-        timelines = (
-            reduce(operator.add, hits.values(), 0) + 1
-        )  # add the original universe
+        timelines = reduce(operator.add, hits.values(), 0) + 1
+        # add the original universe
 
         return splitted, timelines
 
