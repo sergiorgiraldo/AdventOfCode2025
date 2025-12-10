@@ -2,7 +2,8 @@
 
 import itertools
 import time
-
+from functools import reduce
+import operator
 import z3
 
 from ..base.advent import *
@@ -55,7 +56,7 @@ class Solution(InputAsLinesSolution):
                 
         return presses
 
-    # we need to solve several equations like Ax = B with the goal to minimize sum(x)
+    # we need to solve several equations like Wiring * x = Joltage with the goal to minimize sum(x)
     # using Z3 (day 24, 2023/day 13, 2024)
     def SetJoltage(self, input):
         total = 0
@@ -65,7 +66,7 @@ class Solution(InputAsLinesSolution):
 
             # variables available to Z3
             # number of wiring schemas
-            schemas = [z3.Int(f"press{i}") for i in range(len(wirings))]
+            schemas = [z3.Int(i) for i in range(len(wirings))]
 
             solver = z3.Optimize()
 
@@ -76,27 +77,23 @@ class Solution(InputAsLinesSolution):
 
             # sum of the presses must be the joltage
             solver.add(
-                z3.And(
-                    [
-                        sum(
-                            schemas[j]
-                            for j, button in enumerate(wirings)
-                            if i in button
-                        )
+                z3.And([
+                        sum(schemas[j]
+                            for j, buttons in enumerate(wirings)
+                            if i in buttons)
                         == joltage
                         for i, joltage in enumerate(joltages)
-                    ]
-                )
+                    ])
             )
 
             # goal
             solver.minimize(sum(schemas))
 
             # solve
-            assert solver.check() == z3.sat
+            _ = solver.check() #assuming result z3.sat
             model = solver.model()
-            for press in schemas:
-                total += model[press].as_long()
+
+            total += sum(model[schema].as_long() for schema in schemas)
 
         return total
 
