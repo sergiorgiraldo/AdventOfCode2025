@@ -36,9 +36,11 @@
 <pre>
 <span># puzzle prompt: https://adventofcode.com/2025/day/10</span>
 <span></span>
-<span>import time</span>
 <span>import itertools</span>
+<span>import time</span>
+<span></span>
 <span>import z3</span>
+<span></span>
 <span>from ..base.advent import *</span>
 <span></span>
 <span></span>
@@ -49,34 +51,41 @@
 <span>    _is_debugging = False</span>
 <span></span>
 <span>    def Parse(self, machine):</span>
-<span>        pattern, *buttons, joltages = machine.split()</span>
+<span>        pattern, *wirings, joltages = machine.split()</span>
 <span></span>
-<span>        pattern = pattern[1:-1] #pattern is inside brackets</span>
+<span>        pattern = pattern[1:-1]  # pattern is inside brackets</span>
 <span></span>
-<span>        buttons = [set(map(int, button[1:-1].split(","))) for button in buttons]</span>
+<span>        wirings = [set(map(int, button[1:-1].split(","))) for button in wirings]</span>
 <span></span>
 <span>        joltages = map(int, joltages[1:-1].split(","))</span>
 <span></span>
-<span>        return pattern, *buttons, joltages</span>
+<span>        return pattern, *wirings, joltages</span>
 <span></span>
 <span>    def TurnOnMachines(self, input):</span>
 <span>        presses = 0</span>
 <span></span>
 <span>        # just brute-force which ones to press</span>
 <span>        for machine in input:</span>
-<span>            pattern, *buttons, _ = self.Parse(machine)</span>
+<span>            pattern, *wirings, _ = self.Parse(machine)</span>
 <span></span>
-<span>            presses += next(</span>
-<span>                N for N in itertools.count(0)</span>
-<span>                for pressed in itertools.combinations(buttons, N)</span>
-<span>                if (</span>
-<span>                    "".join(</span>
-<span>                        ".#"[sum((i in button for button in pressed)) % 2]</span>
-<span>                        for i in range(len(pattern))</span>
-<span>                    )</span>
-<span>                    == pattern</span>
-<span>                )</span>
-<span>            )</span>
+<span>            found = False</span>
+<span>            for size in itertools.count(0):</span>
+<span>                #make combinations of the wirings</span>
+<span>                for buttons in itertools.combinations(wirings, size):</span>
+<span>                    result = ""</span>
+<span>                    for i in range(len(pattern)):</span>
+<span>                        #how many of the wiring buttons are the position i.</span>
+<span>                        size = sum(1 for button in buttons if i in button)</span>
+<span>                        #determine if the position should be off (0 = even presses cancel out) or on (1 = odd presses)</span>
+<span>                        result += ".#"[size % 2]</span>
+<span>                    </span>
+<span>                    if result == pattern:</span>
+<span>                        presses += size</span>
+<span>                        found = True</span>
+<span>                        break</span>
+<span></span>
+<span>                if found:</span>
+<span>                    break</span>
 <span></span>
 <span>        return presses</span>
 <span></span>
@@ -86,33 +95,44 @@
 <span>        total = 0</span>
 <span></span>
 <span>        for machine in input:</span>
-<span>            _, *buttons, joltages = self.Parse(machine)</span>
+<span>            _, *wirings, joltages = self.Parse(machine)</span>
 <span></span>
-<span>            #variables available to Z3</span>
-<span>            presses = [z3.Int(f"press{i}") for i in range(len(buttons))]</span>
+<span>            # variables available to Z3</span>
+<span>            buttons = [z3.Int(f"press{i}") for i in range(len(wirings))]</span>
 <span></span>
 <span>            solver = z3.Optimize()</span>
 <span></span>
-<span>            #constraints</span>
-<span>            #button was pressed</span>
-<span>            solver.add(z3.And([press >= 0 for press in presses]))</span>
-<span>            #sum of the presses must be the joltage</span>
-<span>            solver.add(z3.And([</span>
-<span>                sum(presses[j] for j, button in enumerate(buttons) if i in button) == joltage</span>
-<span>                    for i, joltage in enumerate(joltages)</span>
-<span>            ]))</span>
+<span>            # constraints</span>
 <span>            </span>
-<span>            #goal</span>
-<span>            solver.minimize(sum(presses))</span>
-<span>            </span>
-<span>            #solve</span>
+<span>            # button was pressed</span>
+<span>            solver.add(z3.And([press >= 0 for press in buttons]))</span>
+<span></span>
+<span>            # sum of the presses must be the joltage</span>
+<span>            solver.add(</span>
+<span>                z3.And(</span>
+<span>                    [</span>
+<span>                        sum(</span>
+<span>                            buttons[j]</span>
+<span>                            for j, button in enumerate(wirings)</span>
+<span>                            if i in button</span>
+<span>                        )</span>
+<span>                        == joltage</span>
+<span>                        for i, joltage in enumerate(joltages)</span>
+<span>                    ]</span>
+<span>                )</span>
+<span>            )</span>
+<span></span>
+<span>            # goal</span>
+<span>            solver.minimize(sum(buttons))</span>
+<span></span>
+<span>            # solve</span>
 <span>            assert solver.check() == z3.sat</span>
 <span>            model = solver.model()</span>
-<span>            for press in presses:</span>
+<span>            for press in buttons:</span>
 <span>                total += model[press].as_long()</span>
 <span></span>
 <span>        return total</span>
-<span>    </span>
+<span></span>
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
 <span></span>
