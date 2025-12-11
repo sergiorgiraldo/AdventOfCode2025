@@ -2,8 +2,7 @@
 
 import itertools
 import time
-from functools import reduce
-import operator
+
 import z3
 
 from ..base.advent import *
@@ -18,11 +17,13 @@ class Solution(InputAsLinesSolution):
     def Parse(self, machine):
         pattern, *wirings, joltages = machine.split()
 
-        pattern = pattern[1:-1]  # pattern is inside brackets
+        pattern = pattern[1:-1]  # brackets
 
-        wirings = [set(map(int, button[1:-1].split(","))) for button in wirings]
+        wirings = [
+            set(map(int, wiring[1:-1].split(","))) for wiring in wirings
+        ]  # parenthesis
 
-        joltages = map(int, joltages[1:-1].split(","))
+        joltages = map(int, joltages[1:-1].split(","))  # braces
 
         return pattern, *wirings, joltages
 
@@ -35,25 +36,25 @@ class Solution(InputAsLinesSolution):
 
             found = False
             for size in itertools.count(0):
-                #make combinations of the wirings
+                # make combinations of the wirings
                 for pressed in itertools.combinations(wirings, size):
                     # Build the result pattern
                     result = ""
                     for i in range(len(pattern)):
-                        #how many of the wiring buttons are the position i.
+                        # how many of the wiring buttons are the position i.
                         count = sum(1 for button in pressed if i in button)
-                        #determine if the position should be off (0 = even presses cancel out) or on (1 = odd presses)
+                        # determine if the position should be off (0 = even presses cancel out) or on (1 = odd presses)
                         result += ".#"[count % 2]
-                    
+
                     # Check if it matches
                     if result == pattern:
                         presses += size
                         found = True
                         break
-                
+
                 if found:
                     break
-                
+
         return presses
 
     # we need to solve several equations like Wiring * x = Joltage with the goal to minimize sum(x)
@@ -71,26 +72,30 @@ class Solution(InputAsLinesSolution):
             solver = z3.Optimize()
 
             # constraints
-            
+
             # buttons of a wiring were pressed
             solver.add(z3.And([presses >= 0 for presses in schemas]))
 
             # sum of the presses must be the joltage
             solver.add(
-                z3.And([
-                        sum(schemas[j]
+                z3.And(
+                    [
+                        sum(
+                            schemas[j]
                             for j, buttons in enumerate(wirings)
-                            if i in buttons)
+                            if i in buttons
+                        )
                         == joltage
                         for i, joltage in enumerate(joltages)
-                    ])
+                    ]
+                )
             )
 
             # goal
             solver.minimize(sum(schemas))
 
             # solve
-            _ = solver.check() #assuming result z3.sat
+            _ = solver.check()  # assuming result z3.sat
             model = solver.model()
 
             total += sum(model[schema].as_long() for schema in schemas)
