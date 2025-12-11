@@ -1,0 +1,124 @@
+<style>
+        pre {
+    background: #303030;
+    color: #f1f1f1;
+    padding: 10px 16px;
+    border-radius: 2px;
+    border-top: 4px solid #00aeef;
+    -moz-box-shadow: inset 0 0 10px #000;
+    box-shadow: inset 0 0 10px #000;
+    counter-reset: line;
+    }
+    pre span {
+    display: block;
+    line-height: 1.5rem;
+    }
+    pre span:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    border-right: 1px solid #ddd;
+    padding: 0 .5em;
+    margin-right: .5em;
+    color: #888
+    }
+    span{
+        font-family: monospace;
+        font-size: 16px;
+    }
+    </style>
+<script src="script.js"></script>
+<div id="navigation">
+<button onclick="navigateTo('prev')">Previous Day</button>
+<button onclick="navigateTo('next')">Next Day</button>
+</div>
+<h1>Day 11</h1>
+<pre>
+<span># puzzle prompt: https://adventofcode.com/2025/day/11</span>
+<span></span>
+<span>import time</span>
+<span>import networkx as nx</span>
+<span>import functools</span>
+<span></span>
+<span>from ..base.advent import *</span>
+<span></span>
+<span>class Solution(InputAsLinesSolution):</span>
+<span>    _year = 2025</span>
+<span>    _day = 11</span>
+<span>    </span>
+<span>    _is_debugging = False</span>
+<span></span>
+<span>    graph = nx.DiGraph()</span>
+<span></span>
+<span>    def Parse(self, input):</span>
+<span>        for line in input:</span>
+<span>            device, outputs = line.split(": ")</span>
+<span>            nodes = [output.strip() for output in outputs.split(" ")]</span>
+<span></span>
+<span>            for node in nodes:</span>
+<span>                self.graph.add_edge(device, node)</span>
+<span></span>
+<span>        self.graph.add_node("out")</span>
+<span></span>
+<span>    # using kind of hack for part 1 with the parameters, in part 1 I dont care if I visited fft and dac</span>
+<span>    # so i pass True so test for part 1 is only if i reached to the end</span>
+<span>    @functools.cache</span>
+<span>    def FindPaths(self, curr, end, has_visited_dac, has_visited_fft):</span>
+<span>        if curr == "fft": #magic text from puzzle</span>
+<span>            has_visited_dac = True</span>
+<span>        </span>
+<span>        if curr == "dac": #magic text from puzzle</span>
+<span>            has_visited_fft = True</span>
+<span>        </span>
+<span>        if curr == end:</span>
+<span>            return 1 if has_visited_dac and has_visited_fft else 0</span>
+<span>                </span>
+<span>        # Get successors (neighbors) from the graph</span>
+<span>        return sum(</span>
+<span>            self.FindPaths(node, end, has_visited_dac, has_visited_fft) </span>
+<span>            for node in self.graph.successors(curr)</span>
+<span>        )</span>
+<span></span>
+<span>    def pt1(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        self.Parse(input)</span>
+<span></span>
+<span>        res = self.FindPaths("you", "out", True, True)</span>
+<span></span>
+<span>        return res</span>
+<span></span>
+<span>    def pt2(self, input):</span>
+<span>        self.debug(input)</span>
+<span>        </span>
+<span>        self.Parse(input)</span>
+<span></span>
+<span>        res = self.FindPaths("svr", "out", False, False)</span>
+<span></span>
+<span>        return res</span>
+<span>        </span>
+<span>    def part_1(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt1(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("1", res, (end_time - start_time))</span>
+<span></span>
+<span>    def part_2(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt2(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("2", res, (end_time - start_time))</span>
+<span></span>
+<span>if __name__ == '__main__':</span>
+<span>    solution = Solution()</span>
+<span></span>
+<span>    solution.part_1()</span>
+<span>    </span>
+<span>    solution.part_2()</span>
+</pre>
