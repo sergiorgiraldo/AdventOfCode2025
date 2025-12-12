@@ -36,28 +36,32 @@
 <pre>
 <span># puzzle prompt: https://adventofcode.com/2025/day/8</span>
 <span></span>
-<span>import math</span>
-<span>import time</span>
-<span>import networkx as nx</span>
 <span>import itertools</span>
+<span>import math</span>
 <span>import operator</span>
+<span>import time</span>
 <span>from functools import reduce</span>
+<span></span>
+<span>import matplotlib.pyplot as plt</span>
+<span>import networkx as nx</span>
+<span></span>
 <span>from ..base.advent import *</span>
+<span></span>
 <span></span>
 <span>class Solution(InputAsLinesSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 8</span>
-<span>    </span>
+<span></span>
 <span>    _is_debugging = False</span>
 <span></span>
-<span>    #using networkx from 2024 (days 20, 23)</span>
+<span>    # using networkx from 2024 (days 20, 23)</span>
 <span></span>
 <span>    def Parse(self, input):</span>
 <span>        points = [tuple(map(int, line.split(","))) for line in input]</span>
 <span>        distances = self.GetDistances(points)</span>
 <span></span>
 <span>        return points, distances</span>
-<span>    </span>
+<span></span>
 <span>    def GetDistances(self, points):</span>
 <span>        def Euclides(points):</span>
 <span>            p1, p2 = points</span>
@@ -75,6 +79,12 @@
 <span>        for _, p1, p2 in distances[:howmany]:</span>
 <span>            graph.add_edge(p1, p2)</span>
 <span></span>
+<span>        self.debug(graph.edges)</span>
+<span></span>
+<span>        if self._is_debugging:</span>
+<span>            nx.draw(graph, with_labels=True)</span>
+<span>            plt.show()</span>
+<span></span>
 <span>        components = [len(c) for c in nx.connected_components(graph)]</span>
 <span>        components.sort(reverse=True)</span>
 <span></span>
@@ -86,14 +96,22 @@
 <span>        points, distances = self.Parse(input)</span>
 <span></span>
 <span>        graph = nx.Graph()</span>
-<span>        </span>
+<span></span>
 <span>        for point in points:</span>
 <span>            graph.add_node(point)</span>
+<span></span>
+<span>        self.debug(graph.nodes)</span>
 <span></span>
 <span>        for _, p1, p2 in distances:</span>
 <span>            graph.add_edge(p1, p2)</span>
 <span>            if nx.is_connected(graph):</span>
 <span>                break</span>
+<span></span>
+<span>        self.debug(graph.edges)</span>
+<span></span>
+<span>        if self._is_debugging:</span>
+<span>            nx.draw(graph, with_labels=True)</span>
+<span>            plt.show()</span>
 <span></span>
 <span>        return p1[0] * p2[0]</span>
 <span></span>
@@ -129,10 +147,12 @@
 <span></span>
 <span>        self.solve("2", res, (end_time - start_time))</span>
 <span></span>
-<span>if __name__ == '__main__':</span>
+<span></span>
+<span>if __name__ == "__main__":</span>
 <span>    solution = Solution()</span>
 <span></span>
 <span>    solution.part_1()</span>
-<span>    </span>
+<span></span>
 <span>    solution.part_2()</span>
+<span></span>
 </pre>

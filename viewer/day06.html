@@ -55,15 +55,16 @@
 <span></span>
 <span>        # this works for part 1 but for part 2 i cannot strip the spaces</span>
 <span>        # numbers = [list(col) for col in zip(*[re.findall(r"\d+", row) for row in input[:-1]])]</span>
-<span></span>
+<span>        #</span>
 <span>        # notice the space in the pattern</span>
 <span>        matches = list(re.finditer(r"(\W) +", input[-1] + " "))</span>
 <span></span>
 <span>        for match in matches:</span>
-<span>            start = match.start()</span>
-<span>            length = len(match.group(0)) - 1</span>
-<span>            segment = [row[start : start + length] for row in input[:-1]]</span>
-<span>            numbers.append(segment)</span>
+<span>            begin = match.start()</span>
+<span>            end = begin + len(match.group(0)) - 1</span>
+<span></span>
+<span>            parts = [row[begin:end] for row in input[:-1]]</span>
+<span>            numbers.append(parts)</span>
 <span></span>
 <span>        ops = re.findall(r"[+*]", input[-1])</span>
 <span></span>
