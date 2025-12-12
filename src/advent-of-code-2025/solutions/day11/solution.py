@@ -7,6 +7,8 @@ import networkx as nx
 
 from ..base.advent import *
 
+graph = nx.DiGraph()
+
 
 class Solution(InputAsLinesSolution):
     _year = 2025
@@ -14,22 +16,27 @@ class Solution(InputAsLinesSolution):
 
     _is_debugging = False
 
-    graph = nx.DiGraph()
-
     def Parse(self, input):
         for line in input:
             device, outputs = line.split(": ")
             nodes = [output.strip() for output in outputs.split(" ")]
 
             for node in nodes:
-                self.graph.add_edge(device, node)
+                graph.add_edge(device, node)
 
-        self.graph.add_node("out")
+        graph.add_node("out")
 
     # using kind of hack for part 1 with the parameters, in part 1 I dont care if I visited fft and dac
     # so i pass True so test for part 1 is only if i reached to the end
+    #
+    # If i make FindPaths a class method (takes self as the first parameter),
+    # each instance of Solution gets cached separately.
+    # Moreover, the cache will hold references to self,
+    # preventing garbage collection and causing state to leak between tests
+    # so the static method (which lead me to put graph as global)
+    @staticmethod
     @functools.cache
-    def FindPaths(self, curr, end, has_visited_dac, has_visited_fft):
+    def FindPaths(curr, end, has_visited_dac, has_visited_fft):
         if curr == "fft":  # magic text from puzzle
             has_visited_dac = True
 
@@ -37,12 +44,12 @@ class Solution(InputAsLinesSolution):
             has_visited_fft = True
 
         if curr == end:
-            return 1 if has_visited_dac and has_visited_fft else 0
+            return has_visited_dac and has_visited_fft
 
         # Get successors (neighbors) from the graph
         return sum(
-            self.FindPaths(node, end, has_visited_dac, has_visited_fft)
-            for node in self.graph.successors(curr)
+            Solution.FindPaths(node, end, has_visited_dac, has_visited_fft)
+            for node in graph.successors(curr)
         )
 
     def pt1(self, input):

@@ -1,0 +1,116 @@
+<style>
+        pre {
+    background: #303030;
+    color: #f1f1f1;
+    padding: 10px 16px;
+    border-radius: 2px;
+    border-top: 4px solid #00aeef;
+    -moz-box-shadow: inset 0 0 10px #000;
+    box-shadow: inset 0 0 10px #000;
+    counter-reset: line;
+    }
+    pre span {
+    display: block;
+    line-height: 1.5rem;
+    }
+    pre span:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    border-right: 1px solid #ddd;
+    padding: 0 .5em;
+    margin-right: .5em;
+    color: #888
+    }
+    span{
+        font-family: monospace;
+        font-size: 16px;
+    }
+    </style>
+<script src="script.js"></script>
+<div id="navigation">
+<button onclick="navigateTo('prev')">Previous Day</button>
+<button onclick="navigateTo('next')">Next Day</button>
+</div>
+<h1>Day 12</h1>
+<pre>
+<span># puzzle prompt: https://adventofcode.com/2025/day/12</span>
+<span></span>
+<span>import time</span>
+<span>import re</span>
+<span>from ..base.advent import *</span>
+<span></span>
+<span>class Solution(InputAsLinesSolution):</span>
+<span>    _year = 2025</span>
+<span>    _day = 12</span>
+<span>    </span>
+<span>    _is_debugging = False</span>
+<span></span>
+<span>    def ArrangePresents(self, lines):</span>
+<span>        sizes = {}</span>
+<span>        num = 0</span>
+<span>        present = 0</span>
+<span>        region = 0</span>
+<span>        actual_size = 0</span>
+<span>        total = 0</span>
+<span>        </span>
+<span>        for line in lines:</span>
+<span>            if line == "":</span>
+<span>                sizes[num] = present</span>
+<span>                present = 0</span>
+<span>            elif len(line) == 2:</span>
+<span>                num = int(line[0])</span>
+<span>            elif "#" in line:</span>
+<span>                for c in line:</span>
+<span>                    if c == "#":</span>
+<span>                        present += 1</span>
+<span>            else:</span>
+<span>                info = line.split(" ")</span>
+<span>                parts = info[0].split("x")</span>
+<span>                print(parts)</span>
+<span>                region = int(parts[0]) * int(parts[1][:-1])</span>
+<span>                for i in range(1, len(info)):</span>
+<span>                    actual_size += sizes[i - 1] * int(info[i])</span>
+<span>                if actual_size <= region:</span>
+<span>                    total += 1</span>
+<span>                actual_size = 0</span>
+<span>        </span>
+<span>        return total</span>
+<span></span>
+<span>    def pt1(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        res = self.ArrangePresents(input)</span>
+<span></span>
+<span>        return res</span>
+<span></span>
+<span>    def pt2(self, input):</span>
+<span>        self.debug(input)</span>
+<span></span>
+<span>        return "Merry Christmas"</span>
+<span>        </span>
+<span>    def part_1(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt1(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("1", res, (end_time - start_time))</span>
+<span></span>
+<span>    def part_2(self):</span>
+<span>        start_time = time.time()</span>
+<span></span>
+<span>        res = self.pt2(self.input)</span>
+<span></span>
+<span>        end_time = time.time()</span>
+<span></span>
+<span>        self.solve("2", res, (end_time - start_time))</span>
+<span></span>
+<span>if __name__ == "__main__":</span>
+<span>    solution = Solution()</span>
+<span></span>
+<span>    solution.part_1()</span>
+<span>    </span>
+<span>    solution.part_2()</span>
+</pre>
