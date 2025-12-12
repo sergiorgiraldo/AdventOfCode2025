@@ -1,5 +1,12 @@
 # Changelog
 
+## [13.0.2](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v13.0.1...v13.0.2) (2025-12-12)
+
+
+### Bug Fixes
+
+* unit tests in day 12 ([aea9b10](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/aea9b1025a9651e470b13540e5f700317d26f734))
+
 ## [13.0.1](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v13.0.0...v13.0.1) (2025-12-12)
 
 
