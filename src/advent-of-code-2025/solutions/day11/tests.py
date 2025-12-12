@@ -2,14 +2,17 @@ import unittest
 
 from ..day11.solution import Solution
 
-solution = Solution()
-
 
 class Tests(unittest.TestCase):
     def setUp(self):
-        solution.FindPaths.cache_clear()
+        Solution.FindPaths.cache_clear()
+
+    def tearDown(self):
+        Solution.FindPaths.cache_clear()
 
     def test_part1(self):
+        solution = Solution()
+
         input = [
             "aaa: you hhh",
             "you: bbb ccc",
@@ -26,8 +29,9 @@ class Tests(unittest.TestCase):
         self.assertEqual(solution.pt1(input), 5, "Oops")
 
     def test_part2(self):
-        pass  # cache is not being clear when entering
-        # if I run this test in isolation, it passes
+        pass  # i cant get both tests to pass together, they do in isolation
+        # solution = Solution()
+
         # input = ["svr: aaa bbb",
         #         "aaa: fft",
         #         "fft: ccc",
@@ -41,6 +45,7 @@ class Tests(unittest.TestCase):
         #         "fff: ggg hhh",
         #         "ggg: out",
         #         "hhh: out"]
+
         # self.assertEqual(solution.pt2(input), 2, "Oops")
 
     def test_sanity_check(self):
