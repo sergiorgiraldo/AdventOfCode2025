@@ -1,5 +1,21 @@
 # Changelog
 
+## [13.0.2](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v13.0.1...v13.0.2) (2025-12-12)
+
+
+### Bug Fixes
+
+* unit tests in day 12 ([aea9b10](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/aea9b1025a9651e470b13540e5f700317d26f734))
+
+## [13.0.1](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v13.0.0...v13.0.1) (2025-12-12)
+
+
+### Bug Fixes
+
+* unit tests in day 11, i need to clear the graph in parse ([2b358ca](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/2b358caca6078eedb59df3884563ace16194a30b))
+* viewer template was not linking the backlog ([b4acdc4](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/b4acdc4c7a0fef4b4184692a5c2771f9bbfe7974))
+* viewer template was not linking the backlog ([b2ce2a3](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/b2ce2a33926407f86599bc88b5bfcf2f33613b32))
+
 ## [13.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v12.0.0...v13.0.0) (2025-12-12)
 
 
