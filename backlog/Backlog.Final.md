@@ -3,15 +3,15 @@ Project: aoc2025
 
 | To Do | In Progress | Done |
 | --- | --- | --- |
-|  |  | [**TASK-1** - day 01](task-1 - day-01.md) |
-|  |  | [**TASK-1** - day 02](task-2 - day-02.md) |
-|  |  | [**TASK-1** - day 03](task-3 - day-03.md) |
-|  |  | [**TASK-1** - day 04](task-4 - day-04.md) |
-|  |  | [**TASK-1** - day 05](task-5 - day-05.md) |
-|  |  | [**TASK-1** - day 06](task-6 - day-06.md) |
-|  |  | [**TASK-1** - day 07](task-7 - day-07.md) |
-|  |  | [**TASK-1** - day 08](task-8 - day-08.md) |
-|  |  | [**TASK-1** - day 09](task-9 - day-09.md) |
-|  |  | [**TASK-1** - day 10](task-10 - day-10.md) |
-|  |  | [**TASK-1** - day 11](task-11 - day-11.md) |
-|  |  | [**TASK-1** - day 12](task-12 - day-12.md) |
+|  |  | [Day 01](/AdventOfCode2025/viewer/task-1%20-%20day-01) |
+|  |  | [Day 02](/AdventOfCode2025/viewer/task-2%20-%20day-02) |
+|  |  | [Day 03](/AdventOfCode2025/viewer/task-3%20-%20day-03) |
+|  |  | [Day 04](/AdventOfCode2025/viewer/task-4%20-%20day-04) |
+|  |  | [Day 05](/AdventOfCode2025/viewer/task-5%20-%20day-05) |
+|  |  | [Day 06](/AdventOfCode2025/viewer/task-6%20-%20day-06) |
+|  |  | [Day 07](/AdventOfCode2025/viewer/task-7%20-%20day-07) |
+|  |  | [Day 08](/AdventOfCode2025/viewer/task-8%20-%20day-08) |
+|  |  | [Day 09](/AdventOfCode2025/viewer/task-9%20-%20day-09) |
+|  |  | [Day 10](/AdventOfCode2025/viewer/task-10%20-%20day-10) |
+|  |  | [Day 11](/AdventOfCode2025/viewer/task-11%20-%20day-11) |
+|  |  | [Day 12](/AdventOfCode2025/viewer/task-12%20-%20day-12) |

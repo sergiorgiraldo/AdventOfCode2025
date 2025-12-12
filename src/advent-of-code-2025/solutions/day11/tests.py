@@ -26,7 +26,6 @@ class Tests(unittest.TestCase):
         self.assertEqual(solution.pt1(input), 5, "Oops")
 
     def test_part2(self):
-        # pass  # i cant get both tests to pass together, they do in isolation
         solution = Solution()
 
         inputx = ["svr: aaa bbb",
