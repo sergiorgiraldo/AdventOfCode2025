@@ -1,17 +1,17 @@
 # Kanban Board Export (powered by Backlog.md)
 Project: aoc2025
 
-## Done
-
-<a href="task-1 - day-01.md">Day 01</a>
-<a href="task-2 - day-02.md">Day 02</a>
-<a href="task-3 - day-03.md">Day 03</a>
-<a href="task-4 - day-04.md">Day 04</a>
-<a href="task-5 - day-05.md">Day 05</a>
-<a href="task-6 - day-06.md">Day 06</a>
-<a href="task-7 - day-07.md">Day 07</a>
-<a href="task-8 - day-08.md">Day 08</a>
-<a href="task-9 - day-09.md">Day 09</a>
-<a href="task-10 - day-10.md">Day 10</a>
-<a href="task-11 - day-11.md">Day 11</a>
-<a href="task-12 - day-12.md">Day 12</a>
+| To Do | In Progress | Done |
+| --- | --- | --- |
+|  |  | [Day 01](/AdventOfCode2025/viewer/task-1%20-%20day-01) |
+|  |  | [Day 02](/AdventOfCode2025/viewer/task-2%20-%20day-02) |
+|  |  | [Day 03](/AdventOfCode2025/viewer/task-3%20-%20day-03) |
+|  |  | [Day 04](/AdventOfCode2025/viewer/task-4%20-%20day-04) |
+|  |  | [Day 05](/AdventOfCode2025/viewer/task-5%20-%20day-05) |
+|  |  | [Day 06](/AdventOfCode2025/viewer/task-6%20-%20day-06) |
+|  |  | [Day 07](/AdventOfCode2025/viewer/task-7%20-%20day-07) |
+|  |  | [Day 08](/AdventOfCode2025/viewer/task-8%20-%20day-08) |
+|  |  | [Day 09](/AdventOfCode2025/viewer/task-9%20-%20day-09) |
+|  |  | [Day 10](/AdventOfCode2025/viewer/task-10%20-%20day-10) |
+|  |  | [Day 11](/AdventOfCode2025/viewer/task-11%20-%20day-11) |
+|  |  | [Day 12](/AdventOfCode2025/viewer/task-12%20-%20day-12) |
