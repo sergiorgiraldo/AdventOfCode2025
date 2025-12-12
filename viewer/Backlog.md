@@ -1,17 +1,17 @@
 # Kanban Board Export (powered by Backlog.md)
 Project: aoc2025
 
-| To Do | In Progress | Done |
-| --- | --- | --- |
-|  |  | [**TASK-1** - day 01](task-1 - day-01.md) |
-|  |  | [**TASK-1** - day 02](task-2 - day-02.md) |
-|  |  | [**TASK-1** - day 03](task-3 - day-03.md) |
-|  |  | [**TASK-1** - day 04](task-4 - day-04.md) |
-|  |  | [**TASK-1** - day 05](task-5 - day-05.md) |
-|  |  | [**TASK-1** - day 06](task-6 - day-06.md) |
-|  |  | [**TASK-1** - day 07](task-7 - day-07.md) |
-|  |  | [**TASK-1** - day 08](task-8 - day-08.md) |
-|  |  | [**TASK-1** - day 09](task-9 - day-09.md) |
-|  |  | [**TASK-1** - day 10](task-10 - day-10.md) |
-|  |  | [**TASK-1** - day 11](task-11 - day-11.md) |
-|  |  | [**TASK-1** - day 12](task-12 - day-12.md) |
+## Done
+
+<a href="task-1 - day-01.md">Day 01</a>
+<a href="task-2 - day-02.md">Day 02</a>
+<a href="task-3 - day-03.md">Day 03</a>
+<a href="task-4 - day-04.md">Day 04</a>
+<a href="task-5 - day-05.md">Day 05</a>
+<a href="task-6 - day-06.md">Day 06</a>
+<a href="task-7 - day-07.md">Day 07</a>
+<a href="task-8 - day-08.md">Day 08</a>
+<a href="task-9 - day-09.md">Day 09</a>
+<a href="task-10 - day-10.md">Day 10</a>
+<a href="task-11 - day-11.md">Day 11</a>
+<a href="task-12 - day-12.md">Day 12</a>
