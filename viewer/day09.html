@@ -36,64 +36,71 @@
 <pre>
 <span># puzzle prompt: https://adventofcode.com/2025/day/9</span>
 <span></span>
+<span>import sys</span>
 <span>import time</span>
 <span></span>
 <span>from ..base.advent import *</span>
+<span></span>
 <span></span>
 <span>class Point:</span>
 <span>    def __init__(self, x, y):</span>
 <span>        self.x = x</span>
 <span>        self.y = y</span>
-<span>    </span>
-<span>    def area(self, other):</span>
+<span></span>
+<span>    def GetArea(self, other):</span>
 <span>        return (abs(self.x - other.x) + 1) * (abs(self.y - other.y) + 1)</span>
+<span></span>
 <span></span>
 <span>class Edge:</span>
 <span>    def __init__(self, p1, p2):</span>
-<span>        self.horizontal = (p1.y == p2.y)</span>
+<span>        self.horizontal = p1.y == p2.y</span>
 <span></span>
-<span>        if self.horizontal:</span>
-<span>            self.p1 = p1 if p1.x < p2.x else p2</span>
-<span>            self.p2 = p2 if p1.x < p2.x else p1</span>
-<span>        else:</span>
-<span>            self.p1 = p1 if p1.y < p2.y else p2</span>
-<span>            self.p2 = p2 if p1.y < p2.y else p1</span>
-<span>    </span>
-<span>    #Two edges intersect if:</span>
-<span>    #  </span>
-<span>    #- one is horizontal and the other vertical</span>
-<span>    #- the X coordinate of the vertical edge is between the X coordinates of the horizontal edge, and</span>
-<span>    #- the Y coordinate of the horizontal edge is between the Y coordinates of the vertical edge.</span>
-<span>    #    y            '</span>
-<span>    #    y      - - - - - - -</span>
-<span>    #    y            '</span>
+<span>        p1_before = (p1.x < p2.x) if self.horizontal else (p1.y < p2.y)</span>
+<span>        self.p1, self.p2 = (p1, p2) if p1_before else (p2, p1)</span>
+<span></span>
+<span>    # Two edges intersect if:</span>
+<span>    # - one is horizontal and the other vertical</span>
+<span>    # - the X coordinate of the vertical edge is between the X coordinates of the horizontal edge, and</span>
+<span>    # - the Y coordinate of the horizontal edge is between the Y coordinates of the vertical edge.</span>
+<span>    #               v vert (AB)</span>
+<span>    #    y      - - A - - - -</span>
+<span>    #    y      - - | - - - -</span>
+<span>    #    y      - C ------D -  < horz (CD)</span>
+<span>    #    y      - - | - - - -</span>
+<span>    #    y      - - B - - - -</span>
 <span>    #           x x x x x x x</span>
-<span>    def intersects(self, other):</span>
+<span>    def Intersects(self, other):</span>
 <span>        if self.horizontal == other.horizontal:</span>
 <span>            return False</span>
-<span>        </span>
+<span></span>
 <span>        horizontal = self if self.horizontal else other</span>
 <span>        vertical = other if self.horizontal else self</span>
-<span>        </span>
-<span>        return (vertical.p1.x > horizontal.p1.x and vertical.p1.x < horizontal.p2.x and</span>
-<span>                horizontal.p1.y > vertical.p1.y and horizontal.p1.y < vertical.p2.y)</span>
+<span></span>
+<span>        return (</span>
+<span>            vertical.p1.x > horizontal.p1.x</span>
+<span>            and vertical.p1.x < horizontal.p2.x</span>
+<span>            and horizontal.p1.y > vertical.p1.y</span>
+<span>            and horizontal.p1.y < vertical.p2.y</span>
+<span>        )</span>
 <span></span>
 <span></span>
 <span>class Polygon:</span>
 <span>    def __init__(self, points):</span>
 <span>        self.points = points</span>
 <span>        self.edges = []</span>
-<span>        for i, p in enumerate(points):</span>
+<span></span>
+<span>        for i, point in enumerate(points):</span>
 <span>            next_point = points[(i + 1) % len(points)]</span>
-<span>            self.edges.append(Edge(p, next_point))</span>
-<span>    </span>
-<span>    def intersects(self, edge):</span>
-<span>        return any(e.intersects(edge) for e in self.edges)</span>
+<span>            self.edges.append(Edge(point, next_point))</span>
+<span></span>
+<span>    def Intersects(self, other_edge):</span>
+<span>        return any(polygon_edge.Intersects(other_edge) for polygon_edge in self.edges)</span>
+<span></span>
 <span></span>
 <span>class Solution(InputAsLinesSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 9</span>
-<span>    </span>
+<span></span>
 <span>    _is_debugging = False</span>
 <span></span>
 <span>    def Parse(self, input):</span>
@@ -101,48 +108,61 @@
 <span>        for line in input:</span>
 <span>            x, y = map(int, line.split(","))</span>
 <span>            points.append(Point(x, y))</span>
-<span>        </span>
+<span></span>
 <span>        polygon = Polygon(points)</span>
 <span></span>
 <span>        return points, polygon</span>
 <span></span>
 <span>    def RetileGrid(self, input):</span>
 <span>        points, polygon = self.Parse(input)</span>
-<span>        </span>
+<span></span>
 <span>        grid_size = len(points) - 1</span>
-<span>        red = -1</span>
+<span>        red_and_any = -1</span>
 <span>        red_and_green = -1</span>
-<span>        </span>
+<span></span>
 <span>        # Iterate all pairs of points</span>
 <span>        for i in range(grid_size):</span>
 <span>            p1 = points[i]</span>
 <span>            for j in range(i + 1, len(points)):</span>
 <span>                p2 = points[j]</span>
-<span>                # Compute area, then update best answer for part 1 if it"s larger</span>
-<span>                area = p1.area(p2)</span>
-<span>                red = max(red, area)</span>
-<span>                </span>
-<span>                # for part 2 we build four edges that represent the rectangle being checked, then check to see if any</span>
-<span>                # intersect our polygon's edges. If no intersections, it is a good rectangle. </span>
-<span>                # but .... edges that share a vertex are considered to intersect, </span>
+<span>                # Compute area, then update best answer for part 1 if it's larger</span>
+<span>                area = p1.GetArea(p2)</span>
+<span>                red_and_any = max(red_and_any, area)</span>
+<span></span>
+<span>                # For part 2 we build four edges that represent the rectangle being checked, then check to see if any edge</span>
+<span>                # intersect our polygon's edges. If no intersections, it is a good rectangle.</span>
+<span>                # example, from the puzzle unit test</span>
+<span>                # 0            13</span>
+<span>                # .............. 0</span>
+<span>                # .......#XXX#.. 1</span>
+<span>                # .......XXXXX.. 2</span>
+<span>                # ..#XXXX#XXXX.. 3</span>
+<span>                # ..XXXXXXXXXX.. 4</span>
+<span>                # ..#XXXXXX#XX.. 5</span>
+<span>                # .........XXX.. 6</span>
+<span>                # .........#X#.. 7</span>
+<span>                # .............. 8</span>
+<span>                # solution will be from rows 3/5</span>
+<span>                # but get reds (11,1) and (2,5), it will be a bigger rectangle. But red (7,1) will intercept, in other</span>
+<span>                # words, there are tiles not red/green</span>
+<span>                # but .... edges that share a vertex are considered to intersect,</span>
 <span>                # which is guaranteed to happen since all the rectangle's vertices are also vertices of the polygon.</span>
 <span>                # hack: shrink the rectangle for intersection testing</span>
-<span>                x1 = min(p1.x, p2.x) + 0.5</span>
-<span>                x2 = max(p1.x, p2.x) - 0.5</span>
-<span>                y1 = min(p1.y, p2.y) + 0.5</span>
-<span>                y2 = max(p1.y, p2.y) - 0.5</span>
-<span>                rect = Polygon([</span>
-<span>                    Point(x1, y1),</span>
-<span>                    Point(x2, y1),</span>
-<span>                    Point(x2, y2),</span>
-<span>                    Point(x1, y2)</span>
-<span>                ])</span>
-<span>                </span>
-<span>                if not any(polygon.intersects(edge) for edge in rect.edges):</span>
-<span>                    # Rectangle is fully inside polygon; update best answer for part 2 if it"s larger</span>
+<span>                x1 = min(p1.x, p2.x) + 0.001</span>
+<span>                x2 = max(p1.x, p2.x) - 0.001</span>
+<span>                y1 = min(p1.y, p2.y) + 0.001</span>
+<span>                y2 = max(p1.y, p2.y) - 0.001</span>
+<span></span>
+<span>                rectangle = Polygon(</span>
+<span>                    [Point(x1, y1), Point(x2, y1), Point(x2, y2), Point(x1, y2)]</span>
+<span>                )</span>
+<span></span>
+<span>                if any(polygon.Intersects(edge) for edge in rectangle.edges):</span>
+<span>                    continue</span>
+<span>                else:  # Rectangle is fully inside polygon; update best answer for part 2 if it's larger</span>
 <span>                    red_and_green = max(red_and_green, area)</span>
-<span>        </span>
-<span>        return [red, red_and_green]</span>
+<span></span>
+<span>        return red_and_any, red_and_green</span>
 <span></span>
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
@@ -157,7 +177,7 @@
 <span>        res = self.RetileGrid(input)</span>
 <span></span>
 <span>        return res[1]</span>
-<span>        </span>
+<span></span>
 <span>    def part_1(self):</span>
 <span>        start_time = time.time()</span>
 <span></span>
@@ -176,10 +196,12 @@
 <span></span>
 <span>        self.solve("2", res, (end_time - start_time))</span>
 <span></span>
+<span></span>
 <span>if __name__ == "__main__":</span>
 <span>    solution = Solution()</span>
 <span></span>
 <span>    solution.part_1()</span>
-<span>    </span>
+<span></span>
 <span>    solution.part_2()</span>
+<span></span>
 </pre>

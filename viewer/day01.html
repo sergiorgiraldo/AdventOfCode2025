@@ -65,10 +65,10 @@
 <span>            dial = (dial + direction * steps) % 100</span>
 <span></span>
 <span>            zeroes += steps == offset_to_zero  # exactly zero</span>
-<span>            </span>
+<span></span>
 <span>            # passing/reaching zero</span>
 <span>            # can be several times</span>
-<span>            clicks += ((steps - offset_to_zero) // 100 + 1) * (steps >= offset_to_zero)  </span>
+<span>            clicks += ((steps - offset_to_zero) // 100 + 1) * (steps >= offset_to_zero)</span>
 <span></span>
 <span>        return zeroes, clicks</span>
 <span></span>

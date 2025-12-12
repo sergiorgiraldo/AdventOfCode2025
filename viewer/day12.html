@@ -36,14 +36,16 @@
 <pre>
 <span># puzzle prompt: https://adventofcode.com/2025/day/12</span>
 <span></span>
-<span>import time</span>
 <span>import re</span>
+<span>import time</span>
+<span></span>
 <span>from ..base.advent import *</span>
+<span></span>
 <span></span>
 <span>class Solution(InputAsLinesSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 12</span>
-<span>    </span>
+<span></span>
 <span>    _is_debugging = False</span>
 <span></span>
 <span>    def ArrangePresents(self, lines):</span>
@@ -53,7 +55,7 @@
 <span>        region = 0</span>
 <span>        actual_size = 0</span>
 <span>        total = 0</span>
-<span>        </span>
+<span></span>
 <span>        for line in lines:</span>
 <span>            if line == "":</span>
 <span>                sizes[num] = present</span>
@@ -74,7 +76,7 @@
 <span>                if actual_size <= region:</span>
 <span>                    total += 1</span>
 <span>                actual_size = 0</span>
-<span>        </span>
+<span></span>
 <span>        return total</span>
 <span></span>
 <span>    def pt1(self, input):</span>
@@ -88,7 +90,7 @@
 <span>        self.debug(input)</span>
 <span></span>
 <span>        return "Merry Christmas"</span>
-<span>        </span>
+<span></span>
 <span>    def part_1(self):</span>
 <span>        start_time = time.time()</span>
 <span></span>
@@ -107,10 +109,12 @@
 <span></span>
 <span>        self.solve("2", res, (end_time - start_time))</span>
 <span></span>
+<span></span>
 <span>if __name__ == "__main__":</span>
 <span>    solution = Solution()</span>
 <span></span>
 <span>    solution.part_1()</span>
-<span>    </span>
+<span></span>
 <span>    solution.part_2()</span>
+<span></span>
 </pre>

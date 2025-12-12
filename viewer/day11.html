@@ -36,19 +36,21 @@
 <pre>
 <span># puzzle prompt: https://adventofcode.com/2025/day/11</span>
 <span></span>
-<span>import time</span>
-<span>import networkx as nx</span>
 <span>import functools</span>
+<span>import time</span>
+<span></span>
+<span>import networkx as nx</span>
 <span></span>
 <span>from ..base.advent import *</span>
+<span></span>
+<span>graph = nx.DiGraph()</span>
+<span></span>
 <span></span>
 <span>class Solution(InputAsLinesSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 11</span>
-<span>    </span>
-<span>    _is_debugging = False</span>
 <span></span>
-<span>    graph = nx.DiGraph()</span>
+<span>    _is_debugging = False</span>
 <span></span>
 <span>    def Parse(self, input):</span>
 <span>        for line in input:</span>
@@ -56,27 +58,34 @@
 <span>            nodes = [output.strip() for output in outputs.split(" ")]</span>
 <span></span>
 <span>            for node in nodes:</span>
-<span>                self.graph.add_edge(device, node)</span>
+<span>                graph.add_edge(device, node)</span>
 <span></span>
-<span>        self.graph.add_node("out")</span>
+<span>        graph.add_node("out")</span>
 <span></span>
 <span>    # using kind of hack for part 1 with the parameters, in part 1 I dont care if I visited fft and dac</span>
 <span>    # so i pass True so test for part 1 is only if i reached to the end</span>
+<span>    #</span>
+<span>    # If i make FindPaths a class method (takes self as the first parameter),</span>
+<span>    # each instance of Solution gets cached separately.</span>
+<span>    # Moreover, the cache will hold references to self,</span>
+<span>    # preventing garbage collection and causing state to leak between tests</span>
+<span>    # so the static method (which lead me to put graph as global)</span>
+<span>    @staticmethod</span>
 <span>    @functools.cache</span>
-<span>    def FindPaths(self, curr, end, has_visited_dac, has_visited_fft):</span>
-<span>        if curr == "fft": #magic text from puzzle</span>
+<span>    def FindPaths(curr, end, has_visited_dac, has_visited_fft):</span>
+<span>        if curr == "fft":  # magic text from puzzle</span>
 <span>            has_visited_dac = True</span>
-<span>        </span>
-<span>        if curr == "dac": #magic text from puzzle</span>
+<span></span>
+<span>        if curr == "dac":  # magic text from puzzle</span>
 <span>            has_visited_fft = True</span>
-<span>        </span>
+<span></span>
 <span>        if curr == end:</span>
-<span>            return 1 if has_visited_dac and has_visited_fft else 0</span>
-<span>                </span>
+<span>            return has_visited_dac and has_visited_fft</span>
+<span></span>
 <span>        # Get successors (neighbors) from the graph</span>
 <span>        return sum(</span>
-<span>            self.FindPaths(node, end, has_visited_dac, has_visited_fft) </span>
-<span>            for node in self.graph.successors(curr)</span>
+<span>            Solution.FindPaths(node, end, has_visited_dac, has_visited_fft)</span>
+<span>            for node in graph.successors(curr)</span>
 <span>        )</span>
 <span></span>
 <span>    def pt1(self, input):</span>
@@ -90,13 +99,13 @@
 <span></span>
 <span>    def pt2(self, input):</span>
 <span>        self.debug(input)</span>
-<span>        </span>
+<span></span>
 <span>        self.Parse(input)</span>
 <span></span>
 <span>        res = self.FindPaths("svr", "out", False, False)</span>
 <span></span>
 <span>        return res</span>
-<span>        </span>
+<span></span>
 <span>    def part_1(self):</span>
 <span>        start_time = time.time()</span>
 <span></span>
@@ -115,10 +124,12 @@
 <span></span>
 <span>        self.solve("2", res, (end_time - start_time))</span>
 <span></span>
-<span>if __name__ == '__main__':</span>
+<span></span>
+<span>if __name__ == "__main__":</span>
 <span>    solution = Solution()</span>
 <span></span>
 <span>    solution.part_1()</span>
-<span>    </span>
+<span></span>
 <span>    solution.part_2()</span>
+<span></span>
 </pre>
