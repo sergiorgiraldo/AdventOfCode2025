@@ -2,13 +2,11 @@
 
 import functools
 import time
-
 import networkx as nx
 
 from ..base.advent import *
 
 graph = nx.DiGraph()
-
 
 class Solution(InputAsLinesSolution):
     _year = 2025
@@ -16,7 +14,9 @@ class Solution(InputAsLinesSolution):
 
     _is_debugging = False
 
-    def Parse(self, input):
+    def Parse(self, input):        
+        graph.clear() #since graph is global, i need to make sure i start clean
+
         for line in input:
             device, outputs = line.split(": ")
             nodes = [output.strip() for output in outputs.split(" ")]
