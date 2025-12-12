@@ -1,5 +1,20 @@
 # Changelog
 
+## [13.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v12.0.0...v13.0.0) (2025-12-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* AOC 2025 completed.
+* AOC 2025 completed.
+* AOC 2025 completed.
+
+### Features
+
+* AOC 2025 completed. ([ff48d4d](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/ff48d4d7ff4e031274adc6b765915426a96254ea))
+* AOC 2025 completed. ([648c25f](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/648c25fe03161ed64b3da5b1a332166852deb71f))
+* AOC 2025 completed. ([481caa6](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/481caa61b2977d2f1e862ab715c4d5474f44ea8b))
+
 ## [12.0.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v11.0.0...v12.0.0) (2025-12-12)
 
 ### ⚠ BREAKING CHANGES
