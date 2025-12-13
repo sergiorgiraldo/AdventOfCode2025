@@ -39,15 +39,16 @@ class Solution(InputAsLinesSolution):
     
     #the unit test only works if you try to change orientations
     #but the puzzle itself works if you just try the total sizes (alternative method below)
-    def ArrangePresents(self, data):
+    def ArrangePresents(self, input):
         presents = []
-        while "" in data:
-            idx = data.index("")
-            presents.append([list(x) for x in data[1:idx]])
-            data = data[idx + 1 :]
-        regions = data
+        while "" in input:
+            offset = input.index("")
+            presents.append([list(present) for present in input[1:offset]])
+            input = input[offset + 1 :]
 
-        def check_can_fill_all(presents, area_map, _list):
+        regions = input
+
+        def is_filled(presents, area_map, aux_list):
             shapes = []
             for present in presents:
                 curr_shapes = set()
@@ -60,7 +61,7 @@ class Solution(InputAsLinesSolution):
                     curr_shapes.add(present)
                 shapes.append(curr_shapes)
 
-            sorted_list = sorted([idx for idx, amount in enumerate(_list) for _ in range(amount)], key=lambda idx: sum(line.count("#") for line in presents[idx]), reverse=True)
+            sorted_list = sorted([idx for idx, amount in enumerate(aux_list) for _ in range(amount)], key=lambda idx: sum(line.count("#") for line in presents[idx]), reverse=True)
 
             def try_fill(present_idx, start_pos):
                 if present_idx == len(sorted_list):
@@ -120,7 +121,7 @@ class Solution(InputAsLinesSolution):
             if x * y < required:
                 continue
 
-            valid = check_can_fill_all(presents, area_map, info)
+            valid = is_filled(presents, area_map, _list)
             if valid:
                 count += 1
             # else:
