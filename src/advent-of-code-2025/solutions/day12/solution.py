@@ -13,16 +13,16 @@ class Solution(InputAsLinesSolution):
     _is_debugging = False
 
     #only works in puzzle, not in unit test    
-    def ArrangePresents_Alternative(self, data):
+    def ArrangePresents_Alternative(self, input):
         presents = []
         actual_size = 0
         total = 0
-        while "" in data:
-            idx = data.index("")
-            presents.append([list(x) for x in data[1:idx]])
-            data = data[idx + 1 :]
+        while "" in input:
+            idx = input.index("")
+            presents.append([list(x) for x in input[1:idx]])
+            input = input[idx + 1 :]
         sizes = [sum(cell == "#" for row in arr for cell in row) for arr in presents]    
-        regions = data
+        regions = input
         for region in regions:
             dimensions, info = region.split(": ")
             x, y = map(int, dimensions.split("x"))
@@ -121,7 +121,7 @@ class Solution(InputAsLinesSolution):
             if x * y < required:
                 continue
 
-            valid = is_filled(presents, area_map, _list)
+            valid = is_filled(presents, area_map, info)
             if valid:
                 count += 1
             # else:

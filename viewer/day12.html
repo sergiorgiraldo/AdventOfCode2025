@@ -48,18 +48,17 @@
 <span></span>
 <span>    _is_debugging = False</span>
 <span></span>
-<span>    #the unit test only works if you try to change orientations</span>
-<span>    #but the puzzle itself works if you just try the total sizes (alternative method below)</span>
-<span>    def ArrangePresents(self, input):</span>
+<span>    #only works in puzzle, not in unit test    </span>
+<span>    def ArrangePresents_Alternative(self, input):</span>
 <span>        presents = []</span>
 <span>        actual_size = 0</span>
 <span>        total = 0</span>
-<span>        while "" in data:</span>
-<span>            idx = data.index("")</span>
-<span>            presents.append([list(x) for x in data[1:idx]])</span>
-<span>            data = data[idx + 1 :]</span>
+<span>        while "" in input:</span>
+<span>            idx = input.index("")</span>
+<span>            presents.append([list(x) for x in input[1:idx]])</span>
+<span>            input = input[idx + 1 :]</span>
 <span>        sizes = [sum(cell == "#" for row in arr for cell in row) for arr in presents]    </span>
-<span>        regions = data</span>
+<span>        regions = input</span>
 <span>        for region in regions:</span>
 <span>            dimensions, info = region.split(": ")</span>
 <span>            x, y = map(int, dimensions.split("x"))</span>
@@ -158,7 +157,7 @@
 <span>            if x * y < required:</span>
 <span>                continue</span>
 <span></span>
-<span>            valid = is_filled(presents, area_map, _list)</span>
+<span>            valid = is_filled(presents, area_map, info)</span>
 <span>            if valid:</span>
 <span>                count += 1</span>
 <span>            # else:</span>
