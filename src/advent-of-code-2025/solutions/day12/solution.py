@@ -12,6 +12,31 @@ class Solution(InputAsLinesSolution):
 
     _is_debugging = False
 
+    #only works in puzzle, not in unit test    
+    def ArrangePresents_Alternative(self, data):
+        presents = []
+        actual_size = 0
+        total = 0
+        while "" in data:
+            idx = data.index("")
+            presents.append([list(x) for x in data[1:idx]])
+            data = data[idx + 1 :]
+        sizes = [sum(cell == "#" for row in arr for cell in row) for arr in presents]    
+        regions = data
+        for region in regions:
+            dimensions, info = region.split(": ")
+            x, y = map(int, dimensions.split("x"))
+            available = x * y
+            
+            info = list(map(int, info.split(" ")))
+
+            for i in range(0, len(info)):
+                actual_size += sizes[i] * int(info[i])
+            if actual_size <= available:
+                total += 1
+            actual_size = 0
+        return total
+    
     #the unit test only works if you try to change orientations
     #but the puzzle itself works if you just try the total sizes (alternative method below)
     def ArrangePresents(self, data):
@@ -82,20 +107,20 @@ class Solution(InputAsLinesSolution):
 
         count = 0
         for region in regions:
-            size, _list = region.split(": ")
+            dimensions, info = region.split(": ")
 
-            x, y = map(int, size.split("x"))
+            x, y = map(int, dimensions.split("x"))
             area_map = [["." for _ in range(x)] for _ in range(y)]
 
-            _list = list(map(int, _list.split()))
+            info = list(map(int, info.split()))
 
-            required = sum(amount * sum(row.count("#") for row in presents[idx]) for idx, amount in enumerate(_list))
+            required = sum(amount * sum(row.count("#") for row in presents[idx]) for idx, amount in enumerate(info))
 
             #Failed. Spaces not enough
             if x * y < required:
                 continue
 
-            valid = check_can_fill_all(presents, area_map, _list)
+            valid = check_can_fill_all(presents, area_map, info)
             if valid:
                 count += 1
             # else:
@@ -103,44 +128,11 @@ class Solution(InputAsLinesSolution):
 
         return count
     
-    #only works in puzzle, not in test    
-    def ArrangePresents_Alternative(self, input):
-        sizes = {}
-        shape = 0
-        present = 0
-        available = 0
-        actual_size = 0
-        total = 0
-
-        for line in input:
-            if line == "":
-                sizes[shape] = present
-                present = 0
-            elif len(line) == 2:
-                shape = int(line[0])
-            elif "#" in line:
-                for c in line:
-                    if c == "#":
-                        present += 1
-            else:
-                info = line.split(" ")                
-                
-                dimensions = info[0].split("x")
-                available = int(dimensions[0]) * int(dimensions[1][:-1])
-
-                for i in range(1, len(info)):
-                    actual_size += sizes[i - 1] * int(info[i])
-                if actual_size <= available:
-                    total += 1
-                actual_size = 0
-
-        return total
-
     def pt1(self, input):
         self.debug(input)
-
+        
         res = self.ArrangePresents(input)
-
+        
         return res
 
     def pt2(self, input):
@@ -164,7 +156,7 @@ class Solution(InputAsLinesSolution):
 
         end_time = time.time()
 
-        self.solve("2", res, (end_time - start_time))
+        # self.solve("2", res, (end_time - start_time))
 
 
 if __name__ == "__main__":
