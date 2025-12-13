@@ -48,6 +48,31 @@
 <span></span>
 <span>    _is_debugging = False</span>
 <span></span>
+<span>    #only works in puzzle, not in unit test    </span>
+<span>    def ArrangePresents_Alternative(self, input):</span>
+<span>        presents = []</span>
+<span>        actual_size = 0</span>
+<span>        total = 0</span>
+<span>        while "" in input:</span>
+<span>            idx = input.index("")</span>
+<span>            presents.append([list(x) for x in input[1:idx]])</span>
+<span>            input = input[idx + 1 :]</span>
+<span>        sizes = [sum(cell == "#" for row in arr for cell in row) for arr in presents]    </span>
+<span>        regions = input</span>
+<span>        for region in regions:</span>
+<span>            dimensions, info = region.split(": ")</span>
+<span>            x, y = map(int, dimensions.split("x"))</span>
+<span>            available = x * y</span>
+<span>            </span>
+<span>            info = list(map(int, info.split(" ")))</span>
+<span></span>
+<span>            for i in range(0, len(info)):</span>
+<span>                actual_size += sizes[i] * int(info[i])</span>
+<span>            if actual_size <= available:</span>
+<span>                total += 1</span>
+<span>            actual_size = 0</span>
+<span>        return total</span>
+<span>    </span>
 <span>    #the unit test only works if you try to change orientations</span>
 <span>    #but the puzzle itself works if you just try the total sizes (alternative method below)</span>
 <span>    def ArrangePresents(self, input):</span>
@@ -119,20 +144,20 @@
 <span></span>
 <span>        count = 0</span>
 <span>        for region in regions:</span>
-<span>            size, _list = region.split(": ")</span>
+<span>            dimensions, info = region.split(": ")</span>
 <span></span>
-<span>            x, y = map(int, size.split("x"))</span>
+<span>            x, y = map(int, dimensions.split("x"))</span>
 <span>            area_map = [["." for _ in range(x)] for _ in range(y)]</span>
 <span></span>
-<span>            _list = list(map(int, _list.split()))</span>
+<span>            info = list(map(int, info.split()))</span>
 <span></span>
-<span>            required = sum(amount * sum(row.count("#") for row in presents[idx]) for idx, amount in enumerate(_list))</span>
+<span>            required = sum(amount * sum(row.count("#") for row in presents[idx]) for idx, amount in enumerate(info))</span>
 <span></span>
 <span>            #Failed. Spaces not enough</span>
 <span>            if x * y < required:</span>
 <span>                continue</span>
 <span></span>
-<span>            valid = is_filled(presents, area_map, _list)</span>
+<span>            valid = is_filled(presents, area_map, info)</span>
 <span>            if valid:</span>
 <span>                count += 1</span>
 <span>            # else:</span>
@@ -140,44 +165,11 @@
 <span></span>
 <span>        return count</span>
 <span>    </span>
-<span>    #only works in puzzle, not in test    </span>
-<span>    def ArrangePresents_Alternative(self, input):</span>
-<span>        sizes = {}</span>
-<span>        shape = 0</span>
-<span>        present = 0</span>
-<span>        available = 0</span>
-<span>        actual_size = 0</span>
-<span>        total = 0</span>
-<span></span>
-<span>        for line in input:</span>
-<span>            if line == "":</span>
-<span>                sizes[shape] = present</span>
-<span>                present = 0</span>
-<span>            elif len(line) == 2:</span>
-<span>                shape = int(line[0])</span>
-<span>            elif "#" in line:</span>
-<span>                for c in line:</span>
-<span>                    if c == "#":</span>
-<span>                        present += 1</span>
-<span>            else:</span>
-<span>                info = line.split(" ")                </span>
-<span>                </span>
-<span>                dimensions = info[0].split("x")</span>
-<span>                available = int(dimensions[0]) * int(dimensions[1][:-1])</span>
-<span></span>
-<span>                for i in range(1, len(info)):</span>
-<span>                    actual_size += sizes[i - 1] * int(info[i])</span>
-<span>                if actual_size <= available:</span>
-<span>                    total += 1</span>
-<span>                actual_size = 0</span>
-<span></span>
-<span>        return total</span>
-<span></span>
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
-<span></span>
+<span>        </span>
 <span>        res = self.ArrangePresents(input)</span>
-<span></span>
+<span>        </span>
 <span>        return res</span>
 <span></span>
 <span>    def pt2(self, input):</span>
@@ -201,7 +193,7 @@
 <span></span>
 <span>        end_time = time.time()</span>
 <span></span>
-<span>        self.solve("2", res, (end_time - start_time))</span>
+<span>        # self.solve("2", res, (end_time - start_time))</span>
 <span></span>
 <span></span>
 <span>if __name__ == "__main__":</span>
