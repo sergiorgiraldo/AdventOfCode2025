@@ -36,11 +36,9 @@
 <pre>
 <span># puzzle prompt: https://adventofcode.com/2025/day/12</span>
 <span></span>
-<span>import re</span>
 <span>import time</span>
 <span></span>
 <span>from ..base.advent import *</span>
-<span></span>
 <span></span>
 <span>class Solution(InputAsLinesSolution):</span>
 <span>    _year = 2025</span>
@@ -142,6 +140,8 @@
 <span>            return try_fill(0, (0, 0))</span>
 <span></span>
 <span>        presents = []</span>
+<span>        total = 0</span>
+<span></span>
 <span>        while "" in input:</span>
 <span>            offset = input.index("")</span>
 <span>            presents.append([list(present) for present in input[1:offset]])</span>
@@ -149,29 +149,27 @@
 <span></span>
 <span>        regions = input</span>
 <span></span>
-<span>        total = 0</span>
-<span></span>
 <span>        for region in regions:</span>
 <span>            dimensions, info = region.split(": ")</span>
 <span></span>
 <span>            x, y = map(int, dimensions.split("x"))</span>
-<span></span>
-<span>            area_map = [["." for _ in range(x)] for _ in range(y)]</span>
 <span></span>
 <span>            info = list(map(int, info.split()))</span>
 <span></span>
 <span>            required = sum(amount * sum(row.count("#") </span>
 <span>                            for row in presents[idx]) </span>
 <span>                            for idx, amount in enumerate(info))</span>
-<span></span>
+<span>            </span>
 <span>            #Failed. Spaces not enough</span>
 <span>            if x * y < required:</span>
 <span>                continue</span>
 <span></span>
+<span>            #try to fit    </span>
+<span>            area_map = [["." for _ in range(x)] for _ in range(y)]</span>
+<span></span>
 <span>            total = total + 1 if is_filled(presents, area_map, info) else 0</span>
 <span></span>
 <span>        return total</span>
-<span></span>
 <span>    </span>
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>

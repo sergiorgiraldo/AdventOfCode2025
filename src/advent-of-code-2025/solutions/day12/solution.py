@@ -1,10 +1,8 @@
 # puzzle prompt: https://adventofcode.com/2025/day/12
 
-import re
 import time
 
 from ..base.advent import *
-
 
 class Solution(InputAsLinesSolution):
     _year = 2025
@@ -106,6 +104,8 @@ class Solution(InputAsLinesSolution):
             return try_fill(0, (0, 0))
 
         presents = []
+        total = 0
+
         while "" in input:
             offset = input.index("")
             presents.append([list(present) for present in input[1:offset]])
@@ -113,29 +113,27 @@ class Solution(InputAsLinesSolution):
 
         regions = input
 
-        total = 0
-
         for region in regions:
             dimensions, info = region.split(": ")
 
             x, y = map(int, dimensions.split("x"))
-
-            area_map = [["." for _ in range(x)] for _ in range(y)]
 
             info = list(map(int, info.split()))
 
             required = sum(amount * sum(row.count("#") 
                             for row in presents[idx]) 
                             for idx, amount in enumerate(info))
-
+            
             #Failed. Spaces not enough
             if x * y < required:
                 continue
 
+            #try to fit    
+            area_map = [["." for _ in range(x)] for _ in range(y)]
+
             total = total + 1 if is_filled(presents, area_map, info) else 0
 
         return total
-
     
     def pt1(self, input):
         self.debug(input)
