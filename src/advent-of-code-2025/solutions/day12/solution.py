@@ -15,38 +15,37 @@ class Solution(InputAsLinesSolution):
     #only works in puzzle, not in unit test    
     def ArrangePresents_Alternative(self, input):
         presents = []
-        actual_size = 0
         total = 0
+        
         while "" in input:
             idx = input.index("")
             presents.append([list(x) for x in input[1:idx]])
             input = input[idx + 1 :]
-        sizes = [sum(cell == "#" for row in arr for cell in row) for arr in presents]    
+        
         regions = input
+        
         for region in regions:
             dimensions, info = region.split(": ")
+
             x, y = map(int, dimensions.split("x"))
-            available = x * y
             
             info = list(map(int, info.split(" ")))
 
-            for i in range(0, len(info)):
-                actual_size += sizes[i] * int(info[i])
-            if actual_size <= available:
-                total += 1
-            actual_size = 0
+            required = sum(amount * sum(row.count("#") 
+                            for row in presents[idx]) 
+                            for idx, amount in enumerate(info))
+
+            #Failed. Spaces not enough
+            if x * y < required:
+                continue                
+            
+            total += 1
+
         return total
     
     #the unit test only works if you try to change orientations
     #but the puzzle itself works if you just try the total sizes (alternative method below)
     def ArrangePresents(self, input):
-        presents = []
-        while "" in input:
-            offset = input.index("")
-            presents.append([list(present) for present in input[1:offset]])
-            input = input[offset + 1 :]
-
-        regions = input
 
         def is_filled(presents, area_map, aux_list):
             shapes = []
@@ -106,34 +105,43 @@ class Solution(InputAsLinesSolution):
 
             return try_fill(0, (0, 0))
 
-        count = 0
+        presents = []
+        while "" in input:
+            offset = input.index("")
+            presents.append([list(present) for present in input[1:offset]])
+            input = input[offset + 1 :]
+
+        regions = input
+
+        total = 0
+
         for region in regions:
             dimensions, info = region.split(": ")
 
             x, y = map(int, dimensions.split("x"))
+
             area_map = [["." for _ in range(x)] for _ in range(y)]
 
             info = list(map(int, info.split()))
 
-            required = sum(amount * sum(row.count("#") for row in presents[idx]) for idx, amount in enumerate(info))
+            required = sum(amount * sum(row.count("#") 
+                            for row in presents[idx]) 
+                            for idx, amount in enumerate(info))
 
             #Failed. Spaces not enough
             if x * y < required:
                 continue
 
-            valid = is_filled(presents, area_map, info)
-            if valid:
-                count += 1
-            # else:
-            #   Cannot fit properly
+            total = total + 1 if is_filled(presents, area_map, info) else 0
 
-        return count
+        return total
+
     
     def pt1(self, input):
         self.debug(input)
         
         res = self.ArrangePresents(input)
-        
+
         return res
 
     def pt2(self, input):
