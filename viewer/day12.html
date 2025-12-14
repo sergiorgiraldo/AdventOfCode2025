@@ -36,11 +36,9 @@
 <pre>
 <span># puzzle prompt: https://adventofcode.com/2025/day/12</span>
 <span></span>
-<span>import re</span>
 <span>import time</span>
 <span></span>
 <span>from ..base.advent import *</span>
-<span></span>
 <span></span>
 <span>class Solution(InputAsLinesSolution):</span>
 <span>    _year = 2025</span>
@@ -51,38 +49,37 @@
 <span>    #only works in puzzle, not in unit test    </span>
 <span>    def ArrangePresents_Alternative(self, input):</span>
 <span>        presents = []</span>
-<span>        actual_size = 0</span>
 <span>        total = 0</span>
+<span>        </span>
 <span>        while "" in input:</span>
 <span>            idx = input.index("")</span>
 <span>            presents.append([list(x) for x in input[1:idx]])</span>
 <span>            input = input[idx + 1 :]</span>
-<span>        sizes = [sum(cell == "#" for row in arr for cell in row) for arr in presents]    </span>
+<span>        </span>
 <span>        regions = input</span>
+<span>        </span>
 <span>        for region in regions:</span>
 <span>            dimensions, info = region.split(": ")</span>
+<span></span>
 <span>            x, y = map(int, dimensions.split("x"))</span>
-<span>            available = x * y</span>
 <span>            </span>
 <span>            info = list(map(int, info.split(" ")))</span>
 <span></span>
-<span>            for i in range(0, len(info)):</span>
-<span>                actual_size += sizes[i] * int(info[i])</span>
-<span>            if actual_size <= available:</span>
-<span>                total += 1</span>
-<span>            actual_size = 0</span>
+<span>            required = sum(amount * sum(row.count("#") </span>
+<span>                            for row in presents[idx]) </span>
+<span>                            for idx, amount in enumerate(info))</span>
+<span></span>
+<span>            #Failed. Spaces not enough</span>
+<span>            if x * y < required:</span>
+<span>                continue                </span>
+<span>            </span>
+<span>            total += 1</span>
+<span></span>
 <span>        return total</span>
 <span>    </span>
 <span>    #the unit test only works if you try to change orientations</span>
 <span>    #but the puzzle itself works if you just try the total sizes (alternative method below)</span>
 <span>    def ArrangePresents(self, input):</span>
-<span>        presents = []</span>
-<span>        while "" in input:</span>
-<span>            offset = input.index("")</span>
-<span>            presents.append([list(present) for present in input[1:offset]])</span>
-<span>            input = input[offset + 1 :]</span>
-<span></span>
-<span>        regions = input</span>
 <span></span>
 <span>        def is_filled(presents, area_map, aux_list):</span>
 <span>            shapes = []</span>
@@ -142,34 +139,43 @@
 <span></span>
 <span>            return try_fill(0, (0, 0))</span>
 <span></span>
-<span>        count = 0</span>
+<span>        presents = []</span>
+<span>        total = 0</span>
+<span></span>
+<span>        while "" in input:</span>
+<span>            offset = input.index("")</span>
+<span>            presents.append([list(present) for present in input[1:offset]])</span>
+<span>            input = input[offset + 1 :]</span>
+<span></span>
+<span>        regions = input</span>
+<span></span>
 <span>        for region in regions:</span>
 <span>            dimensions, info = region.split(": ")</span>
 <span></span>
 <span>            x, y = map(int, dimensions.split("x"))</span>
-<span>            area_map = [["." for _ in range(x)] for _ in range(y)]</span>
 <span></span>
 <span>            info = list(map(int, info.split()))</span>
 <span></span>
-<span>            required = sum(amount * sum(row.count("#") for row in presents[idx]) for idx, amount in enumerate(info))</span>
-<span></span>
+<span>            required = sum(amount * sum(row.count("#") </span>
+<span>                            for row in presents[idx]) </span>
+<span>                            for idx, amount in enumerate(info))</span>
+<span>            </span>
 <span>            #Failed. Spaces not enough</span>
 <span>            if x * y < required:</span>
 <span>                continue</span>
 <span></span>
-<span>            valid = is_filled(presents, area_map, info)</span>
-<span>            if valid:</span>
-<span>                count += 1</span>
-<span>            # else:</span>
-<span>            #   Cannot fit properly</span>
+<span>            #try to fit    </span>
+<span>            area_map = [["." for _ in range(x)] for _ in range(y)]</span>
 <span></span>
-<span>        return count</span>
+<span>            total = total + 1 if is_filled(presents, area_map, info) else 0</span>
+<span></span>
+<span>        return total</span>
 <span>    </span>
 <span>    def pt1(self, input):</span>
 <span>        self.debug(input)</span>
 <span>        </span>
 <span>        res = self.ArrangePresents(input)</span>
-<span>        </span>
+<span></span>
 <span>        return res</span>
 <span></span>
 <span>    def pt2(self, input):</span>
