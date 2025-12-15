@@ -1,5 +1,12 @@
 # Changelog
 
+## [13.1.0](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v13.0.2...v13.1.0) (2025-12-15)
+
+
+### Features
+
+* some refactorings packed in a minor version ([7f1be89](https://github.com/sergiorgiraldo/AdventOfCode2025/commit/7f1be898f11a3cfb3ff5efef1e2becf6faa2c910))
+
 ## [13.0.2](https://github.com/sergiorgiraldo/AdventOfCode2025/compare/v13.0.1...v13.0.2) (2025-12-12)
 
 
