@@ -3,25 +3,30 @@
 import time
 
 from ..base.advent import *
-
 class Solution(InputAsLinesSolution):
     _year = 2025
     _day = 12
 
     _is_debugging = False
 
-    #only works in puzzle, not in unit test    
-    def ArrangePresents_Alternative(self, input):
+    def Parse(self, input):
         presents = []
-        total = 0
-        
+
         while "" in input:
-            idx = input.index("")
-            presents.append([list(x) for x in input[1:idx]])
-            input = input[idx + 1 :]
+            offset = input.index("")
+            presents.append([present for present in input[1:offset]])
+            input = input[offset + 1 :]
         
         regions = input
-        
+
+        return presents, regions
+
+    #only works in puzzle, not in unit test    
+    def ArrangePresents_Alternative(self, input):
+        presents, regions = self.Parse(input)
+
+        total = 0
+                
         for region in regions:
             dimensions, info = region.split(": ")
 
@@ -103,15 +108,9 @@ class Solution(InputAsLinesSolution):
 
             return try_fill(0, (0, 0))
 
-        presents = []
+        presents, regions = self.Parse(input)
+
         total = 0
-
-        while "" in input:
-            offset = input.index("")
-            presents.append([list(present) for present in input[1:offset]])
-            input = input[offset + 1 :]
-
-        regions = input
 
         for region in regions:
             dimensions, info = region.split(": ")
@@ -123,15 +122,14 @@ class Solution(InputAsLinesSolution):
             required = sum(amount * sum(row.count("#") 
                             for row in presents[idx]) 
                             for idx, amount in enumerate(info))
-            
+
+            area_map = [["." for _ in range(x)] for _ in range(y)]
+
             #Failed. Spaces not enough
             if x * y < required:
                 continue
 
-            #try to fit    
-            area_map = [["." for _ in range(x)] for _ in range(y)]
-
-            total = total + 1 if is_filled(presents, area_map, info) else 0
+            total = total + 1 if is_filled(presents, area_map, info) else total        
 
         return total
     
@@ -139,7 +137,7 @@ class Solution(InputAsLinesSolution):
         self.debug(input)
         
         res = self.ArrangePresents(input)
-
+        
         return res
 
     def pt2(self, input):
