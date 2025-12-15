@@ -21,7 +21,7 @@ function navigateTo(direction) {
 		newDay = "0" + newDay;
 	}
 
-	if (newDay >= 1 && newDay <= 25) {
+	if (newDay >= 1 && newDay <= 12) {
 		window.location.href = `day${newDay}.html`;
 	} 
 	else {
