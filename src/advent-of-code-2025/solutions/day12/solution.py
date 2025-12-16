@@ -3,7 +3,7 @@
 import time
 
 from ..base.advent import *
-class Solution(InputAsLinesSolution):
+class Solution(InputAsBlockSolution):
     _year = 2025
     _day = 12
 
@@ -12,13 +12,11 @@ class Solution(InputAsLinesSolution):
     def Parse(self, input):
         presents = []
 
-        while "" in input:
-            offset = input.index("")
-            presents.append([present for present in input[1:offset]])
-            input = input[offset + 1 :]
-        
-        regions = input
+        for present in input[:-1]:
+            presents.append(present[1:])
 
+        regions = input[-1]
+        
         return presents, regions
 
     #only works in puzzle, not in unit test    
@@ -123,11 +121,11 @@ class Solution(InputAsLinesSolution):
                             for row in presents[idx]) 
                             for idx, amount in enumerate(info))
 
-            area_map = [["." for _ in range(x)] for _ in range(y)]
-
             #Failed. Spaces not enough
             if x * y < required:
                 continue
+
+            area_map = [["." for _ in range(x)] for _ in range(y)]
 
             total = total + 1 if is_filled(presents, area_map, info) else total        
 
@@ -141,7 +139,7 @@ class Solution(InputAsLinesSolution):
         return res
 
     def pt2(self, input):
-        self.debug(input)
+        # self.debug(input)
 
         return "Merry Christmas"
 

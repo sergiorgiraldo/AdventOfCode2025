@@ -39,7 +39,7 @@
 <span>import time</span>
 <span></span>
 <span>from ..base.advent import *</span>
-<span>class Solution(InputAsLinesSolution):</span>
+<span>class Solution(InputAsBlockSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 12</span>
 <span></span>
@@ -48,13 +48,11 @@
 <span>    def Parse(self, input):</span>
 <span>        presents = []</span>
 <span></span>
-<span>        while "" in input:</span>
-<span>            offset = input.index("")</span>
-<span>            presents.append([present for present in input[1:offset]])</span>
-<span>            input = input[offset + 1 :]</span>
-<span>        </span>
-<span>        regions = input</span>
+<span>        for present in input[:-1]:</span>
+<span>            presents.append(present[1:])</span>
 <span></span>
+<span>        regions = input[-1]</span>
+<span>        </span>
 <span>        return presents, regions</span>
 <span></span>
 <span>    #only works in puzzle, not in unit test    </span>
@@ -159,11 +157,11 @@
 <span>                            for row in presents[idx]) </span>
 <span>                            for idx, amount in enumerate(info))</span>
 <span></span>
-<span>            area_map = [["." for _ in range(x)] for _ in range(y)]</span>
-<span></span>
 <span>            #Failed. Spaces not enough</span>
 <span>            if x * y < required:</span>
 <span>                continue</span>
+<span></span>
+<span>            area_map = [["." for _ in range(x)] for _ in range(y)]</span>
 <span></span>
 <span>            total = total + 1 if is_filled(presents, area_map, info) else total        </span>
 <span></span>
@@ -177,7 +175,7 @@
 <span>        return res</span>
 <span></span>
 <span>    def pt2(self, input):</span>
-<span>        self.debug(input)</span>
+<span>        # self.debug(input)</span>
 <span></span>
 <span>        return "Merry Christmas"</span>
 <span></span>
