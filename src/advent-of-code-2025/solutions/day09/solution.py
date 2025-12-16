@@ -4,8 +4,6 @@ import sys
 import time
 
 from ..base.advent import *
-
-
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -13,7 +11,6 @@ class Point:
 
     def GetArea(self, other):
         return (abs(self.x - other.x) + 1) * (abs(self.y - other.y) + 1)
-
 
 class Edge:
     def __init__(self, p1, p2):
@@ -61,17 +58,14 @@ class Polygon:
         return any(polygon_edge.Intersects(other_edge) for polygon_edge in self.edges)
 
 
-class Solution(InputAsLinesSolution):
+class Solution(InputAsCSVSolution):
     _year = 2025
     _day = 9
 
     _is_debugging = False
 
     def Parse(self, input):
-        points = []
-        for line in input:
-            x, y = map(int, line.split(","))
-            points.append(Point(x, y))
+        points = list(map(lambda point: Point(int(point[0]), int(point[1])), input))
 
         polygon = Polygon(points)
 

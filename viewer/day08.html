@@ -48,7 +48,7 @@
 <span>from ..base.advent import *</span>
 <span></span>
 <span></span>
-<span>class Solution(InputAsLinesSolution):</span>
+<span>class Solution(InputAsCSVSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 8</span>
 <span></span>
@@ -57,7 +57,8 @@
 <span>    # using networkx from 2024 (days 20, 23)</span>
 <span></span>
 <span>    def Parse(self, input):</span>
-<span>        points = [tuple(map(int, line.split(","))) for line in input]</span>
+<span>        points = [tuple(map(int, point)) for point in input]</span>
+<span></span>
 <span>        distances = self.GetDistances(points)</span>
 <span></span>
 <span>        return points, distances</span>

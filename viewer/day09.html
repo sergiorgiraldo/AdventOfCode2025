@@ -40,8 +40,6 @@
 <span>import time</span>
 <span></span>
 <span>from ..base.advent import *</span>
-<span></span>
-<span></span>
 <span>class Point:</span>
 <span>    def __init__(self, x, y):</span>
 <span>        self.x = x</span>
@@ -49,7 +47,6 @@
 <span></span>
 <span>    def GetArea(self, other):</span>
 <span>        return (abs(self.x - other.x) + 1) * (abs(self.y - other.y) + 1)</span>
-<span></span>
 <span></span>
 <span>class Edge:</span>
 <span>    def __init__(self, p1, p2):</span>
@@ -97,17 +94,14 @@
 <span>        return any(polygon_edge.Intersects(other_edge) for polygon_edge in self.edges)</span>
 <span></span>
 <span></span>
-<span>class Solution(InputAsLinesSolution):</span>
+<span>class Solution(InputAsCSVSolution):</span>
 <span>    _year = 2025</span>
 <span>    _day = 9</span>
 <span></span>
 <span>    _is_debugging = False</span>
 <span></span>
 <span>    def Parse(self, input):</span>
-<span>        points = []</span>
-<span>        for line in input:</span>
-<span>            x, y = map(int, line.split(","))</span>
-<span>            points.append(Point(x, y))</span>
+<span>        points = list(map(lambda point: Point(int(point[0]), int(point[1])), input))</span>
 <span></span>
 <span>        polygon = Polygon(points)</span>
 <span></span>
