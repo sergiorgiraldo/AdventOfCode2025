@@ -37,7 +37,7 @@
 <span># puzzle prompt: https://adventofcode.com/2025/day/4</span>
 <span></span>
 <span>import time</span>
-<span></span>
+<span>from collections import defaultdict</span>
 <span>from ..base.advent import *</span>
 <span></span>
 <span></span>
@@ -47,35 +47,49 @@
 <span></span>
 <span>    _is_debugging = False</span>
 <span></span>
+<span>    # grids are good as complex numbers (day 10, 2024)</span>
+<span>    def Parse(self, input):</span>
+<span>        grid = defaultdict(lambda: ".")</span>
+<span>        </span>
+<span>        for i, line in enumerate(input):</span>
+<span>            for j, c in enumerate(line):</span>
+<span>                grid[i + 1j * j] = c</span>
+<span>        </span>
+<span>        return grid, i + 1, j + 1</span>
+<span></span>
 <span>    #         col</span>
 <span>    #       @  @  @</span>
 <span>    #  row  @  |  @</span>
 <span>    #       @  @  @</span>
 <span>    #</span>
 <span>    # Scan the @ positions, there must be less than 4 around the Roll |</span>
-<span>    def InspectRoll(self, input, row, col):</span>
-<span>        if input[row][col] != "@":</span>
+<span>    def InspectRoll(self, grid, i, j):</span>
+<span>        position = i + 1j * j</span>
+<span></span>
+<span>        if grid[position] != "@":</span>
 <span>            return False</span>
 <span></span>
-<span>        row_bgn = max(0, row - 1)</span>
-<span>        row_end = min(row + 1, len(input) - 1)</span>
-<span>        col_bgn = max(0, col - 1)</span>
-<span>        col_end = min(col + 1, len(input[row]) - 1)</span>
+<span>        directions = [</span>
+<span>            -1-1j,  -1+0j,  -1+1j,</span>
+<span>            0-1j,           0+1j, </span>
+<span>            1-1j,   1+0j,   1+1j  </span>
+<span>        ]</span>
 <span></span>
 <span>        rolls = sum(</span>
-<span>            input[row_adj][col_adj] == "@"</span>
-<span>            for row_adj in range(row_bgn, row_end + 1)</span>
-<span>            for col_adj in range(col_bgn, col_end + 1)</span>
+<span>            1 for direction in directions </span>
+<span>            if grid[position + direction] == "@"</span>
 <span>        )</span>
 <span></span>
-<span>        return rolls < 5  # magic number given by the puzzle</span>
+<span>        return rolls < 4  # magic number given by the puzzle</span>
 <span></span>
 <span>    def DetermineRolls(self, input):</span>
+<span>        grid, rows, cols = self.Parse(input)</span>
+<span></span>
 <span>        res = sum(</span>
 <span>            1</span>
-<span>            for row in range(len(input))</span>
-<span>            for col in range(len(input[row]))</span>
-<span>            if self.InspectRoll(input, row, col)</span>
+<span>            for i in range(rows)</span>
+<span>            for j in range(cols)</span>
+<span>            if self.InspectRoll(grid, i, j)</span>
 <span>        )</span>
 <span></span>
 <span>        return res</span>
@@ -84,15 +98,15 @@
 <span>    def RemoveRolls(self, input):</span>
 <span>        res = 0</span>
 <span></span>
-<span>        grid = [list(line) for line in input]  # input may change</span>
+<span>        grid, rows, cols = self.Parse(input)</span>
 <span></span>
 <span>        while True:</span>
 <span>            lifted = 0</span>
 <span></span>
-<span>            for row in range(len(grid)):</span>
-<span>                for col in range(len(grid[row])):</span>
-<span>                    if self.InspectRoll(grid, row, col):</span>
-<span>                        grid[row][col] = "x"</span>
+<span>            for i in range(rows):</span>
+<span>                for j in range(cols):</span>
+<span>                    if self.InspectRoll(grid, i, j):</span>
+<span>                        grid[i + 1j * j] = "x"</span>
 <span>                        lifted += 1</span>
 <span></span>
 <span>            if lifted == 0:</span>
@@ -103,14 +117,14 @@
 <span>        return res</span>
 <span></span>
 <span>    def pt1(self, input):</span>
-<span>        # self.debug(input)</span>
+<span>        self.debug(input)</span>
 <span></span>
 <span>        res = self.DetermineRolls(input)</span>
 <span></span>
 <span>        return res</span>
 <span></span>
 <span>    def pt2(self, input):</span>
-<span>        # self.debug(input)</span>
+<span>        self.debug(input)</span>
 <span></span>
 <span>        res = self.RemoveRolls(input)</span>
 <span></span>

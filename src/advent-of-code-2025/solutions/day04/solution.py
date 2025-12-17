@@ -1,7 +1,7 @@
 # puzzle prompt: https://adventofcode.com/2025/day/4
 
 import time
-
+from collections import defaultdict
 from ..base.advent import *
 
 
@@ -11,35 +11,49 @@ class Solution(InputAsLinesSolution):
 
     _is_debugging = False
 
+    # grids are good as complex numbers (day 10, 2024)
+    def Parse(self, input):
+        grid = defaultdict(lambda: ".")
+        
+        for i, line in enumerate(input):
+            for j, c in enumerate(line):
+                grid[i + 1j * j] = c
+        
+        return grid, i + 1, j + 1
+
     #         col
     #       @  @  @
     #  row  @  |  @
     #       @  @  @
     #
     # Scan the @ positions, there must be less than 4 around the Roll |
-    def InspectRoll(self, input, row, col):
-        if input[row][col] != "@":
+    def InspectRoll(self, grid, i, j):
+        position = i + 1j * j
+
+        if grid[position] != "@":
             return False
 
-        row_bgn = max(0, row - 1)
-        row_end = min(row + 1, len(input) - 1)
-        col_bgn = max(0, col - 1)
-        col_end = min(col + 1, len(input[row]) - 1)
+        directions = [
+            -1-1j,  -1+0j,  -1+1j,
+            0-1j,           0+1j, 
+            1-1j,   1+0j,   1+1j  
+        ]
 
         rolls = sum(
-            input[row_adj][col_adj] == "@"
-            for row_adj in range(row_bgn, row_end + 1)
-            for col_adj in range(col_bgn, col_end + 1)
+            1 for direction in directions 
+            if grid[position + direction] == "@"
         )
 
-        return rolls < 5  # magic number given by the puzzle
+        return rolls < 4  # magic number given by the puzzle
 
     def DetermineRolls(self, input):
+        grid, rows, cols = self.Parse(input)
+
         res = sum(
             1
-            for row in range(len(input))
-            for col in range(len(input[row]))
-            if self.InspectRoll(input, row, col)
+            for i in range(rows)
+            for j in range(cols)
+            if self.InspectRoll(grid, i, j)
         )
 
         return res
@@ -48,15 +62,15 @@ class Solution(InputAsLinesSolution):
     def RemoveRolls(self, input):
         res = 0
 
-        grid = [list(line) for line in input]  # input may change
+        grid, rows, cols = self.Parse(input)
 
         while True:
             lifted = 0
 
-            for row in range(len(grid)):
-                for col in range(len(grid[row])):
-                    if self.InspectRoll(grid, row, col):
-                        grid[row][col] = "x"
+            for i in range(rows):
+                for j in range(cols):
+                    if self.InspectRoll(grid, i, j):
+                        grid[i + 1j * j] = "x"
                         lifted += 1
 
             if lifted == 0:
@@ -67,14 +81,14 @@ class Solution(InputAsLinesSolution):
         return res
 
     def pt1(self, input):
-        # self.debug(input)
+        self.debug(input)
 
         res = self.DetermineRolls(input)
 
         return res
 
     def pt2(self, input):
-        # self.debug(input)
+        self.debug(input)
 
         res = self.RemoveRolls(input)
 

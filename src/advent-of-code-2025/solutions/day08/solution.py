@@ -11,7 +11,6 @@ import networkx as nx
 
 from ..base.advent import *
 
-
 class Solution(InputAsCSVSolution):
     _year = 2025
     _day = 8

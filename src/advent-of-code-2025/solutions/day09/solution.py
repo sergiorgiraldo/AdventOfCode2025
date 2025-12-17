@@ -44,7 +44,6 @@ class Edge:
             and horizontal.p1.y < vertical.p2.y
         )
 
-
 class Polygon:
     def __init__(self, points):
         self.points = points
@@ -56,7 +55,6 @@ class Polygon:
 
     def Intersects(self, other_edge):
         return any(polygon_edge.Intersects(other_edge) for polygon_edge in self.edges)
-
 
 class Solution(InputAsCSVSolution):
     _year = 2025
@@ -89,7 +87,7 @@ class Solution(InputAsCSVSolution):
 
                 # For part 2 we build four edges that represent the rectangle being checked, then check to see if any edge
                 # intersect our polygon's edges. If no intersections, it is a good rectangle.
-                # example, from the puzzle unit test
+                # example, from the puzzle unit test, reds are the #'s, greens are the X's
                 # 0            13
                 # .............. 0
                 # .......#XXX#.. 1
@@ -106,6 +104,14 @@ class Solution(InputAsCSVSolution):
                 # but .... edges that share a vertex are considered to intersect,
                 # which is guaranteed to happen since all the rectangle's vertices are also vertices of the polygon.
                 # hack: shrink the rectangle for intersection testing
+
+                #  
+                # p1 |-------------|
+                #    ||-----------||< 
+                #    ||...........||< consider this smaller rectangle
+                #    ||-----------||<
+                #    |-------------| p2 
+
                 x1 = min(p1.x, p2.x) + 0.001
                 x2 = max(p1.x, p2.x) - 0.001
                 y1 = min(p1.y, p2.y) + 0.001
