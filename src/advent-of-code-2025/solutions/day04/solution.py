@@ -19,7 +19,9 @@ class Solution(InputAsLinesSolution):
             for j, c in enumerate(line):
                 grid[i + 1j * j] = c
         
-        return grid, i + 1, j + 1
+        rows, cols = i + 1, j + 1
+        
+        return grid, rows, cols
 
     #         col
     #       @  @  @
@@ -34,10 +36,9 @@ class Solution(InputAsLinesSolution):
             return False
 
         directions = [
-            -1-1j,  -1+0j,  -1+1j,
-            0-1j,           0+1j, 
-            1-1j,   1+0j,   1+1j  
-        ]
+                    -1-1j, -1+0j, -1+1j,
+                    0-1j,          0+1j, 
+                    1-1j,   1+0j,  1+1j]
 
         rolls = sum(
             1 for direction in directions 
@@ -49,18 +50,18 @@ class Solution(InputAsLinesSolution):
     def DetermineRolls(self, input):
         grid, rows, cols = self.Parse(input)
 
-        res = sum(
+        total = sum(
             1
             for i in range(rows)
             for j in range(cols)
             if self.InspectRoll(grid, i, j)
         )
 
-        return res
+        return total
 
     # same algorithm as in determine but now you go back and check again if more rolls can be removed
     def RemoveRolls(self, input):
-        res = 0
+        total = 0
 
         grid, rows, cols = self.Parse(input)
 
@@ -76,9 +77,9 @@ class Solution(InputAsLinesSolution):
             if lifted == 0:
                 break
 
-            res += lifted
+            total += lifted
 
-        return res
+        return total
 
     def pt1(self, input):
         self.debug(input)
