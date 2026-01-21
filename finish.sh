@@ -56,6 +56,12 @@ echo "###########################"
 
 ./backlog.sh
 
+echo "###########################"
+echo "Python - requirements.txt"
+echo "###########################"
+
+uv pip freeze > requirements.txt
+
 git add --all . 
 
 git commit -S -m 'feat!: AOC 2025 completed.'

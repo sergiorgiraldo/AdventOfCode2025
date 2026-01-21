@@ -26,7 +26,9 @@ When advent begins, get the session cookie from the page and update these:
 
 setup a virtual env and install components
 
-`uv pip install -e .`
+`uv venv`
+
+`uv pip install -r requirements.txt`
 
 ### gh actions
 
