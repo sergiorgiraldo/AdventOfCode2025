@@ -16,7 +16,7 @@ My solutions to [Advent of Code 2025](https://adventofcode.com/2025) done in Pyt
 
 ## Puzzles
 
-The puzzels are copyright and they cannot be distributed outside of AOC. I keep them in my repo **encrypted**. It is important to setup git-crypt correctly.
+The puzzels are copyright and they cannot be distributed outside of AOC. I keep them in my repo **encrypted**. It is important to setup git-crypt correctly, see section below.
 
 ## setup
 
