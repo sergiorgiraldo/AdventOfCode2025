@@ -14,6 +14,10 @@ My solutions to [Advent of Code 2025](https://adventofcode.com/2025) done in Pyt
 
 - Based on @xavdid's Python Advent of Code Project Template
 
+## Puzzles
+
+The puzzels are copyright and they cannot be distributed outside of AOC. I keep them in my repo **encrypted**. It is important to setup git-crypt correctly.
+
 ## setup
 
 When advent begins, get the session cookie from the page and update these:
